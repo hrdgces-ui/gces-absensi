@@ -58,7 +58,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-2">
     <div>
       <span class="text-xs font-bold text-slate-800 block">Master Database Karyawan PT. GCES</span>
-      <span class="text-[9px] text-slate-500">Pilih akun untuk simulasi presensi & rekap</span>
+      <span class="text-[9px] text-slate-500">Pilih akun sesuai Master Database</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -126,7 +126,6 @@
       <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer"></div>
     </div>
 
-    <!-- REAL-TIME DEVICE CLOCK & TIMEZONE -->
     <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
       <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-600/20 rounded-full blur-xl"></div>
       <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
@@ -158,7 +157,6 @@
       </p>
     </div>
 
-    <!-- DETAIL STATISTIK LENGKAP SESUAI MASTER DATABASE -->
     <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2">
         <span class="text-xs font-bold text-slate-800 uppercase tracking-wide">
@@ -345,7 +343,7 @@
             <div class="flex items-center space-x-2">
               <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs" id="approvalInitial">H</div>
               <div>
-                <h5 class="text-xs font-bold text-slate-800" id="approvalNameRole">Hasanih (CSO)</h5>
+                <h5 class="text-xs font-bold text-slate-800" id="approvalNameRole">Syaulia Medy Daiyah (SPV)</h5>
                 <p class="text-[10px] text-slate-500">Cuti Tahunan | 22 Okt (1 Hari)</p>
               </div>
             </div>
@@ -446,7 +444,6 @@
 </div>
 
 <script>
-  // COMPLETE AUTHENTIC MASTER DATABASE KARYAWAN PT. GCES (ALL LOCATIONS: RS. HARUM, RS. SUKMUL, PT. MOYA, PT. CELSIUS, PT. SAPTA & HEXAGON, PT. SISMADI MANCORPINDO, HO)
   const EMPLOYEES = [
     { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     
@@ -516,7 +513,6 @@
     }
   });
 
-  // REAL-TIME DEVICE CLOCK & TIMEZONE SYNC
   function updateLiveClockAndDate() {
     const now = new Date();
     
