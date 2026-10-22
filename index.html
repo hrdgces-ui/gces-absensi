@@ -411,7 +411,11 @@
 
   // 2. LOGIC DATABASE (LOCAL STORAGE)
   function loadDatabase() {
-    const stored = localStorage.getItem('gces_employees_db');
+    // KODE BARU: Hapus paksa memori data "ngarang" yang lama
+    localStorage.removeItem('gces_employees_db');
+    
+    // Gunakan nama memori baru (v2) agar benar-benar bersih
+    const stored = localStorage.getItem('gces_employees_db_v2');
     if(stored) {
       EMPLOYEES = JSON.parse(stored);
     } else {
@@ -424,7 +428,7 @@
   }
 
   function saveDatabase() {
-    localStorage.setItem('gces_employees_db', JSON.stringify(EMPLOYEES));
+    localStorage.setItem('gces_employees_db_v2', JSON.stringify(EMPLOYEES));
   }
 
   // --- ADMIN FUNCTIONS ---
