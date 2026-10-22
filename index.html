@@ -2,479 +2,708 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aplikasi Absensi Karyawan Operasional - PT. GCES</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Aplikasi Absensi Operasional PT. GCES</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: { sans: ['Inter', 'sans-serif'] },
-          colors: {
-            brand: { 50: '#f0fdf4', 100: '#dcfce7', 500: '#22c55e', 600: '#16a34a', 700: '#15803d', 900: '#14532d' }
-          },
-          boxShadow: {
-            'card-soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
-            'glow-emerald': '0 0 25px -5px rgba(34, 197, 94, 0.5)',
-          }
-        }
-      }
-    }
-  </script>
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
   <style>
-    .tab-content-pane { display: none; }
-    .tab-content-pane.active { display: block; }
+    body { font-family: 'Inter', sans-serif; }
+    .shadow-card-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
+    .shadow-glow-emerald { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
     @keyframes pulseRing {
       0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.15); opacity: 0.3; }
+      50% { transform: scale(1.12); opacity: 0.2; }
       100% { transform: scale(0.95); opacity: 0.8; }
     }
     .animate-pulse-ring { animation: pulseRing 3s infinite ease-in-out; }
-    .viewfinder-oval { border: 2px dashed rgba(52, 211, 153, 0.8); box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); }
+    .viewfinder-oval {
+      border: 2px dashed rgba(16, 185, 129, 0.8);
+      box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65);
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
   </style>
 </head>
-<body class="bg-slate-100 font-sans antialiased text-slate-800 flex justify-center min-h-screen">
+<body class="bg-slate-100 text-slate-800 flex flex-col h-screen max-w-md mx-auto relative overflow-hidden select-none">
 
-  <div class="w-full max-w-md bg-slate-50 min-h-screen flex flex-col shadow-2xl relative overflow-hidden">
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
+  <div class="flex items-center space-x-2.5">
+    <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center shadow-md">
+      <i class="fa-solid fa-shield-halved text-white text-base"></i>
+    </div>
+    <div>
+      <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v2.9</p>
+    </div>
+  </div>
 
-    <!-- HEADER BRANDING -->
-    <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-emerald-400 flex items-center justify-center shadow-md">
-          <i class="fa-solid fa-shield-halved text-white text-base"></i>
+  <div class="flex items-center space-x-1.5">
+    <button onclick="openConfigModal()" title="Pengaturan Server Google Sheets" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 p-1.5 rounded-full text-xs transition relative cursor-pointer">
+      <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+      <i class="fa-solid fa-cloud-arrow-up"></i>
+    </button>
+    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full text-xs font-medium flex items-center space-x-1.5 transition cursor-pointer">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="text-[11px]" id="headerActiveUserShort">Ahmad Fauzi</span>
+      <i class="fa-solid fa-chevron-down text-[10px]"></i>
+    </button>
+  </div>
+</header>
+
+<div id="userDropdownCard" class="hidden absolute top-14 right-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 w-72 space-y-2">
+  <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+    <span class="text-xs font-bold text-slate-800">Pilih Akun Simulasi Karyawan</span>
+    <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="space-y-1.5 max-h-60 overflow-y-auto pr-1 text-xs" id="userListContainer"></div>
+</div>
+
+<main class="flex-1 overflow-y-auto p-4 pb-20 space-y-4">
+
+  <!-- TAB 1: BERANDA / ABSENSI -->
+  <div id="tabContent-beranda" class="space-y-4 tab-content-pane active">
+    
+    <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
+      <div class="flex items-center space-x-3">
+        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm">
+          <i class="fa-solid fa-location-crosshairs"></i>
         </div>
         <div>
-          <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-          <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v2.7</p>
+          <div class="flex items-center space-x-1.5">
+            <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS LOKASI KERJA</span>
+          </div>
+          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak Terdeteksi: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Maks. 1.000m)</p>
         </div>
       </div>
-
-      <div class="flex items-center space-x-1.5">
-        <button onclick="openConfigModal()" title="Pengaturan Server Google Sheets" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 p-1.5 rounded-full text-xs transition relative cursor-pointer">
-          <span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-        </button>
-        <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full text-xs font-medium flex items-center space-x-1.5 transition cursor-pointer">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span class="text-[11px]" id="headerActiveUserShort">Ahmad Fauzi</span>
-          <i class="fa-solid fa-chevron-down text-[10px]"></i>
-        </button>
-      </div>
-    </header>
-
-    <!-- FLOATING USER SWITCHER DROPDOWN -->
-    <div id="userDropdownCard" class="hidden absolute top-14 right-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 w-72 space-y-2">
-      <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-        <span class="text-xs font-bold text-slate-800">Pilih Akun Simulasi Karyawan</span>
-        <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
-      </div>
-      <div class="space-y-1.5 max-h-60 overflow-y-auto pr-1 text-xs" id="userListContainer"></div>
+      <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-2xs">GPS Live</span>
     </div>
 
-    <!-- MAIN SCROLLABLE BODY AREA -->
-    <main class="flex-1 overflow-y-auto p-4 pb-20 space-y-4">
-
-      <div id="tabContent-beranda" class="space-y-4 tab-content-pane active">
-        
-        <!-- Live GPS Status Badge Card -->
-        <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
-          <div class="flex items-center space-x-3">
-            <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm">
-              <i class="fa-solid fa-location-crosshairs"></i>
-            </div>
-            <div>
-              <div class="flex items-center space-x-1.5">
-                <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-                <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS LOKASI KERJA</span>
-              </div>
-              <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak Terdeteksi: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Maks. 1.000m)</p>
-            </div>
-          </div>
-          <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-2xs">GPS Live</span>
-        </div>
-
-        <!-- Locked Warning Alert Banner -->
-        <div id="gpsLockedAlert" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-xl shadow-sm text-red-900">
-          <div class="flex items-start space-x-2">
-            <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
-            <div>
-              <h4 class="text-xs font-bold">Luar Area Presensi (Akses Terkunci)</h4>
-              <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari lokasi kerja terdaftar.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Quick GPS Simulator Helper -->
-        <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs space-y-1.5">
-          <div class="flex justify-between items-center text-[10px] font-bold text-slate-600">
-            <span><i class="fa-solid fa-satellite-dish text-blue-600 mr-1"></i> Simulasi GPS Test Jarak:</span>
-            <span class="text-slate-400">Klik untuk test status</span>
-          </div>
-          <div class="flex items-center justify-between pt-0.5">
-            <button onclick="setQuickGps(35)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-emerald-700 font-semibold transition cursor-pointer">
-              <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>35m (Dalam)
-            </button>
-            <button onclick="setQuickGps(450)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-blue-700 font-semibold transition cursor-pointer">
-              <i class="fa-solid fa-circle-check text-blue-500 mr-1"></i>450m (Radius OK)
-            </button>
-            <button onclick="setQuickGps(1350)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-red-700 font-semibold transition cursor-pointer">
-              <i class="fa-solid fa-triangle-exclamation text-red-500 mr-1"></i>1.35 Km (Luar)
-            </button>
-          </div>
-        </div>
-
-        <!-- Active Shift Selector -->
-        <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-1.5">
-          <div class="flex justify-between items-center">
-            <span class="text-xs font-bold text-slate-800 flex items-center">
-              <i class="fa-solid fa-clock-rotate-left text-blue-600 mr-1.5"></i> Pilih Shift Hari Ini:
-            </span>
-            <span class="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Toleransi 10 mnt</span>
-          </div>
-          <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer"></div>
-        </div>
-
-        <!-- Clock & Date Widget Card -->
-        <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
-          <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-600/20 rounded-full blur-xl"></div>
-          <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Kamis, 22 Oktober 2026</p>
-          <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">13:54:10 <span class="text-xs text-blue-400 font-sans">WIB</span></div>
-          
-          <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
-            <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
-              <span class="text-[9px] text-slate-400 font-medium block">JAM MASUK HARI INI</span>
-              <span id="clockInSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
-            </div>
-            <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
-              <span class="text-[9px] text-slate-400 font-medium block">JAM PULANG HARI INI</span>
-              <span id="clockOutSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- MAIN ATTENDANCE TAP BUTTON -->
-        <div class="py-2 flex flex-col items-center justify-center space-y-3">
-          <div class="relative flex items-center justify-center">
-            <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
-            <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group cursor-pointer">
-              <i id="mainAbsenIcon" class="fa-solid fa-fingerprint text-4xl mb-1 group-hover:scale-110 transition"></i>
-              <span id="mainAbsenLabel" class="text-xs font-black uppercase tracking-wider">TAP ABSEN</span>
-              <span id="mainAbsenSublabel" class="text-[9px] text-emerald-100 font-medium">MASUK SHIFT 1</span>
-            </button>
-          </div>
-          <p id="absenInstructionText" class="text-[11px] text-slate-500 font-medium text-center">
-            Pastikan posisi Anda berada di dalam area lokasi kerja sebelum menekan tombol.
-          </p>
-        </div>
-
-        <div class="grid grid-cols-3 gap-2">
-          <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-            <span class="text-[10px] text-slate-500 block font-semibold">Hadir Bulan Ini</span>
-            <span id="metricHadir" class="text-sm font-black text-emerald-600">18 Hari</span>
-          </div>
-          <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-            <span class="text-[10px] text-slate-500 block font-semibold">Keterlambatan</span>
-            <span id="metricTelat" class="text-sm font-black text-amber-500">1 Kali</span>
-          </div>
-          <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-            <span class="text-[10px] text-slate-500 block font-semibold">Hak Cuti Tahunan</span>
-            <span id="metricCuti" class="text-sm font-black text-blue-600">12 Hari</span>
-          </div>
-        </div>
-
-      </div>
-
-      <div id="tabContent-riwayat" class="space-y-3 tab-content-pane">
-        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Log Aktivitas & Riwayat</h3>
-            <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Ahmad Fauzi</p>
-          </div>
-          <button onclick="refreshHistoryList()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition cursor-pointer">
-            <i class="fa-solid fa-rotate mr-1"></i> Refresh
-          </button>
-        </div>
-
-        <div class="space-y-2.5" id="attendanceHistoryList"></div>
-      </div>
-
-      <div id="tabContent-cuti" class="space-y-3 tab-content-pane">
-        <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
-          <div>
-            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin</h3>
-            <p class="text-[10px] text-slate-400">PT. Gema Cita Elok Selaras</p>
-          </div>
-          <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Cuti: <span id="sisaCutiBadge">12</span> Hari</span>
-        </div>
-
-        <form id="leaveForm" onsubmit="submitLeaveRequest(event)" class="space-y-3 bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft">
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kategori Pengajuan *</label>
-            <select id="leaveType" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white outline-none">
-              <option value="Cuti Tahunan">Cuti Tahunan</option>
-              <option value="Sakit">Sakit</option>
-              <option value="Izin Khusus">Izin Khusus / Duka</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keterangan / Alasan *</label>
-            <textarea id="leaveReason" rows="2" required placeholder="Tuliskan alasan..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white outline-none"></textarea>
-          </div>
-          <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
-            Kirim Pengajuan Izin
-          </button>
-        </form>
-      </div>
-
-      <div id="tabContent-tim" class="space-y-3 tab-content-pane">
-        
-        <!-- ACCESS DENIED FOR CSO -->
-        <div id="leaderAccessDeniedBox" class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-3 hidden">
-          <div class="w-14 h-14 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-          <div>
-            <h3 class="text-xs font-black text-red-900 uppercase tracking-wide">Akses Khusus Tim Leader / SPV</h3>
-            <p class="text-[11px] text-red-700 mt-1">Akun Anda terdaftar sebagai <b id="deniedRoleName">CSO</b>. Menu ini terkunci untuk pelaksana.</p>
-          </div>
-          <button onclick="switchTab('beranda')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
-            Kembali ke Beranda
-          </button>
-        </div>
-
-        <!-- LEADER DASHBOARD -->
-        <div id="leaderDashboardContent" class="space-y-3 hidden">
-          <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
-            <div>
-              <span class="text-[10px] text-blue-400 font-bold uppercase">DASHBOARD LEADER / SPV</span>
-              <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Harum Sisma Medika</h3>
-            </div>
-            <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Active</span>
-          </div>
-          <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft text-center text-xs text-slate-600">
-            Panel monitoring dan approval shift tim operasional aktif.
-          </div>
-        </div>
-
-      </div>
-
-    </main>
-
-    <!-- BOTTOM NAVIGATION -->
-    <nav class="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 py-2 px-3 flex justify-around items-center z-30 shadow-lg text-white">
-      <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer">
-        <i class="fa-solid fa-fingerprint text-base"></i>
-        <span class="text-[10px] font-semibold">Absen</span>
-      </button>
-      <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
-        <i class="fa-solid fa-clock-rotate-left text-base"></i>
-        <span class="text-[10px] font-semibold">Riwayat</span>
-      </button>
-      <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
-        <i class="fa-solid fa-calendar-days text-base"></i>
-        <span class="text-[10px] font-semibold">Cuti</span>
-      </button>
-      <button onclick="switchTab('tim')" id="navBtn-tim" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition relative cursor-pointer">
-        <i class="fa-solid fa-users-gear text-base"></i>
-        <span class="text-[10px] font-semibold">Tim Leader</span>
-        <span id="navLeaderBadge" class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
-      </button>
-    </nav>
-
-    <!-- CAMERA MODAL -->
-    <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-950/90 flex flex-col justify-end max-w-md mx-auto">
-      <div class="bg-slate-900 rounded-t-3xl overflow-hidden shadow-2xl border-t border-slate-800 flex flex-col">
-        <div class="p-3 bg-slate-800 text-white flex items-center justify-between border-b border-slate-700">
-          <h3 class="text-xs font-bold">Verifikasi Foto Selfie Absen</h3>
-          <button onclick="closeCameraModal()" class="text-slate-300 text-xs cursor-pointer"><i class="fa-solid fa-xmark text-base"></i></button>
-        </div>
-        <div class="relative bg-black h-72 flex items-center justify-center">
-          <video id="webcamVideo" autoplay playsinline class="w-full h-full object-cover"></video>
-        </div>
-        <div class="p-3 bg-slate-900">
-          <button onclick="processCameraSubmit()" class="w-full py-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow cursor-pointer">
-            AMBIL FOTO & KIRIM ABSEN
-          </button>
+    <div id="gpsLockedAlert" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-xl shadow-sm text-red-900">
+      <div class="flex items-start space-x-2">
+        <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
+        <div>
+          <h4 class="text-xs font-bold">Luar Area Presensi (Akses Terkunci)</h4>
+          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari lokasi kerja terdaftar.</p>
         </div>
       </div>
     </div>
 
-    <!-- CONFIG MODAL -->
-    <div id="configModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4">
-      <div class="bg-white rounded-2xl w-full max-w-sm p-4 space-y-3 shadow-2xl">
-        <h3 class="text-xs font-bold text-slate-800">Endpoint Google Apps Script</h3>
-        <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 outline-none font-mono" />
-        <div class="flex space-x-2">
-          <button onclick="saveConfigUrl()" class="flex-1 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl cursor-pointer">Simpan</button>
-          <button onclick="closeConfigModal()" class="py-2 px-3 bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl cursor-pointer">Batal</button>
+    <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs space-y-1.5">
+      <div class="flex justify-between items-center text-[10px] font-bold text-slate-600">
+        <span><i class="fa-solid fa-satellite-dish text-blue-600 mr-1"></i> Simulasi GPS Test Jarak:</span>
+        <span class="text-slate-400">Klik untuk test status</span>
+      </div>
+      <div class="flex items-center justify-between pt-0.5">
+        <button onclick="setQuickGps(35)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-emerald-700 font-semibold transition cursor-pointer">
+          <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>35m (Dalam)
+        </button>
+        <button onclick="setQuickGps(450)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-blue-700 font-semibold transition cursor-pointer">
+          <i class="fa-solid fa-circle-check text-blue-500 mr-1"></i>450m (Radius OK)
+        </button>
+        <button onclick="setQuickGps(1350)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-red-700 font-semibold transition cursor-pointer">
+          <i class="fa-solid fa-triangle-exclamation text-red-500 mr-1"></i>1.35 Km (Luar)
+        </button>
+      </div>
+    </div>
+
+    <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-1.5">
+      <div class="flex justify-between items-center">
+        <span class="text-xs font-bold text-slate-800 flex items-center">
+          <i class="fa-solid fa-clock-rotate-left text-blue-600 mr-1.5"></i> Pilih Shift Hari Ini:
+        </span>
+        <span class="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Toleransi 10 mnt</span>
+      </div>
+      <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer"></div>
+    </div>
+
+    <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-600/20 rounded-full blur-xl"></div>
+      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
+      <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-blue-400 font-sans" id="liveTzText">WIB</span></div>
+      
+      <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
+        <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
+          <span class="text-[9px] text-slate-400 font-medium block">JAM MASUK HARI INI</span>
+          <span id="clockInSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
         </div>
+        <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
+          <span class="text-[9px] text-slate-400 font-medium block">JAM PULANG HARI INI</span>
+          <span id="clockOutSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="py-2 flex flex-col items-center justify-center space-y-3">
+      <div class="relative flex items-center justify-center">
+        <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
+        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group cursor-pointer">
+          <i id="mainAbsenIcon" class="fa-solid fa-fingerprint text-4xl mb-1 group-hover:scale-110 transition"></i>
+          <span id="mainAbsenLabel" class="text-xs font-black uppercase tracking-wider">TAP ABSEN</span>
+          <span id="mainAbsenSublabel" class="text-[9px] text-emerald-100 font-medium">MASUK SHIFT 1</span>
+        </button>
+      </div>
+      <p id="absenInstructionText" class="text-[11px] text-slate-500 font-medium text-center">
+        Pastikan posisi Anda berada di dalam area lokasi kerja sebelum menekan tombol.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2">
+      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
+        <span class="text-[10px] text-slate-500 block font-semibold">Hadir Bulan Ini</span>
+        <span id="metricHadir" class="text-sm font-black text-emerald-600">18 Hari</span>
+      </div>
+      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
+        <span class="text-[10px] text-slate-500 block font-semibold">Keterlambatan</span>
+        <span id="metricTelat" class="text-sm font-black text-amber-500">1 Kali</span>
+      </div>
+      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
+        <span class="text-[10px] text-slate-500 block font-semibold">Hak Cuti Tahunan</span>
+        <span id="metricCuti" class="text-sm font-black text-blue-600">12 Hari</span>
       </div>
     </div>
 
   </div>
 
-  <script>
-    const MOCK_KARYAWAN = [
-      { nip: "01.012.01.19", nama: "Ahmad Fauzi", jabatan: "CSO", lokasi: "RS. Sukmul Sisma Medika", lat: -6.1132, lng: 106.8837, shift: "Shift 1 (07:00 - 15:00)" },
-      { nip: "01.015.03.21", nama: "Andyka Topansyah", jabatan: "CSO", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.9012, shift: "Shift 1 (07:00 - 15:00)" },
-      { nip: "01.002.11.15", nama: "Siti Rahmawati", jabatan: "LEADER", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.9012, shift: "Shift 1 (07:00 - 15:00)" }
-    ];
+  <!-- TAB 2: RIWAYAT -->
+  <div id="tabContent-riwayat" class="space-y-3 tab-content-pane" style="display:none;">
+    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Log Aktivitas & Riwayat</h3>
+        <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Ahmad Fauzi (RS. Sukmul Sisma Medika)</p>
+      </div>
+      <button onclick="refreshHistoryList()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition cursor-pointer">
+        <i class="fa-solid fa-rotate mr-1"></i> Refresh
+      </button>
+    </div>
 
-    let activeUserIndex = 0;
-    let currentUser = MOCK_KARYAWAN[activeUserIndex];
-    let currentGpsDistance = 35;
-    let selectedShiftName = currentUser.shift;
-    let appScriptUrl = localStorage.getItem('gces_script_url') || "";
+    <div class="flex space-x-1.5 overflow-x-auto pb-1 text-[11px]">
+      <span onclick="filterHistory('semua')" class="bg-slate-800 text-white px-2.5 py-1 rounded-full font-medium shadow-2xs whitespace-nowrap cursor-pointer">Semua (21)</span>
+      <span onclick="filterHistory('hadir')" class="bg-white text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-emerald-50">Hadir (18)</span>
+      <span onclick="filterHistory('telat')" class="bg-white text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-amber-50">Telat (1)</span>
+      <span onclick="filterHistory('off')" class="bg-white text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-slate-50">Off Roster (2)</span>
+    </div>
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initUserSwitcher();
-      updateUserContext();
-      renderShiftButtons();
-      renderHistoryList();
+    <div class="space-y-2.5" id="attendanceHistoryList"></div>
+  </div>
+
+  <!-- TAB 3: CUTI & IZIN -->
+  <div id="tabContent-cuti" class="space-y-3 tab-content-pane" style="display:none;">
+    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin Kerja</h3>
+        <p class="text-[10px] text-slate-400">PT. Gema Cita Elok Selaras</p>
+      </div>
+      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Cuti: <span id="sisaCutiBadge">12</span> Hari</span>
+    </div>
+
+    <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-[10px] text-amber-900 space-y-1">
+      <div class="font-bold flex items-center text-amber-800">
+        <i class="fa-solid fa-circle-info text-amber-600 mr-1.5 text-xs"></i> Ketentuan Pengajuan Cuti & Izin PT. GCES:
+      </div>
+      <ul class="list-disc list-inside space-y-0.5 text-[9.5px] text-amber-800">
+        <li>Hak cuti tahunan total <b>12 hari/tahun</b>.</li>
+        <li>Area Jabodetabekser & Jabar: Maksimal <b>2 hari berturut-turut</b>.</li>
+        <li>Area Jateng, Jatim, Bali, Sumatera & luar pulau: Maksimal <b>3 hari berturut-turut</b>.</li>
+        <li>Sakit tanpa Surat Dokter: Maksimal <b>1 hari</b>.</li>
+      </ul>
+    </div>
+
+    <form id="leaveForm" onsubmit="submitLeaveRequest(event)" class="space-y-3">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kategori Pengajuan *</label>
+        <select id="leaveType" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" onchange="toggleAreaSelect(this.value)">
+          <option value="Cuti Tahunan">Cuti Tahunan (Potong Hak Cuti)</option>
+          <option value="Sakit (Surat Dokter)">Sakit (Dengan Surat Dokter)</option>
+          <option value="Sakit (Tanpa Surat Dokter)">Sakit (Tanpa Surat Dokter - Maks 1 Hari)</option>
+          <option value="Izin Khusus / Duka">Izin Khusus / Duka Cita</option>
+          <option value="Tukar Shift / Extra Shift">Permohonan Tukar Shift / Extra</option>
+        </select>
+      </div>
+
+      <div id="areaSelectBox">
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Wilayah / Area Tujuan Cuti *</label>
+        <select id="leaveArea" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
+          <option value="jabar">Jabodetabekser & Jawa Barat (Maksimal 2 Hari)</option>
+          <option value="luar_jabar">Jawa Tengah, Jatim, Bali, Sumatera & Luar Pulau (Maksimal 3 Hari)</option>
+        </select>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Tanggal Mulai *</label>
+          <input type="date" id="leaveStartDate" required class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Tanggal Selesai *</label>
+          <input type="date" id="leaveEndDate" required class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Upload Bukti / Surat Dokter (Opsional)</label>
+        <div class="border-2 border-dashed border-slate-300 rounded-xl p-2.5 text-center bg-slate-50 hover:bg-slate-100 transition cursor-pointer" onclick="document.getElementById('leaveAttachment').click()">
+          <i class="fa-solid fa-cloud-arrow-up text-xl text-blue-500 mb-0.5"></i>
+          <p id="attachmentFileName" class="text-[10px] text-slate-600 font-medium">Klik untuk pilih foto / dokumen</p>
+          <input type="file" id="leaveAttachment" accept="image/*" class="hidden" onchange="handleFileSelected(this)" />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keterangan / Alasan Pengajuan *</label>
+        <textarea id="leaveReason" rows="2" required placeholder="Tuliskan alasan/keperluan pengajuan..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+      </div>
+
+      <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition active:scale-98 cursor-pointer">
+        Kirim Pengajuan Izin
+      </button>
+    </form>
+  </div>
+
+  <!-- TAB 4: TIM LEADER (LOCKED FOR CSO) -->
+  <div id="tabContent-tim" class="space-y-3 tab-content-pane" style="display:none;">
+    
+    <div id="leaderAccessDeniedBox" class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-3 hidden">
+      <div class="w-14 h-14 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <div>
+        <h3 class="text-xs font-black text-red-900 uppercase tracking-wide">Akses Khusus Tim Leader / SPV</h3>
+        <p class="text-[11px] text-red-700 mt-1">Akun Anda saat ini terdaftar sebagai <b id="deniedRoleName">CSO</b> (Pelaksana). Menu ini hanya untuk Leader / SPV.</p>
+      </div>
+      <button onclick="switchTab('beranda')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
+        Kembali ke Beranda Absen
+      </button>
+    </div>
+
+    <div id="leaderDashboardContent" class="space-y-3 hidden">
+      <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
+        <div>
+          <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase">DASHBOARD PEMANTAUAN LEADER</span>
+          <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Harum Sisma Medika</h3>
+        </div>
+        <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Shift 1 Active</span>
+      </div>
+
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
+          <span class="text-[9px] text-slate-500 font-semibold block">Hadir Shift Ini</span>
+          <span class="text-sm font-black text-emerald-600">7 / 8 Orang</span>
+        </div>
+        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
+          <span class="text-[9px] text-slate-500 font-semibold block">Belum Absen</span>
+          <span class="text-sm font-black text-red-500">1 Orang</span>
+        </div>
+        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
+          <span class="text-[9px] text-slate-500 font-semibold block">Pengajuan Izin</span>
+          <span class="text-sm font-black text-amber-500">1 Request</span>
+        </div>
+      </div>
+
+      <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
+        <h4 class="text-xs font-bold text-slate-800 flex items-center justify-between">
+          <span>Persetujuan Izin Membutuhkan Action</span>
+          <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">1 Pending</span>
+        </h4>
+
+        <div id="approvalCardContainer" class="bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">AT</div>
+              <div>
+                <h5 class="text-xs font-bold text-slate-800">Andyka Topansyah (CSO)</h5>
+                <p class="text-[10px] text-slate-500">Izin Sakit | 22 - 23 Okt (2 Hari)</p>
+              </div>
+            </div>
+            <button onclick="viewDoctorNoteMock()" class="text-[10px] bg-white border border-slate-300 text-blue-600 font-bold px-2 py-1 rounded shadow-2xs cursor-pointer">
+              <i class="fa-solid fa-paperclip mr-1"></i>Surat Dokter
+            </button>
+          </div>
+          <div class="flex space-x-2 pt-1">
+            <button onclick="approveLeaveAction(true)" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer">
+              <i class="fa-solid fa-check mr-1"></i> Setujui
+            </button>
+            <button onclick="approveLeaveAction(false)" class="flex-1 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer">
+              <i class="fa-solid fa-xmark mr-1"></i> Tolak
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<nav class="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 py-2 px-3 flex justify-around items-center z-30 shadow-lg text-white">
+  <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer">
+    <i class="fa-solid fa-fingerprint text-base"></i>
+    <span class="text-[10px] font-semibold">Absen</span>
+  </button>
+  <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
+    <i class="fa-solid fa-clock-rotate-left text-base"></i>
+    <span class="text-[10px] font-semibold">Riwayat</span>
+  </button>
+  <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
+    <i class="fa-solid fa-calendar-days text-base"></i>
+    <span class="text-[10px] font-semibold">Cuti / Izin</span>
+  </button>
+  <button onclick="switchTab('tim')" id="navBtn-tim" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition relative cursor-pointer">
+    <i class="fa-solid fa-users-gear text-base"></i>
+    <span class="text-[10px] font-semibold">Tim Leader</span>
+    <span id="navLeaderBadge" class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
+  </button>
+</nav>
+
+<div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-950/90 flex flex-col justify-end max-w-md mx-auto">
+  <div class="bg-slate-900 rounded-t-3xl overflow-hidden shadow-2xl border-t border-slate-800 flex flex-col max-h-[90vh]">
+    <div class="p-3 bg-slate-800 text-white flex items-center justify-between border-b border-slate-700">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-camera text-emerald-400 text-sm"></i>
+        <h3 class="text-xs font-bold">Verifikasi Foto Selfie Absen</h3>
+      </div>
+      <button onclick="closeCameraModal()" class="w-7 h-7 rounded-full bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs flex items-center justify-center cursor-pointer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="relative bg-black h-72 flex items-center justify-center overflow-hidden">
+      <video id="webcamVideo" autoplay playsinline class="w-full h-full object-cover hidden"></video>
+      <div id="cameraFallbackView" class="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-400 p-4 text-center space-y-2">
+        <div class="w-16 h-16 rounded-full border-2 border-emerald-400 border-dashed flex items-center justify-center">
+          <i class="fa-solid fa-user-check text-2xl text-emerald-400"></i>
+        </div>
+        <div>
+          <p class="text-xs font-semibold text-slate-200">Kamera Siap Verifikasi</p>
+        </div>
+      </div>
+      <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div class="w-44 h-56 rounded-full viewfinder-oval flex items-center justify-center">
+          <span class="text-[10px] text-emerald-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded">Posisikan Wajah</span>
+        </div>
+      </div>
+    </div>
+    <div class="p-3 bg-slate-900 space-y-2">
+      <button id="snapAndSubmitBtn" onclick="processCameraSubmit()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-glow-emerald flex items-center justify-center space-x-2 transition active:scale-98 cursor-pointer">
+        <i class="fa-solid fa-circle-check text-sm"></i>
+        <span id="snapBtnText">AMBIL FOTO & KIRIM ABSEN</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<div id="configModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 flex items-center justify-center p-4">
+  <div class="bg-white rounded-2xl w-full max-w-sm p-4 space-y-3 shadow-2xl">
+    <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+      <h3 class="text-xs font-bold text-slate-800 flex items-center">
+        <i class="fa-solid fa-cloud-arrow-up text-emerald-600 mr-1.5"></i> Endpoint Google Sheets
+      </h3>
+      <button onclick="closeConfigModal()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div>
+      <label class="block text-[10px] font-semibold text-slate-700 mb-1">URL Web App Google Apps Script *</label>
+      <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none font-mono" />
+    </div>
+    <div class="flex space-x-2 pt-1">
+      <button onclick="saveConfigUrl()" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
+        Simpan
+      </button>
+      <button onclick="closeConfigModal()" class="py-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition cursor-pointer">
+        Batal
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const EMPLOYEES = [
+    { nip: "01.012.01.19", nama: "Ahmad Fauzi", jabatan: "CSO", lokasi: "RS. Sukmul Sisma Medika", lat: -6.1132, lng: 106.8837 },
+    { nip: "01.012.02.20", nama: "Andyka Topansyah", jabatan: "LEADER", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.8992 },
+    { nip: "01.012.03.21", nama: "Siti Rahmawati", jabatan: "CSO", lokasi: "RS. Sukmul Sisma Medika", lat: -6.1132, lng: 106.8837 },
+    { nip: "01.012.04.22", nama: "Budi Santoso", jabatan: "SPV", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.8992 },
+    { nip: "01.012.05.23", nama: "Dewi Lestari", jabatan: "CSO", lokasi: "RS. Hermina Podomoro", lat: -6.1345, lng: 106.8521 }
+  ];
+
+  let activeUser = EMPLOYEES[0];
+  let activeGpsDistance = 35;
+  let activeShift = "Shift 1 (07:00 - 15:00)";
+  let currentTransactionType = "MASUK";
+  let appScriptUrl = localStorage.getItem("gces_script_url") || "";
+
+  const SHIFTS = [
+    { id: "s1", nama: "Shift 1 (07:00 - 15:00)" },
+    { id: "s2", nama: "Shift 2 (15:00 - 23:00)" },
+    { id: "s3", nama: "Shift 3 (23:00 - 07:00)" }
+  ];
+
+  window.addEventListener('DOMContentLoaded', () => {
+    initUserSwitcher();
+    initShiftButtons();
+    updateLiveClockAndDate(); // Immediate run on load
+    setInterval(updateLiveClockAndDate, 1000); // Live loop every second
+    renderHistoryList();
+    
+    if(appScriptUrl) {
+      document.getElementById('scriptUrlInput').value = appScriptUrl;
+    }
+  });
+
+  // ROBUST DEVICE CLOCK & TIMEZONE SYNC
+  function updateLiveClockAndDate() {
+    const now = new Date();
+    
+    // Format Date from device
+    const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    const dateString = now.toLocaleDateString('id-ID', optionsDate);
+    const dateEl = document.getElementById('liveDateText');
+    if(dateEl) dateEl.innerText = dateString;
+
+    // Format Time from device
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+    const timeString = `${hours}:${minutes}:${seconds}`;
+
+    // Detect Device Timezone Abbreviation
+    let tzAbbr = "WIB";
+    try {
+      const match = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).match(/\b[A-Z]{3,4}\b/g);
+      if (match && match.length > 0) {
+        tzAbbr = match[match.length - 1];
+      }
+    } catch(e) {
+      tzAbbr = "WIB";
+    }
+
+    const clockEl = document.getElementById('liveClockText');
+    if(clockEl) {
+      clockEl.innerHTML = `${timeString} <span class="text-xs text-blue-400 font-sans">${tzAbbr}</span>`;
+    }
+  }
+
+  function toggleUserDropdown() {
+    document.getElementById('userDropdownCard').classList.toggle('hidden');
+  }
+
+  function initUserSwitcher() {
+    const container = document.getElementById('userListContainer');
+    if(!container) return;
+    container.innerHTML = "";
+
+    EMPLOYEES.forEach(emp => {
+      const isSelected = emp.nip === activeUser.nip;
+      const item = document.createElement('div');
+      item.className = `p-2 rounded-xl flex items-center justify-between cursor-pointer transition ${isSelected ? 'bg-emerald-50 border border-emerald-200 font-bold' : 'hover:bg-slate-50'}`;
+      item.innerHTML = `
+        <div>
+          <p class="text-xs text-slate-800">${emp.nama} <span class="text-[9px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' || emp.jabatan === 'SPV' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-slate-100 text-slate-600'}">${emp.jabatan}</span></p>
+          <p class="text-[10px] text-slate-500 font-normal">📍 ${emp.lokasi}</p>
+        </div>
+        ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : '<span class="text-[10px] text-slate-400">Pilih</span>'}
+      `;
+      item.onclick = () => switchActiveUser(emp);
+      container.appendChild(item);
     });
 
-    function initUserSwitcher() {
-      const container = document.getElementById('userListContainer');
-      container.innerHTML = '';
-      MOCK_KARYAWAN.forEach((emp, idx) => {
-        const isSelected = idx === activeUserIndex;
-        container.innerHTML += `
-          <div onclick="switchUser(${idx})" class="p-2 rounded-xl border ${isSelected ? 'border-emerald-500 bg-emerald-50/50' : 'border-slate-200 hover:bg-slate-50'} flex items-center justify-between cursor-pointer transition">
-            <div>
-              <p class="font-bold text-slate-800">${emp.nama} <span class="text-[10px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">${emp.jabatan}</span></p>
-              <p class="text-[10px] text-slate-500">${emp.lokasi}</p>
-            </div>
-            ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : ''}
-          </div>
-        `;
-      });
+    document.getElementById('headerActiveUserShort').innerText = activeUser.nama.split(' ')[0];
+    document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.lokasi})`;
+    checkLeaderAccess();
+  }
+
+  function switchActiveUser(emp) {
+    activeUser = emp;
+    toggleUserDropdown();
+    initUserSwitcher();
+    renderHistoryList();
+    showToast(`Akun beralih ke: ${emp.nama} (${emp.jabatan})`);
+  }
+
+  function checkLeaderAccess() {
+    const deniedBox = document.getElementById('leaderAccessDeniedBox');
+    const dashboardBox = document.getElementById('leaderDashboardContent');
+    const navBadge = document.getElementById('navLeaderBadge');
+    const deniedRoleName = document.getElementById('deniedRoleName');
+    if(!deniedBox) return;
+
+    deniedRoleName.innerText = activeUser.jabatan;
+
+    if (activeUser.jabatan === 'LEADER' || activeUser.jabatan === 'SPV') {
+      deniedBox.classList.add('hidden');
+      dashboardBox.classList.remove('hidden');
+      navBadge.classList.remove('hidden');
+      document.getElementById('leaderLocationTitle').innerText = activeUser.lokasi;
+    } else {
+      deniedBox.classList.remove('hidden');
+      dashboardBox.classList.add('hidden');
+      navBadge.classList.add('hidden');
     }
+  }
 
-    function toggleUserDropdown() {
-      document.getElementById('userDropdownCard').classList.toggle('hidden');
+  function initShiftButtons() {
+    const container = document.getElementById('shiftButtonsContainer');
+    if(!container) return;
+    container.innerHTML = "";
+
+    SHIFTS.forEach(shift => {
+      const isSelected = activeShift === shift.nama;
+      const btn = document.createElement('button');
+      btn.type = "button";
+      btn.className = `py-2 px-1 text-[11px] font-semibold rounded-xl border transition cursor-pointer text-center ${isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}`;
+      btn.innerHTML = `<div class="font-bold">${shift.nama.split(' ')[0]} ${shift.nama.split(' ')[1]}</div><div class="text-[9px] opacity-80">${shift.nama.split('(')[1]?.replace(')','') || ''}</div>`;
+      btn.onclick = () => {
+        activeShift = shift.nama;
+        initShiftButtons();
+      };
+      container.appendChild(btn);
+    });
+  }
+
+  function setQuickGps(meters) {
+    activeGpsDistance = meters;
+    const card = document.getElementById('gpsStatusCard');
+    const alertBox = document.getElementById('gpsLockedAlert');
+    const distanceText = document.getElementById('gpsDistanceText');
+    const alertDistanceText = document.getElementById('alertDistanceText');
+    const dotIndicator = document.getElementById('gpsDotIndicator');
+    const iconBg = document.getElementById('gpsIconBg');
+    const title = document.getElementById('gpsStatusTitle');
+    const absenBtn = document.getElementById('mainAbsenBtn');
+
+    distanceText.innerText = `${meters} Meter`;
+    alertDistanceText.innerText = `${meters.toLocaleString()} meter`;
+
+    if (meters <= 1000) {
+      card.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
+      iconBg.className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm";
+      dotIndicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping";
+      title.innerText = "DALAM RADIUS LOKASI KERJA";
+      title.className = "text-xs font-bold text-emerald-900";
+      alertBox.classList.add('hidden');
+      absenBtn.disabled = false;
+      absenBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+    } else {
+      card.className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
+      iconBg.className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg shadow-sm";
+      dotIndicator.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+      title.innerText = "DI LUAR RADIUS LOKASI KERJA";
+      title.className = "text-xs font-bold text-red-900";
+      alertBox.classList.remove('hidden');
+      absenBtn.disabled = true;
+      absenBtn.classList.add('opacity-50', 'cursor-not-allowed');
+      showToast("GPS Terkunci: Di luar radius 1 Km!", "error");
     }
+  }
 
-    function switchUser(idx) {
-      activeUserIndex = idx;
-      currentUser = MOCK_KARYAWAN[activeUserIndex];
-      selectedShiftName = currentUser.shift;
-      toggleUserDropdown();
-      initUserSwitcher();
-      updateUserContext();
-      renderHistoryList();
+  function triggerAbsenAction() {
+    if (activeGpsDistance > 1000) {
+      showToast("Tidak dapat absen! Posisi di luar radius kantor.", "error");
+      return;
     }
+    document.getElementById('cameraModal').classList.remove('hidden');
+  }
 
-    function updateUserContext() {
-      document.getElementById('headerActiveUserShort').innerText = currentUser.nama.split(' ')[0];
-      document.getElementById('historyUserSubtitle').innerText = `${currentUser.nama} (${currentUser.lokasi})`;
-      
-      const isLeaderOrSpv = currentUser.jabatan === 'LEADER' || currentUser.jabatan === 'SPV';
-      const deniedBox = document.getElementById('leaderAccessDeniedBox');
-      const dashboardBox = document.getElementById('leaderDashboardContent');
-      const navBadge = document.getElementById('navLeaderBadge');
-      
-      document.getElementById('deniedRoleName').innerText = currentUser.jabatan;
+  function closeCameraModal() {
+    document.getElementById('cameraModal').classList.add('hidden');
+  }
 
-      if (isLeaderOrSpv) {
-        deniedBox.classList.add('hidden');
-        dashboardBox.classList.remove('hidden');
-        navBadge.classList.remove('hidden');
-      } else {
-        deniedBox.classList.remove('hidden');
-        dashboardBox.classList.add('hidden');
-        navBadge.classList.add('hidden');
-      }
+  function processCameraSubmit() {
+    closeCameraModal();
+    const now = new Date();
+    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+
+    if (currentTransactionType === "MASUK") {
+      document.getElementById('clockInSummary').innerText = `${timeStr} WIB`;
+      document.getElementById('clockInSummary').className = "text-xs font-bold text-emerald-400";
+      currentTransactionType = "PULANG";
+      showToast(`Absen MASUK berhasil dicatat jam ${timeStr}`);
+    } else {
+      document.getElementById('clockOutSummary').innerText = `${timeStr} WIB`;
+      document.getElementById('clockOutSummary').className = "text-xs font-bold text-blue-400";
+      currentTransactionType = "SELESAI";
+      showToast(`Absen PULANG berhasil dicatat jam ${timeStr}`);
     }
+  }
 
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content-pane').forEach(p => p.classList.remove('active'));
-      document.getElementById(`tabContent-${tabId}`).classList.add('active');
-      ['beranda', 'riwayat', 'cuti', 'tim'].forEach(id => {
-        const btn = document.getElementById(`navBtn-${id}`);
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content-pane').forEach(pane => pane.style.display = 'none');
+    const target = document.getElementById(`tabContent-${tabId}`);
+    if(target) target.style.display = 'block';
+
+    ['beranda', 'riwayat', 'cuti', 'tim'].forEach(id => {
+      const btn = document.getElementById(`navBtn-${id}`);
+      if(btn) {
         btn.className = id === tabId ? "flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer" : "flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer";
-      });
-    }
-
-    function setQuickGps(d) {
-      currentGpsDistance = d;
-      document.getElementById('gpsDistanceText').innerText = `${d} Meter`;
-      document.getElementById('alertDistanceText').innerText = `${d} meter`;
-      const absenBtn = document.getElementById('mainAbsenBtn');
-      if (d <= 1000) {
-        document.getElementById('gpsStatusCard').classList.remove('hidden');
-        document.getElementById('gpsLockedAlert').classList.add('hidden');
-        absenBtn.disabled = false;
-        absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 cursor-pointer";
-      } else {
-        document.getElementById('gpsStatusCard').classList.add('hidden');
-        document.getElementById('gpsLockedAlert').classList.remove('hidden');
-        absenBtn.disabled = true;
-        absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-slate-700 text-slate-400 flex flex-col items-center justify-center border-4 border-slate-600 cursor-not-allowed opacity-80";
       }
-    }
+    });
+    if (tabId === 'tim') checkLeaderAccess();
+  }
 
-    function renderShiftButtons() {
-      const shifts = ["Shift 1 (07:00 - 15:00)", "Shift 2 (15:00 - 23:00)", "Shift 3 (23:00 - 07:00)"];
-      const container = document.getElementById('shiftButtonsContainer');
-      container.innerHTML = '';
-      shifts.forEach(sh => {
-        const isSelected = selectedShiftName === sh;
-        container.innerHTML += `
-          <button onclick="selectShift('${sh}')" class="p-2 rounded-xl text-[10px] font-bold border transition cursor-pointer ${isSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-slate-50 text-slate-700 border-slate-200'}">
-            ${sh.split(' ')[0]} ${sh.split(' ')[1]}
-          </button>
-        `;
-      });
-    }
+  function renderHistoryList(filter = 'semua') {
+    const container = document.getElementById('attendanceHistoryList');
+    if(!container) return;
+    container.innerHTML = "";
+    
+    const mockHistory = [
+      { tanggal: "Kamis, 22 Okt 2026", masuk: "06:58 WIB", pulang: "15:02 WIB", status: "Hadir", shift: "Shift 1", ket: "Tepat Waktu" },
+      { tanggal: "Rabu, 21 Okt 2026", masuk: "07:12 WIB", pulang: "15:00 WIB", status: "Telat", shift: "Shift 1", ket: "Terlambat 12 Menit" }
+    ];
 
-    function selectShift(sh) {
-      selectedShiftName = sh;
-      renderShiftButtons();
-    }
-
-    function triggerAbsenAction() {
-      if (currentGpsDistance > 1000) {
-        alert("Akses ditolak! Berada di luar radius lokasi kerja.");
-        return;
-      }
-      document.getElementById('cameraModal').classList.remove('hidden');
-      navigator.mediaDevices?.getUserMedia({ video: { facingMode: 'user' } })
-        .then(stream => { document.getElementById('webcamVideo').srcObject = stream; })
-        .catch(e => console.log(e));
-    }
-
-    function closeCameraModal() {
-      const v = document.getElementById('webcamVideo');
-      if (v.srcObject) v.srcObject.getTracks().forEach(t => t.stop());
-      document.getElementById('cameraModal').classList.add('hidden');
-    }
-
-    function processCameraSubmit() {
-      closeCameraModal();
-      alert("Presensi berhasil dicatat!");
-      switchTab('riwayat');
-    }
-
-    function renderHistoryList() {
-      document.getElementById('attendanceHistoryList').innerHTML = `
-        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-2xs flex items-center justify-between">
-          <div>
-            <span class="text-[10px] font-bold text-slate-400">21 Okt 2026</span>
-            <h4 class="text-xs font-bold text-slate-800">Hadir Tepat Waktu</h4>
-          </div>
-          <span class="text-[10px] font-mono font-bold px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-800">06:52 WIB</span>
+    mockHistory.forEach(item => {
+      const card = document.createElement('div');
+      card.className = "bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft space-y-2";
+      card.innerHTML = `
+        <div class="flex justify-between items-center">
+          <span class="text-xs font-bold text-slate-800">${item.tanggal}</span>
+          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${item.status}</span>
+        </div>
+        <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-2 rounded-xl">
+          <div><span class="text-slate-400 block text-[9px]">MASUK</span><span class="font-bold text-slate-700">${item.masuk}</span></div>
+          <div><span class="text-slate-400 block text-[9px]">PULANG</span><span class="font-bold text-slate-700">${item.pulang}</span></div>
         </div>
       `;
-    }
+      container.appendChild(card);
+    });
+  }
 
-    function refreshHistoryList() { renderHistoryList(); }
-    function submitLeaveRequest(e) { e.preventDefault(); alert("Pengajuan berhasil dikirim!"); switchTab('beranda'); }
-    function openConfigModal() { document.getElementById('configModal').classList.remove('hidden'); }
-    function closeConfigModal() { document.getElementById('configModal').classList.add('hidden'); }
-    function saveConfigUrl() { appScriptUrl = document.getElementById('scriptUrlInput').value; closeConfigModal(); alert("Tersimpan!"); }
-  </script>
+  function filterHistory(type) { renderHistoryList(type); }
+  function refreshHistoryList() { showToast("Riwayat diperbarui."); renderHistoryList(); }
+  function toggleAreaSelect(val) {
+    const box = document.getElementById('areaSelectBox');
+    if (val.includes('Sakit') || val.includes('Cuti')) box.classList.remove('hidden');
+    else box.classList.add('hidden');
+  }
+  function handleFileSelected(input) {
+    if(input.files && input.files[0]) document.getElementById('attachmentFileName').innerText = input.files[0].name;
+  }
+  function submitLeaveRequest(e) {
+    e.preventDefault();
+    showToast("Pengajuan izin berhasil dikirim!");
+    document.getElementById('leaveForm').reset();
+  }
+  function viewDoctorNoteMock() { showToast("Membuka lampiran surat dokter..."); }
+  function approveLeaveAction(is) { showToast(is ? "Izin disetujui." : "Izin ditolak."); }
+  function openConfigModal() { document.getElementById('configModal').classList.remove('hidden'); }
+  function closeConfigModal() { document.getElementById('configModal').classList.add('hidden'); }
+  function saveConfigUrl() {
+    appScriptUrl = document.getElementById('scriptUrlInput').value.trim();
+    localStorage.setItem("gces_script_url", appScriptUrl);
+    closeConfigModal();
+    showToast("Endpoint disimpan!");
+  }
+  function showToast(msg, type = "success") {
+    const existing = document.getElementById('gcesToastAlert');
+    if (existing) existing.remove();
+    const toast = document.createElement('div');
+    toast.id = 'gcesToastAlert';
+    toast.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold text-white flex items-center space-x-2 bg-slate-900 border border-slate-700`;
+    toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i><span>${msg}</span>`;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+</script>
+
 </body>
 </html>
