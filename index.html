@@ -37,7 +37,7 @@
     </div>
     <div>
       <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v3.5</p>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v3.6</p>
     </div>
   </div>
 
@@ -48,7 +48,7 @@
     </button>
     <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-2.5 py-1 rounded-full text-xs font-medium flex items-center space-x-1.5 transition cursor-pointer">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="text-[11px]" id="headerActiveUserShort">Ahmad Fauzi</span>
+      <span class="text-[11px]" id="headerActiveUserShort">Syaulia</span>
       <i class="fa-solid fa-chevron-down text-[10px]"></i>
     </button>
   </div>
@@ -204,7 +204,7 @@
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
       <div>
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Log Aktivitas & Riwayat</h3>
-        <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Ahmad Fauzi (RS. Sukmul Sisma Medika)</p>
+        <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Syaulia Medy Daiyah (RS. Harum Sisma Medika)</p>
       </div>
       <button onclick="refreshHistoryList()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-2.5 py-1 rounded-lg text-[10px] font-semibold transition cursor-pointer">
         <i class="fa-solid fa-rotate mr-1"></i> Refresh
@@ -227,7 +227,7 @@
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin Kerja</h3>
         <p class="text-[10px] text-slate-400">PT. Gema Cita Elok Selaras</p>
       </div>
-      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Hak Cuti: <span id="sisaCutiBadge">11</span> Hari</span>
+      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Hak Cuti: <span id="sisaCutiBadge">12</span> Hari</span>
     </div>
 
     <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-[10px] text-amber-900 space-y-1">
@@ -312,7 +312,7 @@
       <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
         <div>
           <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase">DASHBOARD PEMANTAUAN LEADER</span>
-          <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Sukmul Sisma Medika</h3>
+          <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Harum Sisma Medika</h3>
         </div>
         <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Shift 1 Active</span>
       </div>
@@ -320,7 +320,7 @@
       <div class="grid grid-cols-3 gap-2 text-center">
         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
           <span class="text-[9px] text-slate-500 font-semibold block">Hadir Shift Ini</span>
-          <span class="text-sm font-black text-emerald-600" id="leaderHadirCount">8 Orang</span>
+          <span class="text-sm font-black text-emerald-600" id="leaderHadirCount">15 Orang</span>
         </div>
         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
           <span class="text-[9px] text-slate-500 font-semibold block">Belum Absen</span>
@@ -341,9 +341,9 @@
         <div id="approvalCardContainer" class="bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs" id="approvalInitial">A</div>
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs" id="approvalInitial">H</div>
               <div>
-                <h5 class="text-xs font-bold text-slate-800" id="approvalNameRole">Ahmad Fauzi (CSO)</h5>
+                <h5 class="text-xs font-bold text-slate-800" id="approvalNameRole">Hasanih (CSO)</h5>
                 <p class="text-[10px] text-slate-500">Cuti Tahunan | 22 Okt (1 Hari)</p>
               </div>
             </div>
@@ -444,101 +444,146 @@
 </div>
 
 <script>
-  // MASTER DATABASE KARYAWAN PT. GCES (FULL LIST SESUAI DATABASE AWAL PROYEK)
+  // MASTER DATABASE KARYAWAN PT. GCES (FULL LENGKAP DARI DATA MASTER EXCEL)
   const EMPLOYEES = [
     { 
+      nip: "001", 
+      nama: "BIMA", 
+      jabatan: "Direktur", 
+      lokasi: "HO", 
+      lat: -6.2300, 
+      lng: 106.8400,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    },
+    { 
       nip: "01.012.01.19", 
-      nama: "Ahmad Fauzi", 
-      jabatan: "CSO", 
-      lokasi: "RS. Sukmul Sisma Medika", 
-      lat: -6.1132, 
-      lng: 106.8837,
+      nama: "SYAULIA MEDY DAIYAH", 
+      jabatan: "SPV", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
     },
     { 
-      nip: "01.012.02.20", 
-      nama: "Andyka Topansyah", 
+      nip: "01.047.04.21", 
+      nama: "MUCHAMAD UBAY DILLAH", 
       jabatan: "LEADER", 
-      lokasi: "RS. Harum Sisma Medika", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
       lat: -6.2251, 
       lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
     },
     { 
-      nip: "01.012.03.21", 
-      nama: "Siti Rahmawati", 
+      nip: "01.003.01.15", 
+      nama: "HASANIH", 
       jabatan: "CSO", 
-      lokasi: "RS. Sukmul Sisma Medika", 
-      lat: -6.1132, 
-      lng: 106.8837,
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
     },
     { 
-      nip: "01.012.04.22", 
-      nama: "Budi Santoso", 
-      jabatan: "SPV", 
-      lokasi: "RS. Harum Sisma Medika", 
+      nip: "01.013.06.19", 
+      nama: "WAHYU TIKO SAPUTRA", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
       lat: -6.2251, 
       lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 }
     },
     { 
-      nip: "01.012.05.23", 
-      nama: "Dewi Lestari", 
-      jabatan: "CSO", 
-      lokasi: "RS. Hermina Podomoro", 
-      lat: -6.1345, 
-      lng: 106.8521,
-      stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 0, sakitTanpa: 1, alpha: 0, sisaCuti: 11 }
+      nip: "01.014.07.19", 
+      nama: "AHMAD FIKRI", 
+      jabatan: "LEADER", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
     },
     { 
-      nip: "01.012.06.24", 
-      nama: "Rian Hidayat", 
+      nip: "01.029.10.21", 
+      nama: "NURHAYATI AWALLUDIN", 
       jabatan: "CSO", 
-      lokasi: "RS. Sukmul Sisma Medika", 
-      lat: -6.1132, 
-      lng: 106.8837,
-      stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
     },
     { 
-      nip: "01.012.07.25", 
-      nama: "Siti Nurhaliza", 
+      nip: "01.067.07.22", 
+      nama: "ABDUL MALIK ZAIN", 
       jabatan: "CSO", 
-      lokasi: "RS. Harum Sisma Medika", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
       lat: -6.2251, 
       lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
     },
     { 
-      nip: "01.012.08.26", 
-      nama: "Joko Prasetyo", 
+      nip: "01.069.07.22", 
+      nama: "YUSWO PETAROH", 
       jabatan: "CSO", 
-      lokasi: "RS. Hermina Podomoro", 
-      lat: -6.1345, 
-      lng: 106.8521,
-      stats: { hariKerja: 22, jamKerja: 176, hadir: 18, cuti: 2, sakitDokter: 1, sakitTanpa: 1, alpha: 0, sisaCuti: 10 }
-    },
-    { 
-      nip: "01.012.09.27", 
-      nama: "Maya Sari", 
-      jabatan: "LEADER", 
-      lokasi: "RS. Hermina Podomoro", 
-      lat: -6.1345, 
-      lng: 106.8521,
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
     },
     { 
-      nip: "01.012.10.28", 
-      nama: "Eko Prasetyo", 
+      nip: "01.070.08.22", 
+      nama: "KHAERUL", 
       jabatan: "CSO", 
-      lokasi: "RS. Sukmul Sisma Medika", 
-      lat: -6.1132, 
-      lng: 106.8837,
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
       stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
+    },
+    { 
+      nip: "01.102.02.24", 
+      nama: "MAJID", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 }
+    },
+    { 
+      nip: "01.119.11.24", 
+      nama: "Ahmad fadillah furqon", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    },
+    { 
+      nip: "01.125.04.25", 
+      nama: "Aisyah Pertiwi", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    },
+    { 
+      nip: "01.131.05.25", 
+      nama: "M. Fajar Setiaji", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 0, sakitTanpa: 1, alpha: 0, sisaCuti: 11 }
+    },
+    { 
+      nip: "01.135.05.25", 
+      nama: "Desta Pratama", 
+      jabatan: "CSO", 
+      lokasi: "RS. HARUM SISMA MEDIKA", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
     }
   ];
 
-  let activeUser = EMPLOYEES[0];
+  let activeUser = EMPLOYEES[1]; // Syaulia Medy Daiyah (SPV)
   let activeGpsDistance = 35;
   let activeShift = "Shift 1 (07:00 - 15:00)";
   let currentTransactionType = "MASUK";
@@ -608,7 +653,7 @@
       item.className = `p-2 rounded-xl flex items-center justify-between cursor-pointer transition ${isSelected ? 'bg-emerald-50 border border-emerald-200 font-bold' : 'hover:bg-slate-50'}`;
       item.innerHTML = `
         <div>
-          <p class="text-xs text-slate-800">${emp.nama} <span class="text-[9px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' || emp.jabatan === 'SPV' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-slate-100 text-slate-600'}">${emp.jabatan}</span></p>
+          <p class="text-xs text-slate-800">${emp.nama} <span class="text-[9px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' || emp.jabatan === 'SPV' || emp.jabatan === 'Direktur' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-slate-100 text-slate-600'}">${emp.jabatan}</span></p>
           <p class="text-[10px] text-slate-500 font-normal">📍 ${emp.lokasi} | NIP: ${emp.nip}</p>
         </div>
         ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : '<span class="text-[10px] text-slate-400">Pilih</span>'}
@@ -652,7 +697,7 @@
 
     deniedRoleName.innerText = activeUser.jabatan;
 
-    if (activeUser.jabatan === 'LEADER' || activeUser.jabatan === 'SPV') {
+    if (activeUser.jabatan === 'LEADER' || activeUser.jabatan === 'SPV' || activeUser.jabatan === 'Direktur') {
       deniedBox.classList.add('hidden');
       dashboardBox.classList.remove('hidden');
       navBadge.classList.remove('hidden');
