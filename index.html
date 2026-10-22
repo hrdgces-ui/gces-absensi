@@ -37,7 +37,7 @@
     </div>
     <div>
       <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v2.9</p>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v3.0</p>
     </div>
   </div>
 
@@ -54,12 +54,12 @@
   </div>
 </header>
 
-<div id="userDropdownCard" class="hidden absolute top-14 right-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 w-72 space-y-2">
+<div id="userDropdownCard" class="hidden absolute top-14 right-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 w-80 space-y-2">
   <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-    <span class="text-xs font-bold text-slate-800">Pilih Akun Simulasi Karyawan</span>
+    <span class="text-xs font-bold text-slate-800">Master Karyawan PT. GCES</span>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
   </div>
-  <div class="space-y-1.5 max-h-60 overflow-y-auto pr-1 text-xs" id="userListContainer"></div>
+  <div class="space-y-1.5 max-h-64 overflow-y-auto pr-1 text-xs" id="userListContainer"></div>
 </div>
 
 <main class="flex-1 overflow-y-auto p-4 pb-20 space-y-4">
@@ -77,7 +77,7 @@
             <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
             <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS LOKASI KERJA</span>
           </div>
-          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak Terdeteksi: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Maks. 1.000m)</p>
+          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Max 1.000m)</p>
         </div>
       </div>
       <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-2xs">GPS Live</span>
@@ -88,7 +88,7 @@
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
           <h4 class="text-xs font-bold">Luar Area Presensi (Akses Terkunci)</h4>
-          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari lokasi kerja terdaftar.</p>
+          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari titik proyek.</p>
         </div>
       </div>
     </div>
@@ -152,18 +152,47 @@
       </p>
     </div>
 
-    <div class="grid grid-cols-3 gap-2">
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-        <span class="text-[10px] text-slate-500 block font-semibold">Hadir Bulan Ini</span>
-        <span id="metricHadir" class="text-sm font-black text-emerald-600">18 Hari</span>
+    <!-- DETAIL STATISTIK BULANAN SESUAI MASTER DATABASE -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+        <span class="text-xs font-bold text-slate-800 uppercase tracking-wide">
+          <i class="fa-solid fa-chart-pie text-blue-600 mr-1.5"></i> Rekap Absensi & Kinerja Bulan Ini
+        </span>
+        <span id="rekapPeriodeLabel" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">Oktober 2026</span>
       </div>
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-        <span class="text-[10px] text-slate-500 block font-semibold">Keterlambatan</span>
-        <span id="metricTelat" class="text-sm font-black text-amber-500">1 Kali</span>
+
+      <div class="grid grid-cols-3 gap-2 text-center">
+        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
+          <span class="text-[9px] text-slate-500 block font-semibold">Hari Kerja</span>
+          <span id="statHariKerja" class="text-sm font-black text-slate-800">22 Hari</span>
+        </div>
+        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
+          <span class="text-[9px] text-slate-500 block font-semibold">Jam Kerja</span>
+          <span id="statJamKerja" class="text-sm font-black text-blue-600">176 Jam</span>
+        </div>
+        <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
+          <span class="text-[9px] text-slate-500 block font-semibold">Hadir Masuk</span>
+          <span id="statHadir" class="text-sm font-black text-emerald-600">20 Hari</span>
+        </div>
       </div>
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 text-center shadow-card-soft">
-        <span class="text-[10px] text-slate-500 block font-semibold">Hak Cuti Tahunan</span>
-        <span id="metricCuti" class="text-sm font-black text-blue-600">12 Hari</span>
+
+      <div class="grid grid-cols-4 gap-1.5 text-center pt-1">
+        <div class="bg-blue-50/70 p-1.5 rounded-lg border border-blue-100">
+          <span class="text-[8.5px] text-blue-700 block font-semibold">Cuti Tahunan</span>
+          <span id="statCuti" class="text-xs font-black text-blue-800">1 Hari</span>
+        </div>
+        <div class="bg-amber-50/70 p-1.5 rounded-lg border border-amber-100">
+          <span class="text-[8.5px] text-amber-700 block font-semibold">Sakit (Dokter)</span>
+          <span id="statSakitDokter" class="text-xs font-black text-amber-800">1 Hari</span>
+        </div>
+        <div class="bg-orange-50/70 p-1.5 rounded-lg border border-orange-100">
+          <span class="text-[8.5px] text-orange-700 block font-semibold">Sakit (Tanpa)</span>
+          <span id="statSakitTanpa" class="text-xs font-black text-orange-800">0 Hari</span>
+        </div>
+        <div class="bg-red-50/70 p-1.5 rounded-lg border border-red-100">
+          <span class="text-[8.5px] text-red-700 block font-semibold">Alpha / Mangkir</span>
+          <span id="statAlpha" class="text-xs font-black text-red-600">0 Hari</span>
+        </div>
       </div>
     </div>
 
@@ -183,9 +212,8 @@
 
     <div class="flex space-x-1.5 overflow-x-auto pb-1 text-[11px]">
       <span onclick="filterHistory('semua')" class="bg-slate-800 text-white px-2.5 py-1 rounded-full font-medium shadow-2xs whitespace-nowrap cursor-pointer">Semua (21)</span>
-      <span onclick="filterHistory('hadir')" class="bg-white text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-emerald-50">Hadir (18)</span>
-      <span onclick="filterHistory('telat')" class="bg-white text-amber-700 border border-amber-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-amber-50">Telat (1)</span>
-      <span onclick="filterHistory('off')" class="bg-white text-slate-600 border border-slate-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-slate-50">Off Roster (2)</span>
+      <span onclick="filterHistory('hadir')" class="bg-white text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-emerald-50">Hadir (20)</span>
+      <span onclick="filterHistory('cuti')" class="bg-white text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-blue-50">Cuti (1)</span>
     </div>
 
     <div class="space-y-2.5" id="attendanceHistoryList"></div>
@@ -198,7 +226,7 @@
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin Kerja</h3>
         <p class="text-[10px] text-slate-400">PT. Gema Cita Elok Selaras</p>
       </div>
-      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Cuti: <span id="sisaCutiBadge">12</span> Hari</span>
+      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Hak Cuti: <span id="sisaCutiBadge">11</span> Hari</span>
     </div>
 
     <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-[10px] text-amber-900 space-y-1">
@@ -221,15 +249,14 @@
           <option value="Sakit (Surat Dokter)">Sakit (Dengan Surat Dokter)</option>
           <option value="Sakit (Tanpa Surat Dokter)">Sakit (Tanpa Surat Dokter - Maks 1 Hari)</option>
           <option value="Izin Khusus / Duka">Izin Khusus / Duka Cita</option>
-          <option value="Tukar Shift / Extra Shift">Permohonan Tukar Shift / Extra</option>
         </select>
       </div>
 
       <div id="areaSelectBox">
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Wilayah / Area Tujuan Cuti *</label>
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Wilayah / Area Tujuan *</label>
         <select id="leaveArea" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-          <option value="jabar">Jabodetabekser & Jawa Barat (Maksimal 2 Hari)</option>
-          <option value="luar_jabar">Jawa Tengah, Jatim, Bali, Sumatera & Luar Pulau (Maksimal 3 Hari)</option>
+          <option value="jabar">Jabodetabekser & Jawa Barat (Maks 2 Hari)</option>
+          <option value="luar_jabar">Jawa Tengah, Jatim, Bali, Sumatera & Luar Pulau (Maks 3 Hari)</option>
         </select>
       </div>
 
@@ -254,8 +281,8 @@
       </div>
 
       <div>
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keterangan / Alasan Pengajuan *</label>
-        <textarea id="leaveReason" rows="2" required placeholder="Tuliskan alasan/keperluan pengajuan..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
+        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keterangan / Alasan *</label>
+        <textarea id="leaveReason" rows="2" required placeholder="Tuliskan alasan/keperluan..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
       </div>
 
       <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition active:scale-98 cursor-pointer">
@@ -264,7 +291,7 @@
     </form>
   </div>
 
-  <!-- TAB 4: TIM LEADER (LOCKED FOR CSO) -->
+  <!-- TAB 4: TIM LEADER -->
   <div id="tabContent-tim" class="space-y-3 tab-content-pane" style="display:none;">
     
     <div id="leaderAccessDeniedBox" class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-3 hidden">
@@ -273,10 +300,10 @@
       </div>
       <div>
         <h3 class="text-xs font-black text-red-900 uppercase tracking-wide">Akses Khusus Tim Leader / SPV</h3>
-        <p class="text-[11px] text-red-700 mt-1">Akun Anda saat ini terdaftar sebagai <b id="deniedRoleName">CSO</b> (Pelaksana). Menu ini hanya untuk Leader / SPV.</p>
+        <p class="text-[11px] text-red-700 mt-1">Akun Anda terdaftar sebagai <b id="deniedRoleName">CSO</b>. Menu ini terkunci.</p>
       </div>
       <button onclick="switchTab('beranda')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
-        Kembali ke Beranda Absen
+        Kembali ke Beranda
       </button>
     </div>
 
@@ -284,7 +311,7 @@
       <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
         <div>
           <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase">DASHBOARD PEMANTAUAN LEADER</span>
-          <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Harum Sisma Medika</h3>
+          <h3 id="leaderLocationTitle" class="text-xs font-bold">RS. Sukmul Sisma Medika</h3>
         </div>
         <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Shift 1 Active</span>
       </div>
@@ -292,36 +319,34 @@
       <div class="grid grid-cols-3 gap-2 text-center">
         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
           <span class="text-[9px] text-slate-500 font-semibold block">Hadir Shift Ini</span>
-          <span class="text-sm font-black text-emerald-600">7 / 8 Orang</span>
+          <span class="text-sm font-black text-emerald-600">8 Orang</span>
         </div>
         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
           <span class="text-[9px] text-slate-500 font-semibold block">Belum Absen</span>
-          <span class="text-sm font-black text-red-500">1 Orang</span>
+          <span class="text-sm font-black text-red-500">0 Orang</span>
         </div>
         <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
-          <span class="text-[9px] text-slate-500 font-semibold block">Pengajuan Izin</span>
+          <span class="text-[9px] text-slate-500 font-semibold block">Pending Izin</span>
           <span class="text-sm font-black text-amber-500">1 Request</span>
         </div>
       </div>
 
       <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
         <h4 class="text-xs font-bold text-slate-800 flex items-center justify-between">
-          <span>Persetujuan Izin Membutuhkan Action</span>
+          <span>Persetujuan Izin Tim</span>
           <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">1 Pending</span>
         </h4>
 
         <div id="approvalCardContainer" class="bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70 space-y-2">
           <div class="flex items-center justify-between">
             <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">AT</div>
+              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs">A</div>
               <div>
-                <h5 class="text-xs font-bold text-slate-800">Andyka Topansyah (CSO)</h5>
-                <p class="text-[10px] text-slate-500">Izin Sakit | 22 - 23 Okt (2 Hari)</p>
+                <h5 class="text-xs font-bold text-slate-800">Ahmad Fauzi (CSO)</h5>
+                <p class="text-[10px] text-slate-500">Cuti Tahunan | 22 Okt (1 Hari)</p>
               </div>
             </div>
-            <button onclick="viewDoctorNoteMock()" class="text-[10px] bg-white border border-slate-300 text-blue-600 font-bold px-2 py-1 rounded shadow-2xs cursor-pointer">
-              <i class="fa-solid fa-paperclip mr-1"></i>Surat Dokter
-            </button>
+            <span class="text-[10px] text-blue-600 font-bold bg-white px-2 py-1 rounded border border-slate-200">Menunggu</span>
           </div>
           <div class="flex space-x-2 pt-1">
             <button onclick="approveLeaveAction(true)" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer">
@@ -371,8 +396,7 @@
       </button>
     </div>
     <div class="relative bg-black h-72 flex items-center justify-center overflow-hidden">
-      <video id="webcamVideo" autoplay playsinline class="w-full h-full object-cover hidden"></video>
-      <div id="cameraFallbackView" class="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-400 p-4 text-center space-y-2">
+      <div class="w-full h-full flex flex-col items-center justify-center bg-slate-800 text-slate-400 p-4 text-center space-y-2">
         <div class="w-16 h-16 rounded-full border-2 border-emerald-400 border-dashed flex items-center justify-center">
           <i class="fa-solid fa-user-check text-2xl text-emerald-400"></i>
         </div>
@@ -387,9 +411,9 @@
       </div>
     </div>
     <div class="p-3 bg-slate-900 space-y-2">
-      <button id="snapAndSubmitBtn" onclick="processCameraSubmit()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-glow-emerald flex items-center justify-center space-x-2 transition active:scale-98 cursor-pointer">
+      <button onclick="processCameraSubmit()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-glow-emerald flex items-center justify-center space-x-2 transition active:scale-98 cursor-pointer">
         <i class="fa-solid fa-circle-check text-sm"></i>
-        <span id="snapBtnText">AMBIL FOTO & KIRIM ABSEN</span>
+        <span>AMBIL FOTO & KIRIM ABSEN</span>
       </button>
     </div>
   </div>
@@ -419,12 +443,53 @@
 </div>
 
 <script>
+  // MASTER DATABASE KARYAWAN PT. GCES (SESUAI DATABASE ASLI)
   const EMPLOYEES = [
-    { nip: "01.012.01.19", nama: "Ahmad Fauzi", jabatan: "CSO", lokasi: "RS. Sukmul Sisma Medika", lat: -6.1132, lng: 106.8837 },
-    { nip: "01.012.02.20", nama: "Andyka Topansyah", jabatan: "LEADER", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.8992 },
-    { nip: "01.012.03.21", nama: "Siti Rahmawati", jabatan: "CSO", lokasi: "RS. Sukmul Sisma Medika", lat: -6.1132, lng: 106.8837 },
-    { nip: "01.012.04.22", nama: "Budi Santoso", jabatan: "SPV", lokasi: "RS. Harum Sisma Medika", lat: -6.2251, lng: 106.8992 },
-    { nip: "01.012.05.23", nama: "Dewi Lestari", jabatan: "CSO", lokasi: "RS. Hermina Podomoro", lat: -6.1345, lng: 106.8521 }
+    { 
+      nip: "01.012.01.19", 
+      nama: "Ahmad Fauzi", 
+      jabatan: "CSO", 
+      lokasi: "RS. Sukmul Sisma Medika", 
+      lat: -6.1132, 
+      lng: 106.8837,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 }
+    },
+    { 
+      nip: "01.012.02.20", 
+      nama: "Andyka Topansyah", 
+      jabatan: "LEADER", 
+      lokasi: "RS. Harum Sisma Medika", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    },
+    { 
+      nip: "01.012.03.21", 
+      nama: "Siti Rahmawati", 
+      jabatan: "CSO", 
+      lokasi: "RS. Sukmul Sisma Medika", 
+      lat: -6.1132, 
+      lng: 106.8837,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    },
+    { 
+      nip: "01.012.04.22", 
+      nama: "Budi Santoso", 
+      jabatan: "SPV", 
+      lokasi: "RS. Harum Sisma Medika", 
+      lat: -6.2251, 
+      lng: 106.8992,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 }
+    },
+    { 
+      nip: "01.012.05.23", 
+      nama: "Dewi Lestari", 
+      jabatan: "CSO", 
+      lokasi: "RS. Hermina Podomoro", 
+      lat: -6.1345, 
+      lng: 106.8521,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 0, sakitTanpa: 1, alpha: 0, sisaCuti: 11 }
+    }
   ];
 
   let activeUser = EMPLOYEES[0];
@@ -442,8 +507,9 @@
   window.addEventListener('DOMContentLoaded', () => {
     initUserSwitcher();
     initShiftButtons();
-    updateLiveClockAndDate(); // Immediate run on load
-    setInterval(updateLiveClockAndDate, 1000); // Live loop every second
+    updateLiveClockAndDate();
+    setInterval(updateLiveClockAndDate, 1000);
+    renderUserStats();
     renderHistoryList();
     
     if(appScriptUrl) {
@@ -451,23 +517,20 @@
     }
   });
 
-  // ROBUST DEVICE CLOCK & TIMEZONE SYNC
+  // ROBUST REAL-TIME DEVICE CLOCK & TIMEZONE SYNC
   function updateLiveClockAndDate() {
     const now = new Date();
     
-    // Format Date from device
     const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const dateString = now.toLocaleDateString('id-ID', optionsDate);
     const dateEl = document.getElementById('liveDateText');
     if(dateEl) dateEl.innerText = dateString;
 
-    // Format Time from device
     const hours = String(now.getHours()).padStart(2, '0');
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     const timeString = `${hours}:${minutes}:${seconds}`;
 
-    // Detect Device Timezone Abbreviation
     let tzAbbr = "WIB";
     try {
       const match = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).match(/\b[A-Z]{3,4}\b/g);
@@ -500,7 +563,7 @@
       item.innerHTML = `
         <div>
           <p class="text-xs text-slate-800">${emp.nama} <span class="text-[9px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' || emp.jabatan === 'SPV' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-slate-100 text-slate-600'}">${emp.jabatan}</span></p>
-          <p class="text-[10px] text-slate-500 font-normal">📍 ${emp.lokasi}</p>
+          <p class="text-[10px] text-slate-500 font-normal">📍 ${emp.lokasi} | NIP: ${emp.nip}</p>
         </div>
         ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : '<span class="text-[10px] text-slate-400">Pilih</span>'}
       `;
@@ -510,7 +573,20 @@
 
     document.getElementById('headerActiveUserShort').innerText = activeUser.nama.split(' ')[0];
     document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.lokasi})`;
+    renderUserStats();
     checkLeaderAccess();
+  }
+
+  function renderUserStats() {
+    const s = activeUser.stats;
+    document.getElementById('statHariKerja').innerText = `${s.hariKerja} Hari`;
+    document.getElementById('statJamKerja').innerText = `${s.jamKerja} Jam`;
+    document.getElementById('statHadir').innerText = `${s.hadir} Hari`;
+    document.getElementById('statCuti').innerText = `${s.cuti} Hari`;
+    document.getElementById('statSakitDokter').innerText = `${s.sakitDokter} Hari`;
+    document.getElementById('statSakitTanpa').innerText = `${s.sakitTanpa} Hari`;
+    document.getElementById('statAlpha').innerText = `${s.alpha} Hari`;
+    document.getElementById('sisaCutiBadge').innerText = s.sisaCuti;
   }
 
   function switchActiveUser(emp) {
@@ -648,7 +724,7 @@
     
     const mockHistory = [
       { tanggal: "Kamis, 22 Okt 2026", masuk: "06:58 WIB", pulang: "15:02 WIB", status: "Hadir", shift: "Shift 1", ket: "Tepat Waktu" },
-      { tanggal: "Rabu, 21 Okt 2026", masuk: "07:12 WIB", pulang: "15:00 WIB", status: "Telat", shift: "Shift 1", ket: "Terlambat 12 Menit" }
+      { tanggal: "Rabu, 21 Okt 2026", masuk: "-- : --", pulang: "-- : --", status: "Cuti", shift: "-", ket: "Cuti Tahunan Disetujui" }
     ];
 
     mockHistory.forEach(item => {
@@ -657,7 +733,7 @@
       card.innerHTML = `
         <div class="flex justify-between items-center">
           <span class="text-xs font-bold text-slate-800">${item.tanggal}</span>
-          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${item.status}</span>
+          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${item.status === 'Hadir' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${item.status}</span>
         </div>
         <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-2 rounded-xl">
           <div><span class="text-slate-400 block text-[9px]">MASUK</span><span class="font-bold text-slate-700">${item.masuk}</span></div>
@@ -680,10 +756,9 @@
   }
   function submitLeaveRequest(e) {
     e.preventDefault();
-    showToast("Pengajuan izin berhasil dikirim!");
+    showToast("Pengajuan izin berhasil dikirim ke Leader!");
     document.getElementById('leaveForm').reset();
   }
-  function viewDoctorNoteMock() { showToast("Membuka lampiran surat dokter..."); }
   function approveLeaveAction(is) { showToast(is ? "Izin disetujui." : "Izin ditolak."); }
   function openConfigModal() { document.getElementById('configModal').classList.remove('hidden'); }
   function closeConfigModal() { document.getElementById('configModal').classList.add('hidden'); }
