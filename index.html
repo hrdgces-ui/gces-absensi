@@ -37,7 +37,7 @@
     </div>
     <div>
       <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v4.4</p>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v5.2</p>
     </div>
   </div>
 
@@ -63,7 +63,7 @@
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
   </div>
   <div class="mb-1">
-    <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="Cari nama atau NIP..." class="w-full text-xs border border-slate-300 rounded-xl px-2.5 py-1.5 bg-slate-50 outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500" />
+    <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="Cari nama, NIP, atau lokasi..." class="w-full text-xs border border-slate-300 rounded-xl px-2.5 py-1.5 bg-slate-50 outline-none focus:bg-white focus:ring-1 focus:ring-emerald-500" />
   </div>
   <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1 text-xs" id="userListContainer"></div>
 </div>
@@ -444,8 +444,8 @@
 </div>
 
 <script>
-  // Complete Authentic Master Database extracted directly from PT. GCES official records (ALL locations included, zero dummy names)
   const EMPLOYEES = [
+    // HO
     { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "002", nama: "ALMAS ARIZAH", jabatan: "Staff GA", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     
@@ -474,6 +474,7 @@
     { nip: "02.015.03.20", nama: "SITI NURJANAH", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "02.040.05.22", nama: "RAHMAT HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "02.048.08.23", nama: "DEWI ANGGRAINI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
+    { nip: "02.055.01.24", nama: "ARIF HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
 
     // 3. PT. MOYA
     { nip: "03.002.02.19", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
@@ -483,10 +484,12 @@
     // 4. PT. CELSIUS
     { nip: "04.005.01.20", nama: "HENDRA SAPUTRA", jabatan: "SPV", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "04.018.06.22", nama: "RIKA LESTARI", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
+    { nip: "04.022.09.23", nama: "DONI SETIAWAN", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
 
     // 5. PT. SAPTA WARNA CEMERLANG & PT. MUTIARA HEXAGON
     { nip: "05.001.03.18", nama: "YOGA PRATAMA", jabatan: "LEADER", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "05.012.07.21", nama: "SITI RAHMA", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
+    { nip: "05.020.10.22", nama: "AHMAD FAUZI", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
 
     // 6. PT. SISMADI MANCORPINDO
     { nip: "06.001.01.17", nama: "SUGIANTO", jabatan: "SPV", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
@@ -685,6 +688,7 @@
       title.innerText = "DI LUAR RADIUS LOKASI KERJA";
       title.className = "text-xs font-bold text-red-900";
       alertBox.classList.remove('hidden');
+      absenBtn.classList.remove('hidden');
       absenBtn.disabled = true;
       absenBtn.classList.add('opacity-50', 'cursor-not-allowed');
       showToast("GPS Terkunci: Di luar radius 1 Km!", "error");
