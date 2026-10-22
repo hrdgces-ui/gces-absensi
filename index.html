@@ -37,7 +37,7 @@
     </div>
     <div>
       <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v5.5</p>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v6.0</p>
     </div>
   </div>
 
@@ -450,12 +450,12 @@
 </div>
 
 <script>
+  // Master Database Resmi PT. GCES (HO, RS. Harum, RS. Sukmul, PT. Moya, PT. Celsius, PT. Sapta & Hexagon, PT. Sismadi Mancorpindo)
   const EMPLOYEES = [
-    // HO
     { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "002", nama: "ALMAS ARIZAH", jabatan: "Staff GA", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     
-    // 1. RS. HARUM SISMA MEDIKA
+    // RS. HARUM SISMA MEDIKA
     { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "01.003.01.15", nama: "HASANIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
@@ -474,30 +474,32 @@
     { nip: "01.148.09.25", nama: "MUHAMMAD RIAN SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "01.151.10.25", nama: "NURKENIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
     { nip: "01.152.11.25", nama: "SRI WULANDARI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
+    { nip: "01.156.12.25", nama: "FAHMI PRATAMA PUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
+    { nip: "01.160.02.26", nama: "ASYIFFA DESIYANTI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
 
-    // 2. RS. SUKMUL SISMA MEDIKA
+    // RS. SUKMUL SISMA MEDIKA
     { nip: "02.001.01.18", nama: "BAMBANG SUDRAJAT", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "02.015.03.20", nama: "SITI NURJANAH", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "02.040.05.22", nama: "RAHMAT HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "02.048.08.23", nama: "DEWI ANGGRAINI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "02.055.01.24", nama: "ARIF HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
 
-    // 3. PT. MOYA
+    // PT. MOYA
     { nip: "03.002.02.19", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "03.011.04.21", nama: "SITI AMINAH", jabatan: "CSO", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
     { nip: "03.025.09.23", nama: "DEDI KURNIAWAN", jabatan: "CSO", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
 
-    // 4. PT. CELSIUS
+    // PT. CELSIUS
     { nip: "04.005.01.20", nama: "HENDRA SAPUTRA", jabatan: "SPV", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "04.018.06.22", nama: "RIKA LESTARI", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
     { nip: "04.022.09.23", nama: "DONI SETIAWAN", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
 
-    // 5. PT. SAPTA WARNA CEMERLANG & PT. MUTIARA HEXAGON
+    // PT. SAPTA WARNA CEMERLANG & PT. MUTIARA HEXAGON
     { nip: "05.001.03.18", nama: "YOGA PRATAMA", jabatan: "LEADER", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "05.012.07.21", nama: "SITI RAHMA", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
     { nip: "05.020.10.22", nama: "AHMAD FAUZI", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
 
-    // 6. PT. SISMADI MANCORPINDO
+    // PT. SISMADI MANCORPINDO
     { nip: "06.001.01.17", nama: "SUGIANTO", jabatan: "SPV", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
     { nip: "06.010.05.20", nama: "EKO PRASETYO", jabatan: "LEADER", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
     { nip: "06.024.11.23", nama: "RIAN HIDAYAT", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } }
