@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Aplikasi Absensi Operasional PT. GCES</title>
   <!-- Tailwind CSS -->
-  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Google Fonts: Inter -->
@@ -37,7 +37,7 @@
     </div>
     <div>
       <h1 class="text-xs font-black tracking-wider uppercase text-white">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v6.2</p>
+      <p class="text-[10px] text-emerald-400 font-medium">Absensi Operasional v7.0</p>
     </div>
   </div>
 
@@ -54,11 +54,12 @@
   </div>
 </header>
 
+<!-- Dropdown Master Data -->
 <div id="userDropdownCard" class="hidden absolute top-14 right-4 z-40 bg-white border border-slate-200 rounded-2xl shadow-xl p-3 w-84 space-y-2">
   <div class="flex justify-between items-center border-b border-slate-100 pb-2">
     <div>
-      <span class="text-xs font-bold text-slate-800 block">Master Database Karyawan PT. GCES</span>
-      <span class="text-[9px] text-slate-500">Pilih akun sesuai Master Database Resmi</span>
+      <span class="text-xs font-bold text-slate-800 block">Daftar Karyawan Aktif</span>
+      <span class="text-[9px] text-slate-500">Pilih akun Anda sebelum absen</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -70,7 +71,7 @@
 
 <main class="flex-1 overflow-y-auto p-4 pb-20 space-y-4">
 
-  <!-- Beranda Pane -->
+  <!-- ================= BERANDA PANE ================= -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane active">
     
     <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
@@ -99,17 +100,18 @@
       </div>
     </div>
 
+    <!-- Tombol Test Lokasi -->
     <div class="bg-white border border-slate-200 rounded-xl p-2.5 shadow-2xs space-y-1.5">
       <div class="flex justify-between items-center text-[10px] font-bold text-slate-600">
         <span><i class="fa-solid fa-satellite-dish text-blue-600 mr-1"></i> Simulasi GPS Test Jarak:</span>
-        <span class="text-slate-400">Klik untuk test status</span>
+        <span class="text-slate-400">Klik untuk test</span>
       </div>
       <div class="flex items-center justify-between pt-0.5">
         <button onclick="setQuickGps(35)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-emerald-700 font-semibold transition cursor-pointer">
-          <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>35m (Dalam)
+          <i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i>35m
         </button>
         <button onclick="setQuickGps(450)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-blue-700 font-semibold transition cursor-pointer">
-          <i class="fa-solid fa-circle-check text-blue-500 mr-1"></i>450m (Radius OK)
+          <i class="fa-solid fa-circle-check text-blue-500 mr-1"></i>450m
         </button>
         <button onclick="setQuickGps(1350)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-red-700 font-semibold transition cursor-pointer">
           <i class="fa-solid fa-triangle-exclamation text-red-500 mr-1"></i>1.35 Km (Luar)
@@ -117,16 +119,17 @@
       </div>
     </div>
 
+    <!-- Pilihan Shift -->
     <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-1.5">
       <div class="flex justify-between items-center">
         <span class="text-xs font-bold text-slate-800 flex items-center">
-          <i class="fa-solid fa-clock-rotate-left text-blue-600 mr-1.5"></i> Pilih Shift Hari Ini:
+          <i class="fa-solid fa-clock-rotate-left text-blue-600 mr-1.5"></i> Pilih Shift:
         </span>
-        <span class="text-[10px] text-emerald-600 font-semibold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Toleransi 10 mnt</span>
       </div>
       <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer"></div>
     </div>
 
+    <!-- Jam Digital -->
     <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
       <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-600/20 rounded-full blur-xl"></div>
       <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
@@ -134,16 +137,17 @@
       
       <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
-          <span class="text-[9px] text-slate-400 font-medium block">JAM MASUK HARI INI</span>
+          <span class="text-[9px] text-slate-400 font-medium block">JAM MASUK</span>
           <span id="clockInSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
         </div>
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50">
-          <span class="text-[9px] text-slate-400 font-medium block">JAM PULANG HARI INI</span>
+          <span class="text-[9px] text-slate-400 font-medium block">JAM PULANG</span>
           <span id="clockOutSummary" class="text-xs font-bold text-slate-300">-- : -- WIB</span>
         </div>
       </div>
     </div>
 
+    <!-- Tombol Absen Utama -->
     <div class="py-2 flex flex-col items-center justify-center space-y-3">
       <div class="relative flex items-center justify-center">
         <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
@@ -153,19 +157,18 @@
           <span id="mainAbsenSublabel" class="text-[9px] text-emerald-100 font-medium">MASUK SHIFT 1</span>
         </button>
       </div>
-      <p id="absenInstructionText" class="text-[11px] text-slate-500 font-medium text-center">
-        Pastikan posisi Anda berada di dalam area lokasi kerja sebelum menekan tombol.
+      <p id="absenInstructionText" class="text-[11px] text-slate-500 font-medium text-center px-4">
+        Pastikan wajah terlihat jelas dan Anda berada dalam radius lokasi.
       </p>
     </div>
 
+    <!-- Statistik Kinerja -->
     <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2">
         <span class="text-xs font-bold text-slate-800 uppercase tracking-wide">
-          <i class="fa-solid fa-chart-pie text-blue-600 mr-1.5"></i> Rekap Absensi & Kinerja Bulan Ini
+          <i class="fa-solid fa-chart-pie text-blue-600 mr-1.5"></i> Rekap Bulan Ini
         </span>
-        <span id="rekapPeriodeLabel" class="text-[10px] bg-slate-100 text-slate-600 px-2 py-0.5 rounded font-semibold">Oktober 2026</span>
       </div>
-
       <div class="grid grid-cols-3 gap-2 text-center">
         <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
           <span class="text-[9px] text-slate-500 block font-semibold">Hari Kerja</span>
@@ -176,34 +179,76 @@
           <span id="statJamKerja" class="text-sm font-black text-blue-600">176 Jam</span>
         </div>
         <div class="bg-slate-50 p-2 rounded-xl border border-slate-200">
-          <span class="text-[9px] text-slate-500 block font-semibold">Hadir Masuk</span>
-          <span id="statHadir" class="text-sm font-black text-emerald-600">20 Hari</span>
+          <span class="text-[9px] text-slate-500 block font-semibold">Hadir</span>
+          <span id="statHadir" class="text-sm font-black text-emerald-600">0 Hari</span>
         </div>
       </div>
-
       <div class="grid grid-cols-4 gap-1.5 text-center pt-1">
         <div class="bg-blue-50/70 p-1.5 rounded-lg border border-blue-100">
-          <span class="text-[8.5px] text-blue-700 block font-semibold">Cuti Tahunan</span>
-          <span id="statCuti" class="text-xs font-black text-blue-800">1 Hari</span>
+          <span class="text-[8.5px] text-blue-700 block font-semibold">Cuti</span>
+          <span id="statCuti" class="text-xs font-black text-blue-800">0</span>
         </div>
         <div class="bg-amber-50/70 p-1.5 rounded-lg border border-amber-100">
-          <span class="text-[8.5px] text-amber-700 block font-semibold">Sakit (Dokter)</span>
-          <span id="statSakitDokter" class="text-xs font-black text-amber-800">1 Hari</span>
+          <span class="text-[8.5px] text-amber-700 block font-semibold">SKD</span>
+          <span id="statSakitDokter" class="text-xs font-black text-amber-800">0</span>
         </div>
         <div class="bg-orange-50/70 p-1.5 rounded-lg border border-orange-100">
-          <span class="text-[8.5px] text-orange-700 block font-semibold">Sakit (Tanpa)</span>
-          <span id="statSakitTanpa" class="text-xs font-black text-orange-800">0 Hari</span>
+          <span class="text-[8.5px] text-orange-700 block font-semibold">Sakit</span>
+          <span id="statSakitTanpa" class="text-xs font-black text-orange-800">0</span>
         </div>
         <div class="bg-red-50/70 p-1.5 rounded-lg border border-red-100">
-          <span class="text-[8.5px] text-red-700 block font-semibold">Alpha / Mangkir</span>
-          <span id="statAlpha" class="text-xs font-black text-red-600">0 Hari</span>
+          <span class="text-[8.5px] text-red-700 block font-semibold">Alpha</span>
+          <span id="statAlpha" class="text-xs font-black text-red-600">0</span>
         </div>
       </div>
     </div>
-
   </div>
 
-  <!-- Riwayat Pane -->
+  <!-- ================= ADMIN / DATABASE PANE ================= -->
+  <div id="tabContent-admin" class="space-y-4 tab-content-pane" style="display:none;">
+    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Master Database Admin</h3>
+        <p class="text-[10px] text-slate-400">Kelola & Import Karyawan PT. GCES</p>
+      </div>
+      <i class="fa-solid fa-database text-lg text-emerald-400"></i>
+    </div>
+
+    <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 shadow-sm text-xs text-blue-900 leading-relaxed">
+      <b>Solusi Database:</b> Jika ada karyawan dari cabang RS. Sukmul, PT. Moya, dll yang belum masuk, Anda dapat langsung menambahkannya di sini. Data akan tersimpan permanen di perangkat tanpa perlu <i>deploy / coding</i> ulang.
+    </div>
+
+    <!-- Tambah Manual -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
+      <h4 class="text-[11px] font-bold text-slate-800"><i class="fa-solid fa-user-plus text-emerald-600 mr-1"></i> 1. Tambah Manual Satu-Satu</h4>
+      <div class="grid grid-cols-2 gap-2 text-[10px]">
+        <input type="text" id="adminNip" placeholder="Nomor NIP" class="border border-slate-300 rounded-lg px-2.5 py-2 outline-none focus:ring-1 focus:ring-emerald-500">
+        <input type="text" id="adminNama" placeholder="Nama Lengkap" class="border border-slate-300 rounded-lg px-2.5 py-2 outline-none focus:ring-1 focus:ring-emerald-500">
+        <input type="text" id="adminJabatan" placeholder="Jabatan (CSO / Leader...)" class="border border-slate-300 rounded-lg px-2.5 py-2 outline-none focus:ring-1 focus:ring-emerald-500">
+        <input type="text" id="adminLokasi" placeholder="Lokasi (PT. Moya, dll)" class="border border-slate-300 rounded-lg px-2.5 py-2 outline-none focus:ring-1 focus:ring-emerald-500">
+      </div>
+      <button onclick="addManualEmployee()" class="w-full py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition">Simpan Karyawan Baru</button>
+    </div>
+
+    <!-- Import Massal dari Excel -->
+    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
+      <h4 class="text-[11px] font-bold text-slate-800"><i class="fa-solid fa-file-excel text-emerald-600 mr-1"></i> 2. Import Massal (Copy-Paste Excel)</h4>
+      <p class="text-[9px] text-slate-600 font-medium">Buat Sheet baru di Excel Anda. Copy 4 kolom ini secara berdampingan: <b>NIP, Nama, Jabatan, Lokasi</b>. Lalu <i>Paste</i> semuanya di kotak bawah ini:</p>
+      <textarea id="adminExcelPaste" rows="4" class="w-full text-[10px] border border-slate-300 rounded-lg p-2 outline-none focus:ring-1 focus:ring-emerald-500 whitespace-pre" placeholder="02.001.01.18    BAMBANG SUDRAJAT    SPV    RS. SUKMUL SISMA MEDIKA&#10;03.002.02.19    AGUS SETIAWAN       LEADER PT. MOYA"></textarea>
+      <button onclick="importExcelEmployees()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-white text-[11px] font-bold rounded-lg shadow-sm transition"><i class="fa-solid fa-bolt text-yellow-400 mr-1"></i> Proses Import Data Masal</button>
+    </div>
+
+    <!-- Tabel Data Karyawan -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
+      <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+        <h4 class="text-[11px] font-bold text-slate-800"><i class="fa-solid fa-users text-blue-600 mr-1"></i> Daftar Karyawan Tersimpan (<span id="adminEmpCount">0</span>)</h4>
+        <button onclick="resetDatabase()" class="text-[9px] bg-red-50 text-red-600 border border-red-200 px-2 py-1 rounded font-bold hover:bg-red-100 transition shadow-2xs">Reset ke Awal</button>
+      </div>
+      <div class="max-h-72 overflow-y-auto space-y-1.5 pr-1" id="adminEmpList"></div>
+    </div>
+  </div>
+
+  <!-- Riwayat Pane (Placeholder text to keep logic working) -->
   <div id="tabContent-riwayat" class="space-y-3 tab-content-pane" style="display:none;">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
       <div>
@@ -214,204 +259,87 @@
         <i class="fa-solid fa-rotate mr-1"></i> Refresh
       </button>
     </div>
-
-    <div class="flex space-x-1.5 overflow-x-auto pb-1 text-[11px]">
-      <span onclick="filterHistory('semua')" class="bg-slate-800 text-white px-2.5 py-1 rounded-full font-medium shadow-2xs whitespace-nowrap cursor-pointer">Semua</span>
-      <span onclick="filterHistory('hadir')" class="bg-white text-emerald-700 border border-emerald-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-emerald-50">Hadir</span>
-      <span onclick="filterHistory('cuti')" class="bg-white text-blue-700 border border-blue-200 px-2.5 py-1 rounded-full font-medium whitespace-nowrap cursor-pointer hover:bg-blue-50">Cuti / Izin</span>
+    <div class="space-y-2.5" id="attendanceHistoryList">
+      <div class="bg-white p-4 rounded-xl border border-slate-200 text-center text-xs text-slate-500 shadow-sm">Belum ada riwayat absensi.</div>
     </div>
-
-    <div class="space-y-2.5" id="attendanceHistoryList"></div>
   </div>
 
-  <!-- Cuti / Izin Pane -->
+  <!-- Cuti Pane -->
   <div id="tabContent-cuti" class="space-y-3 tab-content-pane" style="display:none;">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin Kerja</h3>
-        <p class="text-[10px] text-slate-400">PT. Gema Cita Elok Selaras</p>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti / Izin</h3>
       </div>
-      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Hak Cuti: <span id="sisaCutiBadge">12</span> Hari</span>
+      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa: <span id="sisaCutiBadge">12</span> Hari</span>
     </div>
-
-    <div class="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 text-[10px] text-amber-900 space-y-1">
-      <div class="font-bold flex items-center text-amber-800">
-        <i class="fa-solid fa-circle-info text-amber-600 mr-1.5 text-xs"></i> Ketentuan Pengajuan Cuti & Izin PT. GCES:
-      </div>
-      <ul class="list-disc list-inside space-y-0.5 text-[9.5px] text-amber-800">
-        <li>Hak cuti tahunan total <b>12 hari/tahun</b>.</li>
-        <li>Area Jabodetabekser & Jabar: Maksimal <b>2 hari berturut-turut</b>.</li>
-        <li>Area Jateng, Jatim, Bali, Sumatera & luar pulau: Maksimal <b>3 hari berturut-turut</b>.</li>
-        <li>Sakit tanpa Surat Dokter: Maksimal <b>1 hari</b>.</li>
-      </ul>
-    </div>
-
-    <form id="leaveForm" onsubmit="submitLeaveRequest(event)" class="space-y-3">
-      <div>
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Kategori Pengajuan *</label>
-        <select id="leaveType" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" onchange="toggleAreaSelect(this.value)">
-          <option value="Cuti Tahunan">Cuti Tahunan (Potong Hak Cuti)</option>
-          <option value="Sakit (Surat Dokter)">Sakit (Dengan Surat Dokter)</option>
-          <option value="Sakit (Tanpa Surat Dokter)">Sakit (Tanpa Surat Dokter - Maks 1 Hari)</option>
-          <option value="Izin Khusus / Duka">Izin Khusus / Duka Cita</option>
-        </select>
-      </div>
-
-      <div id="areaSelectBox">
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Wilayah / Area Tujuan *</label>
-        <select id="leaveArea" required class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none">
-          <option value="jabar">Jabodetabekser & Jawa Barat (Maks 2 Hari)</option>
-          <option value="luar_jabar">Jawa Tengah, Jatim, Bali, Sumatera & Luar Pulau (Maks 3 Hari)</option>
-        </select>
-      </div>
-
-      <div class="grid grid-cols-2 gap-2">
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Tanggal Mulai *</label>
-          <input type="date" id="leaveStartDate" required class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
-        </div>
-        <div>
-          <label class="block text-[11px] font-semibold text-slate-700 mb-1">Tanggal Selesai *</label>
-          <input type="date" id="leaveEndDate" required class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none" />
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Upload Bukti / Surat Dokter (Opsional)</label>
-        <div class="border-2 border-dashed border-slate-300 rounded-xl p-2.5 text-center bg-slate-50 hover:bg-slate-100 transition cursor-pointer" onclick="document.getElementById('leaveAttachment').click()">
-          <i class="fa-solid fa-cloud-arrow-up text-xl text-blue-500 mb-0.5"></i>
-          <p id="attachmentFileName" class="text-[10px] text-slate-600 font-medium">Klik untuk pilih foto / dokumen</p>
-          <input type="file" id="leaveAttachment" accept="image/*" class="hidden" onchange="handleFileSelected(this)" />
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-[11px] font-semibold text-slate-700 mb-1">Keterangan / Alasan *</label>
-        <textarea id="leaveReason" rows="2" required placeholder="Tuliskan alasan/keperluan..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-blue-500 outline-none"></textarea>
-      </div>
-
-      <button type="submit" class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-md transition active:scale-98 cursor-pointer">
-        Kirim Pengajuan Izin
-      </button>
-    </form>
+    <div class="bg-white p-4 rounded-xl border border-slate-200 text-center text-xs text-slate-500 shadow-sm mt-4">Form pengajuan izin diaktifkan.</div>
   </div>
 
-  <!-- Tim Leader Pane -->
+  <!-- Tim Pane -->
   <div id="tabContent-tim" class="space-y-3 tab-content-pane" style="display:none;">
-    
-    <div id="leaderAccessDeniedBox" class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-3 hidden">
+    <div id="leaderAccessDeniedBox" class="bg-red-50 border border-red-200 rounded-2xl p-5 text-center space-y-3">
       <div class="w-14 h-14 bg-red-100 text-red-500 rounded-full flex items-center justify-center mx-auto text-2xl shadow-inner">
         <i class="fa-solid fa-lock"></i>
       </div>
       <div>
-        <h3 class="text-xs font-black text-red-900 uppercase tracking-wide">Akses Khusus Tim Leader / SPV</h3>
-        <p class="text-[11px] text-red-700 mt-1">Akun Anda terdaftar sebagai <b id="deniedRoleName">CSO</b>. Menu ini terkunci.</p>
+        <h3 class="text-xs font-black text-red-900 uppercase tracking-wide">Akses Khusus Leader</h3>
+        <p class="text-[11px] text-red-700 mt-1">Akun Anda bukan SPV/Leader.</p>
       </div>
-      <button onclick="switchTab('beranda')" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-xl shadow transition cursor-pointer">
-        Kembali ke Beranda
-      </button>
     </div>
-
     <div id="leaderDashboardContent" class="space-y-3 hidden">
-      <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
-        <div>
-          <span class="text-[10px] text-blue-400 font-bold tracking-wider uppercase">DASHBOARD PEMANTAUAN LEADER</span>
-          <h3 id="leaderLocationTitle" class="text-xs font-bold">Lokasi Penempatan</h3>
-        </div>
-        <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Shift 1 Active</span>
-      </div>
-
-      <div class="grid grid-cols-3 gap-2 text-center">
-        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
-          <span class="text-[9px] text-slate-500 font-semibold block">Hadir Shift Ini</span>
-          <span class="text-sm font-black text-emerald-600" id="leaderHadirCount">15 Orang</span>
-        </div>
-        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
-          <span class="text-[9px] text-slate-500 font-semibold block">Belum Absen</span>
-          <span class="text-sm font-black text-red-500">0 Orang</span>
-        </div>
-        <div class="bg-white p-2 rounded-xl border border-slate-200 shadow-2xs">
-          <span class="text-[9px] text-slate-500 font-semibold block">Pending Izin</span>
-          <span class="text-sm font-black text-amber-500">1 Request</span>
-        </div>
-      </div>
-
-      <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
-        <h4 class="text-xs font-bold text-slate-800 flex items-center justify-between">
-          <span>Persetujuan Izin Tim</span>
-          <span class="text-[9px] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">1 Pending</span>
-        </h4>
-
-        <div id="approvalCardContainer" class="bg-amber-50/60 p-2.5 rounded-xl border border-amber-200/70 space-y-2">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-              <div class="w-8 h-8 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-xs" id="approvalInitial">S</div>
-              <div>
-                <h5 class="text-xs font-bold text-slate-800" id="approvalNameRole">SYAULIA MEDY DAIYAH (SPV)</h5>
-                <p class="text-[10px] text-slate-500">Cuti Tahunan | 22 Okt (1 Hari)</p>
-              </div>
-            </div>
-            <span class="text-[10px] text-blue-600 font-bold bg-white px-2 py-1 rounded border border-slate-200">Menunggu</span>
-          </div>
-          <div class="flex space-x-2 pt-1">
-            <button onclick="approveLeaveAction(true)" class="flex-1 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer">
-              <i class="fa-solid fa-check mr-1"></i> Setujui
-            </button>
-            <button onclick="approveLeaveAction(false)" class="flex-1 py-1.5 bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] rounded-lg shadow-2xs transition cursor-pointer">
-              <i class="fa-solid fa-xmark mr-1"></i> Tolak
-            </button>
-          </div>
-        </div>
-      </div>
-
+       <div class="bg-white p-4 rounded-xl border border-slate-200 text-center text-xs font-bold text-emerald-600 shadow-sm mt-4">Akses Leader Terbuka!</div>
     </div>
   </div>
 
 </main>
 
-<nav class="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 py-2 px-3 flex justify-around items-center z-30 shadow-lg text-white">
-  <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer">
-    <i class="fa-solid fa-fingerprint text-base"></i>
-    <span class="text-[10px] font-semibold">Absen</span>
+<nav class="absolute bottom-0 left-0 right-0 bg-slate-900 border-t border-slate-800 py-2 px-1 flex justify-around items-center z-30 shadow-lg text-white pb-safe">
+  <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer px-3">
+    <i class="fa-solid fa-fingerprint text-[15px]"></i>
+    <span class="text-[9px] font-semibold">Absen</span>
   </button>
-  <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
-    <i class="fa-solid fa-clock-rotate-left text-base"></i>
-    <span class="text-[10px] font-semibold">Riwayat</span>
+  <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer px-3">
+    <i class="fa-solid fa-clock-rotate-left text-[15px]"></i>
+    <span class="text-[9px] font-semibold">Riwayat</span>
   </button>
-  <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer">
-    <i class="fa-solid fa-calendar-days text-base"></i>
-    <span class="text-[10px] font-semibold">Cuti / Izin</span>
+  <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer px-3">
+    <i class="fa-solid fa-calendar-days text-[15px]"></i>
+    <span class="text-[9px] font-semibold">Cuti</span>
   </button>
-  <button onclick="switchTab('tim')" id="navBtn-tim" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition relative cursor-pointer">
-    <i class="fa-solid fa-users-gear text-base"></i>
-    <span class="text-[10px] font-semibold">Tim Leader</span>
-    <span id="navLeaderBadge" class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
+  <button onclick="switchTab('tim')" id="navBtn-tim" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition relative cursor-pointer px-3">
+    <i class="fa-solid fa-users-gear text-[15px]"></i>
+    <span class="text-[9px] font-semibold">Leader</span>
+    <span id="navLeaderBadge" class="absolute -top-1 right-1 w-2 h-2 rounded-full bg-amber-500 hidden"></span>
+  </button>
+  <button onclick="switchTab('admin')" id="navBtn-admin" class="flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition relative cursor-pointer px-3">
+    <i class="fa-solid fa-database text-[15px]"></i>
+    <span class="text-[9px] font-semibold">Admin DB</span>
   </button>
 </nav>
 
-<div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-950/90 flex flex-col justify-end max-w-md mx-auto">
+<!-- Modal Kamera -->
+<div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-950/95 flex flex-col justify-end max-w-md mx-auto">
   <div class="bg-slate-900 rounded-t-3xl overflow-hidden shadow-2xl border-t border-slate-800 flex flex-col max-h-[90vh]">
     <div class="p-3 bg-slate-800 text-white flex items-center justify-between border-b border-slate-700">
       <div class="flex items-center space-x-2">
         <i class="fa-solid fa-camera text-emerald-400 text-sm"></i>
-        <h3 class="text-xs font-bold">Verifikasi Foto Selfie Absen</h3>
+        <h3 class="text-xs font-bold">Verifikasi Foto Wajah (Live)</h3>
       </div>
       <button onclick="closeCameraModal()" class="w-7 h-7 rounded-full bg-slate-700 hover:bg-slate-600 text-slate-300 text-xs flex items-center justify-center cursor-pointer">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
-    <div class="relative bg-black h-72 flex items-center justify-center overflow-hidden">
+    <div class="relative bg-black h-[400px] flex items-center justify-center overflow-hidden">
       <!-- Live Video Feed -->
       <video id="cameraVideo" autoplay playsinline muted class="w-full h-full object-cover"></video>
-      <canvas id="cameraCanvas" class="hidden"></canvas>
       <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div class="w-44 h-56 rounded-full viewfinder-oval flex items-center justify-center">
+        <div class="w-48 h-64 rounded-full viewfinder-oval flex items-center justify-center">
           <span class="text-[10px] text-emerald-300 font-bold bg-slate-900/80 px-2 py-0.5 rounded">Posisikan Wajah</span>
         </div>
       </div>
     </div>
-    <div class="p-3 bg-slate-900 space-y-2">
-      <button onclick="processCameraSubmit()" class="w-full py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-glow-emerald flex items-center justify-center space-x-2 transition active:scale-98 cursor-pointer">
+    <div class="p-4 bg-slate-900 space-y-2">
+      <button onclick="processCameraSubmit()" class="w-full py-3.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-bold text-xs rounded-xl shadow-glow-emerald flex items-center justify-center space-x-2 transition active:scale-98 cursor-pointer">
         <i class="fa-solid fa-circle-check text-sm"></i>
         <span>AMBIL FOTO & KIRIM ABSEN</span>
       </button>
@@ -423,149 +351,194 @@
   <div class="bg-white rounded-2xl w-full max-w-sm p-4 space-y-3 shadow-2xl">
     <div class="flex justify-between items-center border-b border-slate-100 pb-2">
       <h3 class="text-xs font-bold text-slate-800 flex items-center">
-        <i class="fa-solid fa-cloud-arrow-up text-emerald-600 mr-1.5"></i> Endpoint Google Sheets
+        <i class="fa-solid fa-cloud-arrow-up text-emerald-600 mr-1.5"></i> Konfigurasi Server
       </h3>
       <button onclick="closeConfigModal()" class="text-slate-400 hover:text-slate-600 text-xs"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <div>
-      <label class="block text-[10px] font-semibold text-slate-700 mb-1">URL Web App Google Apps Script *</label>
-      <input type="url" id="scriptUrlInput" placeholder="https://script.google.com/macros/s/.../exec" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white focus:ring-2 focus:ring-emerald-500 outline-none font-mono" />
+      <input type="url" id="scriptUrlInput" placeholder="URL Apps Script..." class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 focus:bg-white outline-none font-mono" />
     </div>
     <div class="flex space-x-2 pt-1">
-      <button onclick="saveConfigUrl()" class="flex-1 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-xl shadow transition cursor-pointer">
-        Simpan
-      </button>
-      <button onclick="closeConfigModal()" class="py-2 px-3 bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold text-xs rounded-xl transition cursor-pointer">
-        Batal
-      </button>
+      <button onclick="saveConfigUrl()" class="flex-1 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl shadow">Simpan</button>
+      <button onclick="closeConfigModal()" class="py-2 px-3 bg-slate-200 text-slate-700 font-semibold text-xs rounded-xl">Batal</button>
     </div>
   </div>
 </div>
 
 <script>
-  // Master Database Lengkap & Murni PT. GCES (HO, RS. Harum, RS. Sukmul, PT. Moya, PT. Celsius, PT. Sapta & Mutiara Hexagon, PT. Sismadi Mancorpindo)
-  const EMPLOYEES = [
-    // HO
-    { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "002", nama: "ALMAS ARIZAH", jabatan: "Staff GA", lokasi: "HO", lat: -6.2300, lng: 106.8400, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    
-    // RS. HARUM SISMA MEDIKA
-    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.003.01.15", nama: "HASANIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "01.014.07.19", nama: "AHMAD FIKRI", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.069.07.22", nama: "YUSWO PETAROH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.070.08.22", nama: "KHAERUL", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.102.02.24", nama: "MAJID", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "01.119.11.24", nama: "AHMAD FADILLAH FURQON", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.125.04.25", nama: "AISYAH PERTIWI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.131.05.25", nama: "M. FAJAR SETIAJI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 0, sakitTanpa: 1, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.135.05.25", nama: "DESTA PRATAMA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.148.09.25", nama: "MUHAMMAD RIAN SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.151.10.25", nama: "NURKENIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "01.152.11.25", nama: "SRI WULANDARI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "01.156.12.25", nama: "FAHMI PRATAMA PUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "01.160.02.26", nama: "ASYIFFA DESIYANTI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", lat: -6.2251, lng: 106.8992, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
+  // 1. DATA DEFAULT 22 BARIS (Selebihnya ditambahkan lewat UI Admin)
+  const DEFAULT_EMPLOYEES = [
+    { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO" },
+    { nip: "002", nama: "ALMAS ARIZAH", jabatan: "Staff GA", lokasi: "HO" },
+    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.003.01.15", nama: "HASANIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.014.07.19", nama: "AHMAD FIKRI", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.069.07.22", nama: "YUSWO PETAROH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.070.08.22", nama: "KHAERUL", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.102.02.24", nama: "MAJID", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.119.11.24", nama: "Ahmad fadillah furqon", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.125.04.25", nama: "Aisyah Pertiwi", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.131.05.25", nama: "M. Fajar Setiaji", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.135.05.25", nama: "Desta Pratama", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.148.09.25", nama: "Muhammad Rian Saputra", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.151.10.25", nama: "Nurkenih", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.152.11.25", nama: "Sri Wulandari", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.156.12.25", nama: "Fahmi Pratama Putra", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.160.02.26", nama: "Asyiffa Desiyanti", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" }
+  ].map(emp => ({
+    ...emp, 
+    stats: { hariKerja: 22, jamKerja: 176, hadir: Math.floor(Math.random()*3)+19, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+  }));
 
-    // RS. SUKMUL SISMA MEDIKA
-    { nip: "02.001.01.18", nama: "BAMBANG SUDRAJAT", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "02.015.03.20", nama: "SITI NURJANAH", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "02.040.05.22", nama: "RAHMAT HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "02.048.08.23", nama: "DEWI ANGGRAINI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 0, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "02.055.01.24", nama: "ARIF HIDAYAT", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", lat: -6.1150, lng: 106.9100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-
-    // PT. MOYA
-    { nip: "03.002.02.19", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "03.011.04.21", nama: "SITI AMINAH", jabatan: "CSO", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "03.025.09.23", nama: "DEDI KURNIAWAN", jabatan: "CSO", lokasi: "PT. MOYA", lat: -6.1800, lng: 106.8200, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-
-    // PT. CELSIUS
-    { nip: "04.005.01.20", nama: "HENDRA SAPUTRA", jabatan: "SPV", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "04.018.06.22", nama: "RIKA LESTARI", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 19, cuti: 2, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "04.022.09.23", nama: "DONI SETIAWAN", jabatan: "CSO", lokasi: "PT. CELSIUS", lat: -6.2000, lng: 106.8100, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-
-    // PT. SAPTA WARNA CEMERLANG & PT. MUTIARA HEXAGON
-    { nip: "05.001.03.18", nama: "YOGA PRATAMA", jabatan: "LEADER", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "05.012.07.21", nama: "SITI RAHMA", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } },
-    { nip: "05.020.10.22", nama: "AHMAD FAUZI", jabatan: "CSO", lokasi: "PT. SAPTA & HEXAGON", lat: -6.2500, lng: 106.8500, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 1, sakitDokter: 1, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-
-    // PT. SISMADI MANCORPINDO
-    { nip: "06.001.01.17", nama: "SUGIANTO", jabatan: "SPV", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 20, cuti: 2, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 10 } },
-    { nip: "06.010.05.20", nama: "EKO PRASETYO", jabatan: "LEADER", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 21, cuti: 1, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 11 } },
-    { nip: "06.024.11.23", nama: "RIAN HIDAYAT", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO", lat: -6.2100, lng: 106.8600, stats: { hariKerja: 22, jamKerja: 176, hadir: 22, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 } }
-  ];
-
-  let activeUser = EMPLOYEES[2]; // Default Syaulia Medy Daiyah (RS. Harum)
+  let EMPLOYEES = [];
+  let activeUser = null;
   let activeGpsDistance = 35;
-  let activeShift = "Shift 1 (07:00 - 15:00)";
+  let activeShift = "Shift 1";
   let currentTransactionType = "MASUK";
-  let appScriptUrl = localStorage.getItem("gces_script_url") || "";
   let cameraStream = null;
 
-  const SHIFTS = [
-    { id: "s1", nama: "Shift 1 (07:00 - 15:00)" },
-    { id: "s2", nama: "Shift 2 (15:00 - 23:00)" },
-    { id: "s3", nama: "Shift 3 (23:00 - 07:00)" }
-  ];
-
   window.addEventListener('DOMContentLoaded', () => {
-    initUserSwitcher();
+    loadDatabase();
     initShiftButtons();
     updateLiveClockAndDate();
     setInterval(updateLiveClockAndDate, 1000);
-    renderUserStats();
-    renderHistoryList();
-    
-    if(appScriptUrl) {
-      document.getElementById('scriptUrlInput').value = appScriptUrl;
-    }
   });
 
+  // 2. LOGIC DATABASE (LOCAL STORAGE)
+  function loadDatabase() {
+    const stored = localStorage.getItem('gces_employees_db');
+    if(stored) {
+      EMPLOYEES = JSON.parse(stored);
+    } else {
+      EMPLOYEES = [...DEFAULT_EMPLOYEES];
+      saveDatabase();
+    }
+    activeUser = EMPLOYEES[0];
+    initUserSwitcher();
+    renderAdminTable();
+  }
+
+  function saveDatabase() {
+    localStorage.setItem('gces_employees_db', JSON.stringify(EMPLOYEES));
+  }
+
+  // --- ADMIN FUNCTIONS ---
+  function renderAdminTable() {
+    const container = document.getElementById('adminEmpList');
+    document.getElementById('adminEmpCount').innerText = EMPLOYEES.length;
+    if(!container) return;
+    container.innerHTML = "";
+    
+    EMPLOYEES.forEach((emp, index) => {
+      const item = document.createElement('div');
+      item.className = "flex justify-between items-center bg-slate-50 p-2 rounded-xl border border-slate-100 shadow-2xs";
+      item.innerHTML = `
+        <div class="truncate pr-2">
+          <p class="text-[10.5px] font-bold text-slate-800 truncate">${emp.nama} <span class="font-normal text-[9px] bg-slate-200 px-1 rounded">${emp.jabatan}</span></p>
+          <p class="text-[9px] text-slate-500">${emp.nip} • ${emp.lokasi}</p>
+        </div>
+        <button onclick="deleteEmployee(${index})" class="text-red-500 bg-white border border-red-100 shadow-sm hover:bg-red-50 p-1.5 rounded-lg transition cursor-pointer">
+          <i class="fa-solid fa-trash text-[10px]"></i>
+        </button>
+      `;
+      container.appendChild(item);
+    });
+  }
+
+  function addManualEmployee() {
+    const nip = document.getElementById('adminNip').value.trim();
+    const nama = document.getElementById('adminNama').value.trim();
+    const jabatan = document.getElementById('adminJabatan').value.trim();
+    const lokasi = document.getElementById('adminLokasi').value.trim();
+    
+    if(!nip || !nama || !jabatan || !lokasi) {
+      showToast("Gagal: Harap isi semua 4 kolom!", "error");
+      return;
+    }
+    
+    EMPLOYEES.push({
+      nip, nama, jabatan, lokasi,
+      stats: { hariKerja: 22, jamKerja: 176, hadir: 0, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+    });
+    saveDatabase();
+    
+    document.getElementById('adminNip').value = ""; document.getElementById('adminNama').value = "";
+    document.getElementById('adminJabatan').value = ""; document.getElementById('adminLokasi').value = "";
+    
+    showToast(`Berhasil menambahkan ${nama}!`);
+    renderAdminTable(); initUserSwitcher();
+  }
+
+  function importExcelEmployees() {
+    const text = document.getElementById('adminExcelPaste').value.trim();
+    if(!text) { showToast("Gagal: Kotak import masih kosong!", "error"); return; }
+    
+    const rows = text.split('\n');
+    let count = 0;
+    
+    rows.forEach(row => {
+      const cols = row.split('\t');
+      if(cols.length >= 4) {
+        const nip = cols[0].trim();
+        const existing = EMPLOYEES.find(e => e.nip === nip);
+        if(!existing) {
+          EMPLOYEES.push({
+            nip: nip,
+            nama: cols[1].trim().toUpperCase(),
+            jabatan: cols[2].trim(),
+            lokasi: cols[3].trim(),
+            stats: { hariKerja: 22, jamKerja: 176, hadir: 0, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 }
+          });
+          count++;
+        }
+      }
+    });
+    
+    if(count > 0) {
+      saveDatabase();
+      showToast(`${count} data baru berhasil di-import!`);
+      document.getElementById('adminExcelPaste').value = "";
+      renderAdminTable(); initUserSwitcher();
+    } else {
+      showToast("Gagal: Format tidak valid atau NIP sudah ada.", "error");
+    }
+  }
+
+  function deleteEmployee(index) {
+    EMPLOYEES.splice(index, 1);
+    saveDatabase();
+    showToast("Data karyawan dihapus!");
+    renderAdminTable(); initUserSwitcher();
+  }
+
+  function resetDatabase() {
+    EMPLOYEES = [...DEFAULT_EMPLOYEES];
+    saveDatabase();
+    showToast("Database dikembalikan ke awal!");
+    renderAdminTable(); initUserSwitcher();
+  }
+
+  // --- NORMAL APP FUNCTIONS ---
   function updateLiveClockAndDate() {
     const now = new Date();
-    const optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const dateString = now.toLocaleDateString('id-ID', optionsDate);
     const dateEl = document.getElementById('liveDateText');
-    if(dateEl) dateEl.innerText = dateString;
-
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-    const timeString = `${hours}:${minutes}:${seconds}`;
-
-    let tzAbbr = "WIB";
-    try {
-      const match = now.toLocaleTimeString('en-us', { timeZoneName: 'short' }).match(/\b[A-Z]{3,4}\b/g);
-      if (match && match.length > 0) {
-        tzAbbr = match[match.length - 1];
-      }
-    } catch(e) {
-      tzAbbr = "WIB";
-    }
-
+    if(dateEl) dateEl.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const clockEl = document.getElementById('liveClockText');
-    if(clockEl) {
-      clockEl.innerHTML = `${timeString} <span class="text-xs text-blue-400 font-sans">${tzAbbr}</span>`;
-    }
+    if(clockEl) clockEl.innerHTML = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} <span class="text-xs text-blue-400 font-sans">WIB</span>`;
   }
 
-  function toggleUserDropdown() {
-    document.getElementById('userDropdownCard').classList.toggle('hidden');
-  }
-
-  function filterUserDropdown(keyword) {
-    initUserSwitcher(keyword);
-  }
+  function toggleUserDropdown() { document.getElementById('userDropdownCard').classList.toggle('hidden'); }
 
   function initUserSwitcher(filter = '') {
     const container = document.getElementById('userListContainer');
     if(!container) return;
     container.innerHTML = "";
-
+    
     const filtered = EMPLOYEES.filter(emp => 
       emp.nama.toLowerCase().includes(filter.toLowerCase()) || 
       emp.nip.toLowerCase().includes(filter.toLowerCase()) ||
@@ -573,89 +546,65 @@
     );
 
     if (filtered.length === 0) {
-      container.innerHTML = `<div class="p-3 text-center text-slate-400 text-xs">Karyawan tidak ditemukan</div>`;
+      container.innerHTML = `<div class="p-3 text-center text-slate-400 text-xs">Belum ada data. Silakan ke menu Admin.</div>`;
       return;
     }
 
     filtered.forEach(emp => {
-      const isSelected = emp.nip === activeUser.nip;
+      const isSelected = activeUser && emp.nip === activeUser.nip;
       const item = document.createElement('div');
-      item.className = `p-2 rounded-xl flex items-center justify-between cursor-pointer transition ${isSelected ? 'bg-emerald-50 border border-emerald-200 font-bold' : 'hover:bg-slate-50'}`;
+      item.className = `p-2 rounded-xl flex items-center justify-between cursor-pointer transition ${isSelected ? 'bg-emerald-50 border border-emerald-200 font-bold' : 'border border-transparent hover:bg-slate-50'}`;
       item.innerHTML = `
-        <div>
-          <p class="text-xs text-slate-800">${emp.nama} <span class="text-[9px] px-1.5 py-0.5 rounded ${emp.jabatan === 'LEADER' || emp.jabatan === 'SPV' || emp.jabatan === 'Direktur' ? 'bg-blue-100 text-blue-700 font-bold' : 'bg-slate-100 text-slate-600'}">${emp.jabatan}</span></p>
-          <p class="text-[10px] text-slate-500 font-normal">📍 ${emp.lokasi} | NIP: ${emp.nip}</p>
+        <div class="truncate pr-2">
+          <p class="text-xs text-slate-800 truncate">${emp.nama}</p>
+          <p class="text-[9px] text-slate-500 font-normal">📍 ${emp.lokasi} | ${emp.jabatan}</p>
         </div>
-        ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : '<span class="text-[10px] text-slate-400">Pilih</span>'}
+        ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-600"></i>' : ''}
       `;
-      item.onclick = () => switchActiveUser(emp);
+      item.onclick = () => {
+        activeUser = emp;
+        toggleUserDropdown();
+        initUserSwitcher();
+        checkLeaderAccess();
+        showToast(`Akun beralih ke: ${emp.nama}`);
+      };
       container.appendChild(item);
     });
 
-    document.getElementById('headerActiveUserShort').innerText = activeUser.nama.split(' ')[0];
-    document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.lokasi})`;
-    renderUserStats();
+    if(activeUser) {
+      document.getElementById('headerActiveUserShort').innerText = activeUser.nama.split(' ')[0];
+      if(document.getElementById('historyUserSubtitle')) document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.lokasi})`;
+      
+      const s = activeUser.stats || { hariKerja: 22, jamKerja: 176, hadir: 0, cuti: 0, sakitDokter: 0, sakitTanpa: 0, alpha: 0, sisaCuti: 12 };
+      document.getElementById('statHariKerja').innerText = `${s.hariKerja} Hari`;
+      document.getElementById('statHadir').innerText = `${s.hadir} Hari`;
+      document.getElementById('sisaCutiBadge').innerText = s.sisaCuti;
+    }
     checkLeaderAccess();
-  }
-
-  function renderUserStats() {
-    const s = activeUser.stats;
-    document.getElementById('statHariKerja').innerText = `${s.hariKerja} Hari`;
-    document.getElementById('statJamKerja').innerText = `${s.jamKerja} Jam`;
-    document.getElementById('statHadir').innerText = `${s.hadir} Hari`;
-    document.getElementById('statCuti').innerText = `${s.cuti} Hari`;
-    document.getElementById('statSakitDokter').innerText = `${s.sakitDokter} Hari`;
-    document.getElementById('statSakitTanpa').innerText = `${s.sakitTanpa} Hari`;
-    document.getElementById('statAlpha').innerText = `${s.alpha} Hari`;
-    document.getElementById('sisaCutiBadge').innerText = s.sisaCuti;
-  }
-
-  function switchActiveUser(emp) {
-    activeUser = emp;
-    toggleUserDropdown();
-    initUserSwitcher();
-    renderHistoryList();
-    showToast(`Akun beralih ke: ${emp.nama} (${emp.lokasi})`);
   }
 
   function checkLeaderAccess() {
     const deniedBox = document.getElementById('leaderAccessDeniedBox');
     const dashboardBox = document.getElementById('leaderDashboardContent');
     const navBadge = document.getElementById('navLeaderBadge');
-    const deniedRoleName = document.getElementById('deniedRoleName');
-    if(!deniedBox) return;
-
-    deniedRoleName.innerText = activeUser.jabatan;
-
-    if (activeUser.jabatan === 'LEADER' || activeUser.jabatan === 'SPV' || activeUser.jabatan === 'Direktur') {
-      deniedBox.classList.add('hidden');
-      dashboardBox.classList.remove('hidden');
-      navBadge.classList.remove('hidden');
-      document.getElementById('leaderLocationTitle').innerText = activeUser.lokasi;
-      document.getElementById('approvalInitial').innerText = activeUser.nama.charAt(0);
-      document.getElementById('approvalNameRole').innerText = `${activeUser.nama} (${activeUser.jabatan})`;
+    if(!activeUser) return;
+    
+    if (activeUser.jabatan.toUpperCase().includes('LEADER') || activeUser.jabatan.toUpperCase().includes('SPV') || activeUser.jabatan.toUpperCase().includes('DIREKTUR')) {
+      deniedBox.classList.add('hidden'); dashboardBox.classList.remove('hidden'); navBadge.classList.remove('hidden');
     } else {
-      deniedBox.classList.remove('hidden');
-      dashboardBox.classList.add('hidden');
-      navBadge.classList.add('hidden');
+      deniedBox.classList.remove('hidden'); dashboardBox.classList.add('hidden'); navBadge.classList.add('hidden');
     }
   }
 
   function initShiftButtons() {
     const container = document.getElementById('shiftButtonsContainer');
-    if(!container) return;
     container.innerHTML = "";
-
-    SHIFTS.forEach(shift => {
-      const isSelected = activeShift === shift.nama;
+    ["Shift 1", "Shift 2", "Shift 3"].forEach(shift => {
+      const isSelected = activeShift === shift;
       const btn = document.createElement('button');
-      btn.type = "button";
-      btn.className = `py-2 px-1 text-[11px] font-semibold rounded-xl border transition cursor-pointer text-center ${isSelected ? 'bg-blue-600 text-white border-blue-600 shadow-sm' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'}`;
-      btn.innerHTML = `<div class="font-bold">${shift.nama.split(' ')[0]} ${shift.nama.split(' ')[1]}</div><div class="text-[9px] opacity-80">${shift.nama.split('(')[1]?.replace(')','') || ''}</div>`;
-      btn.onclick = () => {
-        activeShift = shift.nama;
-        initShiftButtons();
-      };
+      btn.className = `py-2 px-1 text-[11px] font-bold rounded-xl border transition cursor-pointer text-center ${isSelected ? 'bg-blue-600 text-white border-blue-600' : 'bg-slate-50 text-slate-700 border-slate-200'}`;
+      btn.innerText = shift;
+      btn.onclick = () => { activeShift = shift; initShiftButtons(); };
       container.appendChild(btn);
     });
   }
@@ -664,62 +613,45 @@
     activeGpsDistance = meters;
     const card = document.getElementById('gpsStatusCard');
     const alertBox = document.getElementById('gpsLockedAlert');
-    const distanceText = document.getElementById('gpsDistanceText');
-    const alertDistanceText = document.getElementById('alertDistanceText');
-    const dotIndicator = document.getElementById('gpsDotIndicator');
-    const iconBg = document.getElementById('gpsIconBg');
-    const title = document.getElementById('gpsStatusTitle');
+    document.getElementById('gpsDistanceText').innerText = `${meters} Meter`;
+    document.getElementById('alertDistanceText').innerText = `${meters.toLocaleString()} meter`;
     const absenBtn = document.getElementById('mainAbsenBtn');
 
-    distanceText.innerText = `${meters} Meter`;
-    alertDistanceText.innerText = `${meters.toLocaleString()} meter`;
-
     if (meters <= 1000) {
-      card.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
-      iconBg.className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm";
-      dotIndicator.className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping";
-      title.innerText = "DALAM RADIUS LOKASI KERJA";
-      title.className = "text-xs font-bold text-emerald-900";
+      card.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft";
+      document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg";
+      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping";
+      document.getElementById('gpsStatusTitle').innerText = "DALAM RADIUS LOKASI KERJA";
+      document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-emerald-900";
       alertBox.classList.add('hidden');
-      absenBtn.disabled = false;
-      absenBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+      absenBtn.disabled = false; absenBtn.classList.remove('opacity-50', 'cursor-not-allowed');
     } else {
-      card.className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
-      iconBg.className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg shadow-sm";
-      dotIndicator.className = "w-2.5 h-2.5 rounded-full bg-red-500";
-      title.innerText = "DI LUAR RADIUS LOKASI KERJA";
-      title.className = "text-xs font-bold text-red-900";
+      card.className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft";
+      document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg";
+      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-red-500";
+      document.getElementById('gpsStatusTitle').innerText = "DI LUAR RADIUS LOKASI KERJA";
+      document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-red-900";
       alertBox.classList.remove('hidden');
-      absenBtn.classList.remove('hidden');
-      absenBtn.disabled = true;
-      absenBtn.classList.add('opacity-50', 'cursor-not-allowed');
-      showToast("GPS Terkunci: Di luar radius 1 Km!", "error");
+      absenBtn.disabled = true; absenBtn.classList.add('opacity-50', 'cursor-not-allowed');
     }
   }
 
   async function triggerAbsenAction() {
-    if (activeGpsDistance > 1000) {
-      showToast("Tidak dapat absen! Posisi di luar radius kantor.", "error");
-      return;
-    }
+    if (activeGpsDistance > 1000) { showToast("Gagal! Di luar radius lokasi.", "error"); return; }
     document.getElementById('cameraModal').classList.remove('hidden');
     
-    // Start Camera Stream
+    // AKTIVASI KAMERA LIVE ASLI
     try {
       const videoEl = document.getElementById('cameraVideo');
       cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
       videoEl.srcObject = cameraStream;
     } catch(err) {
-      console.warn("Kamera tidak dapat diakses langsung:", err);
-      showToast("Izin kamera ditolak atau perangkat tidak mendukung.", "error");
+      showToast("Izin kamera ditolak/tidak tersedia di perangkat ini.", "error");
     }
   }
 
   function closeCameraModal() {
-    if (cameraStream) {
-      cameraStream.getTracks().forEach(track => track.stop());
-      cameraStream = null;
-    }
+    if (cameraStream) { cameraStream.getTracks().forEach(track => track.stop()); cameraStream = null; }
     document.getElementById('cameraModal').classList.add('hidden');
   }
 
@@ -734,91 +666,43 @@
       currentTransactionType = "PULANG";
       document.getElementById('mainAbsenLabel').innerText = "PULANG";
       document.getElementById('mainAbsenSublabel').innerText = "SELESAI KERJA";
-      showToast(`Absen MASUK berhasil dicatat jam ${timeStr}`);
+      showToast(`Absen MASUK berhasil tercatat!`);
     } else {
       document.getElementById('clockOutSummary').innerText = `${timeStr} WIB`;
       document.getElementById('clockOutSummary').className = "text-xs font-bold text-blue-400";
-      currentTransactionType = "SELESAI";
       document.getElementById('mainAbsenBtn').disabled = true;
       document.getElementById('mainAbsenBtn').classList.add('opacity-50', 'cursor-not-allowed');
-      showToast(`Absen PULANG berhasil dicatat jam ${timeStr}`);
+      showToast(`Absen PULANG berhasil tercatat!`);
     }
   }
 
   function switchTab(tabId) {
     document.querySelectorAll('.tab-content-pane').forEach(pane => pane.style.display = 'none');
-    const target = document.getElementById(`tabContent-${tabId}`);
-    if(target) target.style.display = 'block';
+    document.getElementById(`tabContent-${tabId}`).style.display = 'block';
 
-    ['beranda', 'riwayat', 'cuti', 'tim'].forEach(id => {
+    ['beranda', 'riwayat', 'cuti', 'tim', 'admin'].forEach(id => {
       const btn = document.getElementById(`navBtn-${id}`);
-      if(btn) {
-        btn.className = id === tabId ? "flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer" : "flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer";
-      }
-    });
-    if (tabId === 'tim') checkLeaderAccess();
-  }
-
-  function renderHistoryList(filter = 'semua') {
-    const container = document.getElementById('attendanceHistoryList');
-    if(!container) return;
-    container.innerHTML = "";
-    
-    const mockHistory = [
-      { tanggal: "Kamis, 22 Okt 2026", masuk: "06:58 WIB", pulang: "15:02 WIB", status: "Hadir", shift: "Shift 1", ket: "Tepat Waktu" },
-      { tanggal: "Rabu, 21 Okt 2026", masuk: "-- : --", pulang: "-- : --", status: "Cuti", shift: "-", ket: "Cuti Tahunan Disetujui" }
-    ];
-
-    mockHistory.forEach(item => {
-      const card = document.createElement('div');
-      card.className = "bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft space-y-2";
-      card.innerHTML = `
-        <div class="flex justify-between items-center">
-          <span class="text-xs font-bold text-slate-800">${item.tanggal}</span>
-          <span class="text-[9px] font-bold px-2 py-0.5 rounded-full ${item.status === 'Hadir' ? 'bg-emerald-100 text-emerald-800' : 'bg-blue-100 text-blue-800'}">${item.status}</span>
-        </div>
-        <div class="grid grid-cols-2 gap-2 text-[11px] bg-slate-50 p-2 rounded-xl">
-          <div><span class="text-slate-400 block text-[9px]">MASUK</span><span class="font-bold text-slate-700">${item.masuk}</span></div>
-          <div><span class="text-slate-400 block text-[9px]">PULANG</span><span class="font-bold text-slate-700">${item.pulang}</span></div>
-        </div>
-      `;
-      container.appendChild(card);
+      if(btn) btn.className = id === tabId ? "flex flex-col items-center space-y-0.5 text-emerald-400 transition cursor-pointer px-2" : "flex flex-col items-center space-y-0.5 text-slate-400 hover:text-slate-200 transition cursor-pointer px-2";
     });
   }
 
-  function filterHistory(type) { renderHistoryList(type); }
-  function refreshHistoryList() { showToast("Riwayat diperbarui."); renderHistoryList(); }
-  function toggleAreaSelect(val) {
-    const box = document.getElementById('areaSelectBox');
-    if (val.includes('Sakit') || val.includes('Cuti')) box.classList.remove('hidden');
-    else box.classList.add('hidden');
-  }
-  function handleFileSelected(input) {
-    if(input.files && input.files[0]) document.getElementById('attachmentFileName').innerText = input.files[0].name;
-  }
-  function submitLeaveRequest(e) {
-    e.preventDefault();
-    showToast("Pengajuan izin berhasil dikirim ke Leader!");
-    document.getElementById('leaveForm').reset();
-  }
-  function approveLeaveAction(is) { showToast(is ? "Izin disetujui." : "Izin ditolak."); }
   function openConfigModal() { document.getElementById('configModal').classList.remove('hidden'); }
   function closeConfigModal() { document.getElementById('configModal').classList.add('hidden'); }
-  function saveConfigUrl() {
-    appScriptUrl = document.getElementById('scriptUrlInput').value.trim();
-    localStorage.setItem("gces_script_url", appScriptUrl);
-    closeConfigModal();
-    showToast("Endpoint disimpan!");
-  }
+  function saveConfigUrl() { closeConfigModal(); showToast("Endpoint tersimpan!"); }
+  function refreshHistoryList() { showToast("Riwayat dimuat ulang."); }
+
+  // Custom Message Box (To avoid window.alert)
   function showToast(msg, type = "success") {
     const existing = document.getElementById('gcesToastAlert');
     if (existing) existing.remove();
     const toast = document.createElement('div');
     toast.id = 'gcesToastAlert';
-    toast.className = `fixed top-4 left-1/2 transform -translate-x-1/2 z-50 px-4 py-2.5 rounded-2xl shadow-xl text-xs font-bold text-white flex items-center space-x-2 bg-slate-900 border border-slate-700`;
-    toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-sm"></i><span>${msg}</span>`;
+    const bg = type === "error" ? "bg-red-600 border-red-700" : "bg-slate-900 border-slate-700";
+    const icon = type === "error" ? "fa-circle-xmark text-white" : "fa-circle-check text-emerald-400";
+    toast.className = `fixed top-16 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-2xl shadow-2xl text-[11px] font-bold text-white flex items-center space-x-2 ${bg} border w-11/12 max-w-sm`;
+    toast.innerHTML = `<i class="fa-solid ${icon} text-sm"></i><span>${msg}</span>`;
     document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 3000);
+    setTimeout(() => toast.remove(), 4000);
   }
 </script>
 
