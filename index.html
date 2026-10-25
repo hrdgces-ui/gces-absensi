@@ -35,9 +35,9 @@
     </div>
     <div>
       <h1 class="text-sm font-black tracking-wider uppercase text-white leading-tight">PT. GCES</h1>
-      <!-- PENANDA VERSI V9.0 -->
+      <!-- PENANDA VERSI V9.1 -->
       <p class="text-[10px] text-emerald-400 font-bold bg-emerald-900/50 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-emerald-700/50">
-        V9.0 (DATABASE EXCEL ASLI)
+        V9.1 (EXCEL DATA AKURAT)
       </p>
     </div>
   </div>
@@ -56,7 +56,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-2">
     <div>
       <span class="text-xs font-bold text-slate-800 block">Identitas Karyawan (Login)</span>
-      <span class="text-[10px] text-slate-500">Pilih nama Anda sesuai Database Resmi</span>
+      <span class="text-[10px] text-slate-500">Pilih nama Anda sesuai Database Resmi Excel</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-sm bg-slate-100 w-6 h-6 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -301,7 +301,7 @@
 
 <script>
   // =========================================================================================
-  // DATABASE RESMI PERSIS SESUAI FOTO EXCEL ANDA
+  // DATABASE RESMI PERSIS 100% SESUAI EXCEL ANDA (LOKASI & JABATAN BENAR)
   // =========================================================================================
   const OFFICIAL_EXCEL_EMPLOYEES = [
     { nip: "02.201.01", nama: "TITA LELAWATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
@@ -350,10 +350,11 @@
   let currentTransactionType = "MASUK";
   let cameraStream = null;
 
-  const DB_KEY = 'gces_db_v9_exact_excel';
+  const DB_KEY = 'gces_db_v91_clean';
 
   window.addEventListener('DOMContentLoaded', () => {
-    localStorage.clear();
+    localStorage.removeItem('gces_db_v9_exact_excel');
+    localStorage.removeItem('gces_db_v8_clean');
 
     EMPLOYEES = [...OFFICIAL_EXCEL_EMPLOYEES];
     localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
