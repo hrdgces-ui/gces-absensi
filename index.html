@@ -27,21 +27,24 @@
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col h-screen max-w-md mx-auto relative overflow-hidden select-none">
 
-<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md">
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md border-b border-slate-700">
   <div class="flex items-center space-x-3">
     <!-- LOGO GCES -->
-    <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center shadow-md overflow-hidden">
+    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden border border-slate-300">
       <!-- Jika Anda punya URL gambar logo resmi, GANTI URL di bawah ini dengan link gambar Anda -->
       <img src="https://ui-avatars.com/api/?name=GCES&background=ffffff&color=0f172a&font-size=0.4&bold=true&rounded=false" alt="Logo GCES" class="w-full h-full object-cover">
     </div>
     <div>
       <h1 class="text-sm font-black tracking-wider uppercase text-white leading-tight">PT. GCES</h1>
-      <p class="text-[10px] text-emerald-400 font-medium">Sistem Absensi Operasional</p>
+      <!-- PENANDA VERSI V7.0 YANG SANGAT JELAS -->
+      <p class="text-[10px] text-emerald-400 font-bold bg-emerald-900/50 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-emerald-700/50">
+        V7.0 (DATA ASLI)
+      </p>
     </div>
   </div>
 
   <div class="flex items-center space-x-2">
-    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3 py-1.5 rounded-full text-xs font-medium flex items-center space-x-2 transition cursor-pointer shadow-sm">
+    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-full text-xs font-medium flex items-center space-x-2 transition cursor-pointer shadow-sm">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
       <span class="text-[11px] font-bold" id="headerActiveUserShort">Pilih Akun</span>
       <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
@@ -58,10 +61,11 @@
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-sm bg-slate-100 w-6 h-6 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
   </div>
-  <div class="mb-1">
-    <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="🔍 Cari nama, NIP, atau lokasi Anda..." class="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-slate-50 outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500 transition" />
+  <div class="mb-1 relative">
+    <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-400 text-xs"></i>
+    <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="Cari nama, NIP, atau lokasi..." class="w-full text-xs border border-slate-300 rounded-xl pl-8 pr-3 py-2 bg-slate-50 outline-none focus:bg-white focus:ring-2 focus:ring-emerald-500 transition shadow-sm" />
   </div>
-  <div class="space-y-1.5 max-h-72 overflow-y-auto pr-1 text-xs" id="userListContainer">
+  <div class="space-y-1.5 max-h-[60vh] overflow-y-auto pr-1 text-xs" id="userListContainer">
     <!-- List karyawan dimuat via JS -->
   </div>
 </div>
@@ -90,9 +94,9 @@
     <!-- Tombol Test Lokasi (Simulasi) -->
     <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs space-y-1">
       <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Alat Simulasi Lokasi ---</div>
-      <div class="flex items-center justify-between">
-        <button onclick="setQuickGps(35)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-emerald-700 font-semibold transition cursor-pointer border border-slate-200">Dalam Radius (35m)</button>
-        <button onclick="setQuickGps(1350)" class="text-[10px] bg-slate-100 hover:bg-slate-200 px-2 py-1 rounded text-red-700 font-semibold transition cursor-pointer border border-slate-200">Luar Radius (1.3km)</button>
+      <div class="flex items-center justify-between gap-2">
+        <button onclick="setQuickGps(35)" class="flex-1 text-[10px] bg-emerald-50 hover:bg-emerald-100 py-1.5 rounded text-emerald-700 font-semibold transition cursor-pointer border border-emerald-200 text-center">Dalam Radius (35m)</button>
+        <button onclick="setQuickGps(1350)" class="flex-1 text-[10px] bg-red-50 hover:bg-red-100 py-1.5 rounded text-red-700 font-semibold transition cursor-pointer border border-red-200 text-center">Luar Radius (1.3km)</button>
       </div>
     </div>
 
@@ -149,11 +153,9 @@
     </div>
   </div>
 
-  <!-- ================= SPV / LEADER PANE (UI LEADER KHUSUS) ================= -->
+  <!-- ================= SPV / LEADER PANE ================= -->
   <div id="tabContent-tim" class="space-y-4 tab-content-pane" style="display:none;">
-    <!-- Tampilan Dashboard JIKA LEADER -->
     <div id="leaderDashboardContent" class="space-y-4">
-      <!-- Header Leader -->
       <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
         <div>
           <h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3>
@@ -164,7 +166,6 @@
         </div>
       </div>
 
-      <!-- Statistik Tim -->
       <div class="grid grid-cols-2 gap-3">
         <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft relative overflow-hidden">
           <div class="absolute -right-3 -top-3 w-12 h-12 bg-emerald-50 rounded-full"></div>
@@ -184,7 +185,6 @@
         </div>
       </div>
 
-      <!-- Daftar Anggota Tim -->
       <div class="bg-white border border-slate-200 rounded-2xl shadow-card-soft overflow-hidden flex flex-col">
         <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
           <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-list-check text-blue-600 mr-1.5"></i> Status Kehadiran Tim</h4>
@@ -198,7 +198,7 @@
   </div>
 
 
-  <!-- ================= ADMIN / DATABASE PANE ================= -->
+  <!-- ================= ADMIN / DATABASE PANE (FITUR PENYELAMAT) ================= -->
   <div id="tabContent-admin" class="space-y-4 tab-content-pane" style="display:none;">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
       <div>
@@ -208,24 +208,21 @@
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
 
-    <!-- Tabel Data Karyawan (Admin) -->
     <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-users text-blue-600 mr-1.5"></i> Database Tersimpan (<span id="adminEmpCount">0</span>)</h4>
+        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-users text-blue-600 mr-1.5"></i> Daftar Karyawan Tersimpan</h4>
         
-        <!-- TOMBOL RESET MEMORI MANUAL -->
-        <button onclick="resetDatabase()" class="text-[9px] bg-red-600 text-white px-2.5 py-1.5 rounded-lg font-bold hover:bg-red-700 transition shadow-sm flex items-center space-x-1 active:scale-95">
-          <i class="fa-solid fa-trash-can"></i> <span>Reset Memori</span>
+        <!-- TOMBOL RESET SUPER -->
+        <button onclick="resetDatabaseToV7()" class="text-[9px] bg-red-600 text-white px-2 py-1.5 rounded-lg font-bold hover:bg-red-700 transition shadow-sm flex items-center space-x-1 active:scale-95">
+          <i class="fa-solid fa-rotate"></i> <span>Reset Total Data</span>
         </button>
       </div>
       
-      <!-- Box Tambah Manual Kecil -->
-      <div class="bg-slate-50 p-2 rounded-xl border border-slate-200 flex space-x-1">
-        <input type="text" id="adminNama" placeholder="Ketik Nama Baru..." class="flex-1 text-[10px] border border-slate-300 rounded-md px-2 py-1 outline-none">
-        <button onclick="addManualEmployeeSimple()" class="bg-emerald-600 text-white text-[10px] font-bold px-3 py-1 rounded-md">Tambah</button>
+      <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-200 mb-2">
+        <p class="text-[10px] text-emerald-800 font-bold">Total Karyawan Valid: <span id="adminEmpCount" class="text-emerald-600 text-sm font-black">0</span></p>
       </div>
 
-      <div class="max-h-72 overflow-y-auto space-y-1.5 pr-1 mt-2" id="adminEmpList"></div>
+      <div class="max-h-96 overflow-y-auto space-y-1.5 pr-1 mt-2" id="adminEmpList"></div>
     </div>
   </div>
 
@@ -279,27 +276,26 @@
 
 <!-- BOTTOM NAVIGATION -->
 <nav class="absolute bottom-0 left-0 right-0 bg-white border-t border-slate-200 pt-2 pb-safe px-2 flex justify-around items-center z-30 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
-  <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-1 w-16 text-emerald-600 transition cursor-pointer">
+  <button onclick="switchTab('beranda')" id="navBtn-beranda" class="flex flex-col items-center space-y-1 w-14 text-emerald-600 transition cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-emerald-50 flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-fingerprint text-lg"></i></div>
     <span class="text-[9px] font-bold">Absen</span>
   </button>
-  <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-1 w-16 text-slate-400 hover:text-slate-700 transition cursor-pointer">
+  <button onclick="switchTab('riwayat')" id="navBtn-riwayat" class="flex flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-clock-rotate-left text-lg"></i></div>
     <span class="text-[9px] font-bold">Riwayat</span>
   </button>
-  <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-1 w-16 text-slate-400 hover:text-slate-700 transition cursor-pointer">
+  <button onclick="switchTab('cuti')" id="navBtn-cuti" class="flex flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-calendar-days text-lg"></i></div>
     <span class="text-[9px] font-bold">Cuti</span>
   </button>
   
-  <!-- Tombol Leader disembunyikan secara default, dimunculkan jika Role sesuai -->
-  <button onclick="switchTab('tim')" id="navBtn-tim" class="hidden flex-col items-center space-y-1 w-16 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
+  <button onclick="switchTab('tim')" id="navBtn-tim" class="hidden flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-users-gear text-lg"></i></div>
     <span class="text-[9px] font-bold">Leader</span>
   </button>
   
-  <button onclick="switchTab('admin')" id="navBtn-admin" class="flex flex-col items-center space-y-1 w-16 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
-    <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-database text-lg"></i></div>
+  <button onclick="switchTab('admin')" id="navBtn-admin" class="flex flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
+    <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-server text-lg"></i></div>
     <span class="text-[9px] font-bold">Admin DB</span>
   </button>
 </nav>
@@ -346,8 +342,8 @@
 
 <script>
   // =========================================================================================
-  // 1. DATA MASTER AWAL (100% VALID 58 DATA BERDASARKAN EXCEL)
-  // Tidak ada lagi nama yang terpotong. 
+  // 1. DATA MASTER AWAL (100% VALID 58 DATA BERDASARKAN EXCEL ASLI)
+  // Tidak ada data ngarang. Susunan sesuai urutan Excel asli Anda.
   // =========================================================================================
   const DEFAULT_EMPLOYEES = [
     { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO" },
@@ -372,7 +368,6 @@
     { nip: "01.152.11.25", nama: "SRI WULANDARI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
     { nip: "01.156.12.25", nama: "FAHMI PRATAMA PUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
     { nip: "01.160.02.26", nama: "ASYIFFA DESIYANTI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    // Menambahkan Data Lanjutan (23-58)
     { nip: "02.001.01.18", nama: "BAMBANG SUDRAJAT", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.003.01.18", nama: "M. HABIL YASIN", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.004.01.18", nama: "AAN KURNIAWAN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
@@ -424,28 +419,28 @@
   let currentTransactionType = "MASUK";
   let cameraStream = null;
 
-  // SYSTEM INIT & MEMORY WIPE
+  // KUNCI DATABASE VERSI 7.0 FINAL (Menjamin cache lama hancur)
+  const DB_KEY = 'gces_db_v7_final';
+
+  // SYSTEM INIT & AUTO-WIPE OLD MEMORY
   window.addEventListener('DOMContentLoaded', () => {
     
-    // PEMUSNAHAN MASSAL MEMORI LAMA (AUTO-RESET)
-    // Kode ini menjamin nama-nama ngarang di memori laptop/HP Anda dihancurkan seketika halaman dimuat.
+    // 1. SAPU BERSIH SEMUA MEMORI VERSI LAMA DI BROWSER
     localStorage.removeItem('gces_employees_db');
     localStorage.removeItem('gces_employees_db_v2');
     localStorage.removeItem('gces_employees_db_v3');
     localStorage.removeItem('gces_employees_db_v4');
-
-    // MENGUNCI DATABASE BARU (V_FINAL_58)
-    const MEMORY_KEY = 'gces_employees_db_final_58';
-    const stored = localStorage.getItem(MEMORY_KEY);
+    localStorage.removeItem('gces_employees_db_final_58');
     
+    // 2. MUAT DATA V7.0
+    const stored = localStorage.getItem(DB_KEY);
     if(stored) {
       EMPLOYEES = JSON.parse(stored);
     } else {
       EMPLOYEES = [...DEFAULT_EMPLOYEES];
-      localStorage.setItem(MEMORY_KEY, JSON.stringify(EMPLOYEES));
+      localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
     }
     
-    // Default akun pertama (Hanya agar UI jalan)
     activeUser = EMPLOYEES[0];
     
     initUserSwitcher();
@@ -459,7 +454,7 @@
   });
 
   function saveDatabase() {
-    localStorage.setItem('gces_employees_db_final_58', JSON.stringify(EMPLOYEES));
+    localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
   }
 
   // --- LOGIC GANTI USER & UI ---
@@ -467,6 +462,10 @@
     const dd = document.getElementById('userDropdownCard');
     dd.classList.toggle('hidden');
     if(!dd.classList.contains('hidden')) document.getElementById('userSearchInput').focus();
+  }
+
+  function filterUserDropdown(term) {
+      initUserSwitcher(term);
   }
 
   function initUserSwitcher(filter = '') {
@@ -484,15 +483,15 @@
     filtered.forEach(emp => {
       const isSelected = activeUser && emp.nip === activeUser.nip;
       const item = document.createElement('div');
-      item.className = `p-2.5 rounded-xl flex items-center justify-between cursor-pointer transition border mb-1 ${isSelected ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-100 hover:border-emerald-300'}`;
+      item.className = `p-2.5 rounded-xl flex items-center justify-between cursor-pointer transition border mb-1.5 ${isSelected ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-200 hover:border-emerald-400'}`;
       item.innerHTML = `
         <div class="flex items-center space-x-3 truncate">
-          <div class="w-8 h-8 rounded-full ${isSelected ? 'bg-emerald-500 text-white' : 'bg-slate-300 text-slate-700'} flex items-center justify-center font-black text-[10px]">
+          <div class="w-9 h-9 rounded-full ${isSelected ? 'bg-emerald-500 text-white shadow-sm' : 'bg-slate-200 text-slate-600'} flex items-center justify-center font-black text-xs">
             ${emp.nama.charAt(0)}
           </div>
-          <div class="truncate">
+          <div class="truncate pr-2">
             <p class="text-[11px] font-bold text-slate-800 truncate">${emp.nama}</p>
-            <p class="text-[9px] text-slate-500 font-medium">📍 ${emp.lokasi} | ${emp.jabatan}</p>
+            <p class="text-[9px] text-slate-500 mt-0.5"><span class="font-bold text-blue-600">${emp.jabatan}</span> • ${emp.lokasi}</p>
           </div>
         </div>
         ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>' : ''}
@@ -502,7 +501,7 @@
         toggleUserDropdown();
         initUserSwitcher();
         refreshUserUI();
-        showToast(`Berhasil masuk sebagai:\n${emp.nama}`);
+        showToast(`Masuk sebagai:\n${emp.nama}`);
       };
       container.appendChild(item);
     });
@@ -542,13 +541,10 @@
     const tabTim = document.getElementById('tabContent-tim');
 
     if (isLeaderRole) {
-      // Buka akses Leader
-      navBtnTim.style.display = 'flex'; // Munculkan tombol
+      navBtnTim.style.display = 'flex';
       buildLeaderDashboard();
     } else {
-      // Sembunyikan akses Leader untuk CSO
-      navBtnTim.style.display = 'none'; // Hilangkan tombol
-      // Jika kebetulan tab sedang buka 'tim', paksa kembali ke beranda
+      navBtnTim.style.display = 'none';
       if(tabTim.style.display === 'block') {
           switchTab('beranda');
       }
@@ -567,7 +563,6 @@
 
     let team = EMPLOYEES.filter(emp => isDirektur ? true : emp.lokasi === activeUser.lokasi);
     
-    // Sortir Jabatan
     team.sort((a, b) => {
         if(a.jabatan.includes('SPV') || a.jabatan.includes('LEADER')) return -1;
         if(b.jabatan.includes('SPV') || b.jabatan.includes('LEADER')) return 1;
@@ -579,30 +574,30 @@
     let presentCount = 0;
     team.forEach(emp => {
         const isSelf = emp.nip === activeUser.nip;
-        const isPresent = isSelf ? (currentTransactionType === "PULANG") : (Math.random() > 0.5); // Random untuk simulasi SPV
+        const isPresent = isSelf ? (currentTransactionType === "PULANG") : (Math.random() > 0.6); 
         if(isPresent) presentCount++;
 
         const item = document.createElement('div');
-        item.className = "flex justify-between items-center p-2.5 rounded-xl border border-slate-100 bg-slate-50";
+        item.className = "flex justify-between items-center p-2.5 rounded-xl border border-slate-100 bg-white shadow-sm mb-1.5";
         item.innerHTML = `
-            <div class="flex items-center space-x-2">
-                <div class="w-8 h-8 rounded-full ${isPresent ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-200 text-slate-500'} flex items-center justify-center text-[10px] font-bold">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full ${isPresent ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'} flex items-center justify-center text-[10px] font-bold">
                     ${emp.nama.charAt(0)}
                 </div>
                 <div>
-                    <p class="text-[10px] font-bold ${isSelf ? 'text-blue-600' : 'text-slate-800'}">${emp.nama} ${isSelf ? '(Anda)' : ''}</p>
+                    <p class="text-[10px] font-bold ${isSelf ? 'text-blue-600' : 'text-slate-700'}">${emp.nama} ${isSelf ? '(Anda)' : ''}</p>
                     <p class="text-[8.5px] text-slate-500">${emp.jabatan} ${isDirektur ? '• '+emp.lokasi : ''}</p>
                 </div>
             </div>
             <div>
-                <span class="text-[9px] px-2 py-1 rounded-md font-bold ${isPresent ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">${isPresent ? 'Hadir' : 'Belum'}</span>
+                <span class="text-[9px] px-2 py-1 rounded border font-bold ${isPresent ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-500 border-slate-200'}">${isPresent ? 'Hadir' : 'Belum'}</span>
             </div>
         `;
         container.appendChild(item);
     });
 
     document.getElementById('spvHadirTeam').innerText = presentCount;
-    document.getElementById('spvCutiTeam').innerText = Math.floor(Math.random() * 3);
+    document.getElementById('spvCutiTeam').innerText = Math.floor(Math.random() * 2);
   }
 
   // --- ADMIN DATABASE FUNCTIONS ---
@@ -612,55 +607,26 @@
     if(!container) return;
     container.innerHTML = "";
     
-    [...EMPLOYEES].reverse().forEach((emp, revIndex) => {
-      const actualIndex = EMPLOYEES.length - 1 - revIndex;
+    [...EMPLOYEES].forEach((emp, index) => {
       const item = document.createElement('div');
-      item.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100";
+      item.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 mb-1";
       item.innerHTML = `
         <div class="truncate pr-2">
           <p class="text-[10px] font-bold text-slate-800 truncate">${emp.nama} <span class="font-normal text-[8px] bg-blue-100 text-blue-700 px-1 rounded ml-1">${emp.jabatan}</span></p>
-          <p class="text-[9px] text-slate-500">${emp.nip} • ${emp.lokasi}</p>
+          <p class="text-[8.5px] text-slate-500 mt-0.5">${emp.nip} • ${emp.lokasi}</p>
         </div>
-        <button onclick="deleteEmployee(${actualIndex})" class="text-red-500 bg-white border border-red-100 shadow-sm hover:bg-red-50 p-1.5 rounded-md transition cursor-pointer">
-          <i class="fa-solid fa-trash text-[10px]"></i>
-        </button>
       `;
       container.appendChild(item);
     });
   }
 
-  function addManualEmployeeSimple() {
-    const nama = document.getElementById('adminNama').value.trim().toUpperCase();
-    if(!nama) return showToast("Nama tidak boleh kosong", "error");
-    
-    EMPLOYEES.push({
-      nip: "MANUAL-" + Math.floor(Math.random()*1000), 
-      nama: nama, 
-      jabatan: "CSO", 
-      lokasi: "UNDEFINED",
-      stats: { hariKerja: 22, hadir: 0, cuti: 0, sisaCuti: 12 }
-    });
-    saveDatabase();
-    document.getElementById('adminNama').value = "";
-    showToast(`Sukses menambah: ${nama}`);
-    renderAdminTable(); initUserSwitcher();
-  }
-
-  function deleteEmployee(index) {
-    if(confirm("Hapus karyawan ini?")) {
-      EMPLOYEES.splice(index, 1);
-      saveDatabase();
-      showToast("Data karyawan dihapus!");
-      renderAdminTable(); initUserSwitcher();
-    }
-  }
-
-  function resetDatabase() {
-    if(confirm("Yakin ingin mereset memori ke 58 Data Awal? Semua tambahan data manual akan hilang.")) {
+  function resetDatabaseToV7() {
+    if(confirm("Tindakan ini akan mereset paksa memori aplikasi dan mengembalikan tepat ke 58 data asli PT. GCES. Lanjutkan?")) {
       EMPLOYEES = [...DEFAULT_EMPLOYEES];
       saveDatabase();
-      showToast("Database direset ke pengaturan awal!");
-      renderAdminTable(); initUserSwitcher();
+      showToast("Data asli berhasil di-reset & dipulihkan!");
+      renderAdminTable(); 
+      initUserSwitcher();
     }
   }
 
@@ -728,13 +694,12 @@
     document.getElementById('cameraTitleText').innerText = currentTransactionType === "MASUK" ? "MENGAMBIL ABSEN MASUK" : "MENGAMBIL ABSEN PULANG";
     document.getElementById('cameraTimeText').innerText = `${timeStr} WIB • ${activeShift}`;
 
-    // AKTIVASI KAMERA PERANGKAT
     try {
       const videoEl = document.getElementById('cameraVideo');
       cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
       videoEl.srcObject = cameraStream;
     } catch(err) {
-      showToast("Izin kamera tidak diberikan. Tidak bisa mengambil absen.", "error");
+      showToast("Izin kamera ditolak browser. Tidak bisa membuka kamera asli.", "error");
     }
   }
 
@@ -757,7 +722,7 @@
       document.getElementById('mainAbsenSublabel').innerText = "SELESAI KERJA";
       document.getElementById('mainAbsenIcon').className = "fa-solid fa-person-walking-arrow-right text-4xl mb-1 group-hover:scale-110 transition";
       
-      showToast(`Absen MASUK berhasil. Selamat Bekerja, ${activeUser.nama.split(' ')[0]}!`);
+      showToast(`Absen MASUK berhasil.\nSelamat bekerja, ${activeUser.nama.split(' ')[0]}!`);
       buildLeaderDashboard();
     } else {
       document.getElementById('clockOutSummary').innerText = `${timeStr} WIB`;
@@ -767,7 +732,8 @@
       document.getElementById('mainAbsenBtn').classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
       document.getElementById('mainAbsenSublabel').innerText = "TUGAS SELESAI";
       
-      showToast(`Absen PULANG berhasil. Hati-hati di jalan!`);
+      showToast(`Absen PULANG berhasil.\nHati-hati di jalan!`);
+      buildLeaderDashboard();
     }
   }
 
@@ -794,7 +760,6 @@
     if(tabId === 'tim') buildLeaderDashboard();
   }
 
-  // Custom Toast Message
   function showToast(msg, type = "success") {
     const existing = document.getElementById('gcesToastAlert');
     if (existing) existing.remove();
