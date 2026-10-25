@@ -35,9 +35,9 @@
     </div>
     <div>
       <h1 class="text-sm font-black tracking-wider uppercase text-white leading-tight">PT. GCES</h1>
-      <!-- PENANDA VERSI V9.1 -->
+      <!-- PENANDA VERSI V9.2 -->
       <p class="text-[10px] text-emerald-400 font-bold bg-emerald-900/50 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-emerald-700/50">
-        V9.1 (EXCEL DATA AKURAT)
+        V9.2 (100% DATA RESMI EXCEL)
       </p>
     </div>
   </div>
@@ -301,9 +301,10 @@
 
 <script>
   // =========================================================================================
-  // DATABASE RESMI PERSIS 100% SESUAI EXCEL ANDA (LOKASI & JABATAN BENAR)
+  // DATABASE RESMI 100% AKURAT SESUAI DOKUMEN EXCEL ANDA (V9.2)
   // =========================================================================================
   const OFFICIAL_EXCEL_EMPLOYEES = [
+    // RS. SUKMUL SISMA MEDIKA
     { nip: "02.201.01", nama: "TITA LELAWATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.202.01", nama: "DEDI MULYADI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.203.01", nama: "MAULANA", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
@@ -315,23 +316,35 @@
     { nip: "02.209.01", nama: "AJENG EKA SAPUTRI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.210.01", nama: "NADIA PUSPITA SARI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "02.211.01", nama: "RISTY INTAN NILAMSARI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    
+    // PT. MOYA
     { nip: "03.301.02", nama: "ARIFIN WIRIANTO", jabatan: "CSO", lokasi: "PT. MOYA" },
     { nip: "03.302.02", nama: "TRISNAWATI", jabatan: "CSO", lokasi: "PT. MOYA" },
     { nip: "03.303.02", nama: "NOERHIKMAH", jabatan: "CSO", lokasi: "PT. MOYA" },
+
+    // PT. CELSIUS
     { nip: "04.401.03", nama: "FHANI RISTIANA PUTRI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
     { nip: "04.402.03", nama: "HENDRA SAPUTRA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
     { nip: "04.403.03", nama: "SUHARYADI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
     { nip: "04.404.03", nama: "TRI WINDYARTI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
     { nip: "04.405.03", nama: "DEDE FIRMANSYAH", jabatan: "CSO", lokasi: "PT. CELSIUS" },
     { nip: "04.406.03", nama: "ZHALLYSA FEBRIA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+
+    // PT. SAPTA WARNA CEMERLANG
     { nip: "05.501.04", nama: "YULIA", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
     { nip: "05.502.04", nama: "AHMAD AGUS SUBEKHI", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
     { nip: "05.503.04", nama: "WILDAN", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
     { nip: "05.504.04", nama: "ANGGI ARIYANDI", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+
+    // PT. MUTIARA HEXAGON
     { nip: "06.601.05", nama: "SITI NURJANAH", jabatan: "SPV", lokasi: "PT. MUTIARA HEXAGON" },
     { nip: "06.602.05", nama: "RAHMAT HIDAYAT", jabatan: "LEADER", lokasi: "PT. MUTIARA HEXAGON" },
+
+    // PT. SISMADI MANCORPINDO
     { nip: "07.701.06", nama: "DEWI ANGGRAINI", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" },
     { nip: "07.702.06", nama: "ARIF HIDAYAT", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" },
+
+    // APOTEK DAN KLINIK SEMPER
     { nip: "08.801.07", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "APOTEK DAN KLINIK SEMPER" },
     { nip: "08.802.07", nama: "BAMBANG SUDARMONO", jabatan: "CSO", lokasi: "APOTEK DAN KLINIK SEMPER" },
     { nip: "08.803.07", nama: "MIMAN", jabatan: "CSO", lokasi: "APOTEK DAN KLINIK SEMPER" }
@@ -350,11 +363,12 @@
   let currentTransactionType = "MASUK";
   let cameraStream = null;
 
-  const DB_KEY = 'gces_db_v91_clean';
+  const DB_KEY = 'gces_db_v92_exact';
 
   window.addEventListener('DOMContentLoaded', () => {
+    // Reset memori lama agar data baru langsung masuk bersih
+    localStorage.removeItem('gces_db_v91_clean');
     localStorage.removeItem('gces_db_v9_exact_excel');
-    localStorage.removeItem('gces_db_v8_clean');
 
     EMPLOYEES = [...OFFICIAL_EXCEL_EMPLOYEES];
     localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
