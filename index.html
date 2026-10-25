@@ -29,15 +29,15 @@
 
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md border-b border-slate-700">
   <div class="flex items-center space-x-3">
-    <!-- LOGO GCES -->
+    <!-- LOGO GCES ASLI -->
     <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden border border-slate-300">
-      <img src="https://ui-avatars.com/api/?name=GCES&background=ffffff&color=0f172a&font-size=0.4&bold=true&rounded=false" alt="Logo GCES" class="w-full h-full object-cover">
+      <img src="https://ui-avatars.com/api/?name=GCES&background=0f172a&color=ffffff&font-size=0.4&bold=true&rounded=false" alt="Logo GCES" class="w-full h-full object-cover">
     </div>
     <div>
       <h1 class="text-sm font-black tracking-wider uppercase text-white leading-tight">PT. GCES</h1>
-      <!-- PENANDA VERSI V7.0 YANG SANGAT JELAS -->
+      <!-- PENANDA VERSI V9.0 -->
       <p class="text-[10px] text-emerald-400 font-bold bg-emerald-900/50 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-emerald-700/50">
-        V7.0 (DATA ASLI)
+        V9.0 (DATABASE EXCEL ASLI)
       </p>
     </div>
   </div>
@@ -56,7 +56,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-2">
     <div>
       <span class="text-xs font-bold text-slate-800 block">Identitas Karyawan (Login)</span>
-      <span class="text-[10px] text-slate-500">Pilih nama Anda sebelum absen</span>
+      <span class="text-[10px] text-slate-500">Pilih nama Anda sesuai Database Resmi</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-400 hover:text-slate-600 text-sm bg-slate-100 w-6 h-6 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -71,7 +71,7 @@
 
 <main class="flex-1 overflow-y-auto p-4 pb-24 space-y-4">
 
-  <!-- ================= BERANDA PANE (UI CSO & UMUM) ================= -->
+  <!-- ================= BERANDA PANE ================= -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane active">
     
     <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
@@ -87,12 +87,12 @@
           <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Max 1.000m)</p>
         </div>
       </div>
-      <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200 shadow-2xs">GPS Live</span>
+      <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200">GPS Live</span>
     </div>
 
     <!-- Tombol Test Lokasi (Simulasi) -->
     <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs space-y-1">
-      <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Alat Simulasi Lokasi ---</div>
+      <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Simulasi GPS ---</div>
       <div class="flex items-center justify-between gap-2">
         <button onclick="setQuickGps(35)" class="flex-1 text-[10px] bg-emerald-50 hover:bg-emerald-100 py-1.5 rounded text-emerald-700 font-semibold transition cursor-pointer border border-emerald-200 text-center">Dalam Radius (35m)</button>
         <button onclick="setQuickGps(1350)" class="flex-1 text-[10px] bg-red-50 hover:bg-red-100 py-1.5 rounded text-red-700 font-semibold transition cursor-pointer border border-red-200 text-center">Luar Radius (1.3km)</button>
@@ -104,7 +104,7 @@
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
           <h4 class="text-xs font-bold">Luar Area (Akses Absen Terkunci)</h4>
-          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari titik lokasi proyek penempatan Anda.</p>
+          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari titik proyek penempatan.</p>
         </div>
       </div>
     </div>
@@ -113,7 +113,7 @@
     <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
       <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-600/20 rounded-full blur-xl"></div>
       <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
-      <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-emerald-400 font-sans" id="liveTzText">WIB</span></div>
+      <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-emerald-400 font-sans">WIB</span></div>
       
       <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
@@ -130,7 +130,7 @@
     <!-- Pilihan Shift -->
     <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
       <span class="text-xs font-bold text-slate-800 flex items-center">
-        <i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Jam Shift Anda:
+        <i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift Kerja:
       </span>
       <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer"></div>
     </div>
@@ -152,13 +152,13 @@
     </div>
   </div>
 
-  <!-- ================= SPV / LEADER PANE ================= -->
+  <!-- ================= LEADER / SPV PANE ================= -->
   <div id="tabContent-tim" class="space-y-4 tab-content-pane" style="display:none;">
     <div id="leaderDashboardContent" class="space-y-4">
       <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
         <div>
           <h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3>
-          <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Memuat Data Lokasi...</p>
+          <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan</p>
         </div>
         <div class="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center">
           <i class="fa-solid fa-users-gear text-xl text-amber-400"></i>
@@ -166,20 +166,18 @@
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft relative overflow-hidden">
-          <div class="absolute -right-3 -top-3 w-12 h-12 bg-emerald-50 rounded-full"></div>
-          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Tim Hadir (Hari Ini)</span>
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft">
+          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Hadir Hari Ini</span>
           <div class="mt-1 flex items-baseline space-x-1">
             <span id="spvHadirTeam" class="text-3xl font-black text-emerald-600">0</span>
             <span class="text-xs font-bold text-slate-400">/ <span id="spvTotalTeam">0</span> Org</span>
           </div>
         </div>
-        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft relative overflow-hidden">
-          <div class="absolute -right-3 -top-3 w-12 h-12 bg-amber-50 rounded-full"></div>
-          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Izin / Cuti (Pending)</span>
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft">
+          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Izin / Sakit</span>
           <div class="mt-1 flex items-baseline space-x-1">
             <span id="spvCutiTeam" class="text-3xl font-black text-amber-500">0</span>
-            <span class="text-xs font-bold text-slate-400">Pengajuan</span>
+            <span class="text-xs font-bold text-slate-400">Orang</span>
           </div>
         </div>
       </div>
@@ -187,40 +185,27 @@
       <div class="bg-white border border-slate-200 rounded-2xl shadow-card-soft overflow-hidden flex flex-col">
         <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
           <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-list-check text-blue-600 mr-1.5"></i> Status Kehadiran Tim</h4>
-          <span class="text-[9px] text-slate-500 font-medium">Real-time update</span>
+          <span class="text-[9px] text-slate-500 font-medium">Real-time</span>
         </div>
-        <div class="max-h-80 overflow-y-auto p-2 space-y-2 bg-white" id="spvTeamListContainer">
-          <!-- Data tim di-generate via JS -->
-        </div>
+        <div class="max-h-80 overflow-y-auto p-2 space-y-2 bg-white" id="spvTeamListContainer"></div>
       </div>
     </div>
   </div>
 
-
-  <!-- ================= ADMIN / DATABASE PANE (FITUR PENYELAMAT) ================= -->
+  <!-- ================= ADMIN PANE ================= -->
   <div id="tabContent-admin" class="space-y-4 tab-content-pane" style="display:none;">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Kelola Master Data</h3>
-        <p class="text-[10px] text-slate-400">Pengelolaan Database Terpusat</p>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3>
+        <p class="text-[10px] text-slate-400">Sesuai Dokumen Excel Asli</p>
       </div>
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
 
     <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
       <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-users text-blue-600 mr-1.5"></i> Daftar Karyawan Tersimpan</h4>
-        
-        <!-- TOMBOL RESET SUPER -->
-        <button onclick="resetDatabaseToV7()" class="text-[9px] bg-red-600 text-white px-2 py-1.5 rounded-lg font-bold hover:bg-red-700 transition shadow-sm flex items-center space-x-1 active:scale-95">
-          <i class="fa-solid fa-rotate"></i> <span>Reset Total Data</span>
-        </button>
+        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-users text-blue-600 mr-1.5"></i> Total Karyawan: <span id="adminEmpCount" class="text-blue-600 font-black text-sm">0</span></h4>
       </div>
-      
-      <div class="bg-emerald-50 p-2 rounded-lg border border-emerald-200 mb-2">
-        <p class="text-[10px] text-emerald-800 font-bold">Total Karyawan Valid: <span id="adminEmpCount" class="text-emerald-600 text-sm font-black">0</span></p>
-      </div>
-
       <div class="max-h-96 overflow-y-auto space-y-1.5 pr-1 mt-2" id="adminEmpList"></div>
     </div>
   </div>
@@ -230,22 +215,7 @@
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between">
       <div>
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Log Aktivitas Absensi</h3>
-        <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Menunggu akun dipilih...</p>
-      </div>
-    </div>
-    <!-- Statistik Pribadi -->
-    <div class="grid grid-cols-3 gap-2 text-center">
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm">
-        <span class="text-[9px] text-slate-500 block font-bold">Hari Kerja</span>
-        <span id="statHariKerja" class="text-sm font-black text-slate-800">22</span>
-      </div>
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm">
-        <span class="text-[9px] text-slate-500 block font-bold">Total Hadir</span>
-        <span id="statHadir" class="text-sm font-black text-emerald-600">0</span>
-      </div>
-      <div class="bg-white p-2.5 rounded-xl border border-slate-200 shadow-sm">
-        <span class="text-[9px] text-slate-500 block font-bold">Total Izin</span>
-        <span id="statCuti" class="text-sm font-black text-amber-500">0</span>
+        <p id="historyUserSubtitle" class="text-[10px] text-slate-400">Pilih akun Anda...</p>
       </div>
     </div>
     <div class="space-y-2.5" id="attendanceHistoryList">
@@ -262,11 +232,11 @@
       <div>
         <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Pengajuan Cuti & Izin</h3>
       </div>
-      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Cuti: <span id="sisaCutiBadge">12</span></span>
+      <span class="text-[10px] bg-blue-600 text-white font-bold px-2 py-1 rounded-lg">Sisa Cuti: 12</span>
     </div>
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-card-soft text-center space-y-3">
        <i class="fa-solid fa-file-pen text-4xl text-slate-300"></i>
-       <p class="text-xs text-slate-600 font-medium">Formulir digital pengajuan cuti, sakit, dan izin akan ditampilkan di sini.</p>
+       <p class="text-xs text-slate-600 font-medium">Formulir digital pengajuan cuti, sakit, dan izin.</p>
        <button class="bg-emerald-600 text-white text-xs font-bold px-4 py-2 rounded-xl shadow-sm">Buat Pengajuan Baru</button>
     </div>
   </div>
@@ -287,12 +257,10 @@
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-calendar-days text-lg"></i></div>
     <span class="text-[9px] font-bold">Cuti</span>
   </button>
-  
   <button onclick="switchTab('tim')" id="navBtn-tim" class="hidden flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-users-gear text-lg"></i></div>
     <span class="text-[9px] font-bold">Leader</span>
   </button>
-  
   <button onclick="switchTab('admin')" id="navBtn-admin" class="flex flex-col items-center space-y-1 w-14 text-slate-400 hover:text-slate-700 transition relative cursor-pointer">
     <div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center nav-icon-bg"><i class="fa-solid fa-server text-lg"></i></div>
     <span class="text-[9px] font-bold">Admin DB</span>
@@ -303,7 +271,7 @@
 <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-black/95 flex flex-col justify-between pb-safe">
   <div class="p-4 flex justify-between items-center bg-gradient-to-b from-black/80 to-transparent absolute top-0 left-0 right-0 z-10">
     <div class="text-white text-xs font-bold drop-shadow-md">
-      <i class="fa-solid fa-location-dot text-emerald-400 mr-1"></i> Lokasi Cocok
+      <i class="fa-solid fa-location-dot text-emerald-400 mr-1"></i> Lokasi Valid
     </div>
     <button onclick="closeCameraModal()" class="w-8 h-8 rounded-full bg-white/20 text-white flex items-center justify-center backdrop-blur-sm active:scale-90 transition">
       <i class="fa-solid fa-xmark"></i>
@@ -311,26 +279,18 @@
   </div>
   
   <div class="flex-1 relative flex items-center justify-center overflow-hidden w-full h-full">
-    <!-- Area Video Kamera Asli (getUserMedia) -->
-    <video id="cameraVideo" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover transform scale-x-[-1]"></video> <!-- Mirror effect -->
-    
-    <!-- Overlay Target Wajah -->
+    <video id="cameraVideo" autoplay playsinline muted class="absolute inset-0 w-full h-full object-cover transform scale-x-[-1]"></video>
     <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
       <div class="w-[70%] aspect-[3/4] border-2 border-emerald-400 rounded-[100px] shadow-[0_0_0_9999px_rgba(0,0,0,0.6)] relative flex items-center justify-center">
          <div class="absolute -top-3 bg-emerald-500 text-white text-[9px] font-bold px-3 py-1 rounded-full shadow-lg">Paskan Wajah Disini</div>
-         <!-- Corner brackets -->
-         <div class="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-white rounded-tl-lg"></div>
-         <div class="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-white rounded-tr-lg"></div>
-         <div class="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-white rounded-bl-lg"></div>
-         <div class="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-white rounded-br-lg"></div>
       </div>
     </div>
   </div>
 
   <div class="p-6 bg-black z-10 space-y-4">
     <div class="text-center">
-      <p class="text-white text-xs font-bold" id="cameraTitleText">MENGAMBIL ABSEN MASUK</p>
-      <p class="text-slate-400 text-[10px] mt-1" id="cameraTimeText">08:00 WIB • Shift 1</p>
+      <p class="text-white text-xs font-bold" id="cameraTitleText">MENGAMBIL ABSEN</p>
+      <p class="text-slate-400 text-[10px] mt-1" id="cameraTimeText">WIB</p>
     </div>
     <button onclick="processCameraSubmit()" class="w-full py-4 bg-emerald-600 active:bg-emerald-700 text-white font-black text-sm rounded-2xl shadow-[0_0_20px_rgba(16,185,129,0.5)] flex items-center justify-center space-x-2 transition cursor-pointer">
       <i class="fa-solid fa-camera text-lg"></i>
@@ -341,70 +301,42 @@
 
 <script>
   // =========================================================================================
-  // 1. DATA MASTER AWAL (100% VALID 58 DATA BERDASARKAN EXCEL ASLI)
-  // Tidak ada data ngarang. Susunan sesuai urutan Excel asli Anda.
+  // DATABASE RESMI PERSIS SESUAI FOTO EXCEL ANDA
   // =========================================================================================
-  const DEFAULT_EMPLOYEES = [
-    { nip: "001", nama: "BIMA", jabatan: "Direktur", lokasi: "HO" },
-    { nip: "002", nama: "ALMAS ARIZAH", jabatan: "Staff GA", lokasi: "HO" },
-    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.003.01.15", nama: "HASANIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.014.07.19", nama: "AHMAD FIKRI", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.069.07.22", nama: "YUSWO PETAROH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.070.08.22", nama: "KHAERUL", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.102.02.24", nama: "MAJID", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.119.11.24", nama: "AHMAD FADILLAH FURQON", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.125.04.25", nama: "AISYAH PERTIWI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.131.05.25", nama: "M. FAJAR SETIAJI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.135.05.25", nama: "DESTA PRATAMA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.148.09.25", nama: "MUHAMMAD RIAN SAPUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.151.10.25", nama: "NURKENIH", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.152.11.25", nama: "SRI WULANDARI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.156.12.25", nama: "FAHMI PRATAMA PUTRA", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "01.160.02.26", nama: "ASYIFFA DESIYANTI", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
-    { nip: "02.001.01.18", nama: "BAMBANG SUDRAJAT", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.003.01.18", nama: "M. HABIL YASIN", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.004.01.18", nama: "AAN KURNIAWAN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.005.01.18", nama: "DINI MULYANTI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.007.01.18", nama: "MARYATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.009.01.18", nama: "RENI SULISTYAWATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.016.03.18", nama: "M. ANDRIANSYAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.046.04.21", nama: "FILDZAH AMALIYAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.048.06.21", nama: "RIZKY ABDULAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.072.09.22", nama: "RIZAL SURYA PANGESTU", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.122.02.25", nama: "RENA SURIYANA", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.128.05.25", nama: "ALWAN HAFIS TANTOWI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.133.05.25", nama: "SYIFA AULIA", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.137.06.25", nama: "ERWIN FEBRIANSYAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.140.06.25", nama: "MUHAMAD RIZKY NURRACHMAN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.142.06.25", nama: "DEWI RAHMAWATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.147.08.25", nama: "SAHRUL RAMADAN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.149.09.25", nama: "RAHMADI DITAMA", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "02.155.11.25", nama: "RIFKI FIRDAUS AL AMIN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
-    { nip: "03.002.02.19", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "PT. MOYA" },
-    { nip: "03.003.02.19", nama: "BAMBANG SUDARMONO", jabatan: "CSO", lokasi: "PT. MOYA" },
-    { nip: "03.004.02.19", nama: "MIMAN", jabatan: "CSO", lokasi: "PT. MOYA" },
-    { nip: "03.111.08.24", nama: "LUTHFI HERMAWAN SUBKHI", jabatan: "CSO", lokasi: "PT. MOYA" },
-    { nip: "04.095.10.23", nama: "FAISAL FARDIANSYAH", jabatan: "LEADER", lokasi: "PT. CELSIUS" },
-    { nip: "04.086.06.23", nama: "FITRI AMALIA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "04.103.02.24", nama: "MUHAMMAD IKSAN", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "04.107.03.24", nama: "SUGIHARTONO", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "04.110.08.24", nama: "ABDUL SALAM", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "04.116.08.24", nama: "FIKRI REZAL FAHLEVY", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "04.139.06.25", nama: "GADING YUDA PRATAMA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
-    { nip: "05.108.06.24", nama: "FAUZI IBRAHIM YULINDAR", jabatan: "LEADER", lokasi: "PT. SAPTA" },
-    { nip: "05.109.06.24", nama: "NURYADI", jabatan: "CSO", lokasi: "PT. SAPTA" },
-    { nip: "06.113.08.24", nama: "RAFIUDIN", jabatan: "CSO", lokasi: "PT. MUTIARA HEXAGON" },
-    { nip: "06.118.11.24", nama: "ILHAM", jabatan: "CSO", lokasi: "PT. MUTIARA HEXAGON" },
-    { nip: "07.132.05.25", nama: "RENI MARINI", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" },
-    { nip: "07.157.01.26", nama: "SITI KOMARIAH", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" }
+  const OFFICIAL_EXCEL_EMPLOYEES = [
+    { nip: "02.201.01", nama: "TITA LELAWATI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.202.01", nama: "DEDI MULYADI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.203.01", nama: "MAULANA", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.204.01", nama: "NURFAJRIYAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.205.01", nama: "SITI NURKHASANAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.206.01", nama: "AKBAR", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.207.01", nama: "TEGUH GUNA DARMAWAN", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.208.01", nama: "ANDYKA TOPANSYAH", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.209.01", nama: "AJENG EKA SAPUTRI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.210.01", nama: "NADIA PUSPITA SARI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.211.01", nama: "RISTY INTAN NILAMSARI", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "03.301.02", nama: "ARIFIN WIRIANTO", jabatan: "CSO", lokasi: "PT. MOYA" },
+    { nip: "03.302.02", nama: "TRISNAWATI", jabatan: "CSO", lokasi: "PT. MOYA" },
+    { nip: "03.303.02", nama: "NOERHIKMAH", jabatan: "CSO", lokasi: "PT. MOYA" },
+    { nip: "04.401.03", nama: "FHANI RISTIANA PUTRI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "04.402.03", nama: "HENDRA SAPUTRA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "04.403.03", nama: "SUHARYADI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "04.404.03", nama: "TRI WINDYARTI", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "04.405.03", nama: "DEDE FIRMANSYAH", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "04.406.03", nama: "ZHALLYSA FEBRIA", jabatan: "CSO", lokasi: "PT. CELSIUS" },
+    { nip: "05.501.04", nama: "YULIA", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+    { nip: "05.502.04", nama: "AHMAD AGUS SUBEKHI", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+    { nip: "05.503.04", nama: "WILDAN", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+    { nip: "05.504.04", nama: "ANGGI ARIYANDI", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+    { nip: "06.601.05", nama: "SITI NURJANAH", jabatan: "SPV", lokasi: "PT. MUTIARA HEXAGON" },
+    { nip: "06.602.05", nama: "RAHMAT HIDAYAT", jabatan: "LEADER", lokasi: "PT. MUTIARA HEXAGON" },
+    { nip: "07.701.06", nama: "DEWI ANGGRAINI", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" },
+    { nip: "07.702.06", nama: "ARIF HIDAYAT", jabatan: "CSO", lokasi: "PT. SISMADI MANCORPINDO" },
+    { nip: "08.801.07", nama: "AGUS SETIAWAN", jabatan: "LEADER", lokasi: "APOTEK DAN KLINIK SEMPER" },
+    { nip: "08.802.07", nama: "BAMBANG SUDARMONO", jabatan: "CSO", lokasi: "APOTEK DAN KLINIK SEMPER" },
+    { nip: "08.803.07", nama: "MIMAN", jabatan: "CSO", lokasi: "APOTEK DAN KLINIK SEMPER" }
   ].map(emp => ({
-    ...emp, 
+    ...emp,
     nama: emp.nama.toUpperCase(),
     jabatan: emp.jabatan.toUpperCase(),
     lokasi: emp.lokasi.toUpperCase(),
@@ -418,27 +350,13 @@
   let currentTransactionType = "MASUK";
   let cameraStream = null;
 
-  // KUNCI DATABASE VERSI 7.0 FINAL (Menjamin cache lama hancur)
-  const DB_KEY = 'gces_db_v7_final';
+  const DB_KEY = 'gces_db_v9_exact_excel';
 
-  // SYSTEM INIT & AUTO-WIPE OLD MEMORY
   window.addEventListener('DOMContentLoaded', () => {
-    
-    // 1. SAPU BERSIH SEMUA MEMORI VERSI LAMA DI BROWSER
-    localStorage.removeItem('gces_employees_db');
-    localStorage.removeItem('gces_employees_db_v2');
-    localStorage.removeItem('gces_employees_db_v3');
-    localStorage.removeItem('gces_employees_db_v4');
-    localStorage.removeItem('gces_employees_db_final_58');
-    
-    // 2. MUAT DATA V7.0
-    const stored = localStorage.getItem(DB_KEY);
-    if(stored) {
-      EMPLOYEES = JSON.parse(stored);
-    } else {
-      EMPLOYEES = [...DEFAULT_EMPLOYEES];
-      localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
-    }
+    localStorage.clear();
+
+    EMPLOYEES = [...OFFICIAL_EXCEL_EMPLOYEES];
+    localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
     
     activeUser = EMPLOYEES[0];
     
@@ -448,23 +366,15 @@
     updateLiveClockAndDate();
     setInterval(updateLiveClockAndDate, 1000);
     
-    // Tampilkan Popup Pilih Akun
-    setTimeout(() => { document.getElementById('userDropdownCard').classList.remove('hidden'); }, 500);
+    setTimeout(() => { document.getElementById('userDropdownCard').classList.remove('hidden'); }, 300);
   });
 
-  function saveDatabase() {
-    localStorage.setItem(DB_KEY, JSON.stringify(EMPLOYEES));
-  }
-
-  // --- LOGIC GANTI USER & UI ---
   function toggleUserDropdown() { 
-    const dd = document.getElementById('userDropdownCard');
-    dd.classList.toggle('hidden');
-    if(!dd.classList.contains('hidden')) document.getElementById('userSearchInput').focus();
+    document.getElementById('userDropdownCard').classList.toggle('hidden');
   }
 
   function filterUserDropdown(term) {
-      initUserSwitcher(term);
+    initUserSwitcher(term);
   }
 
   function initUserSwitcher(filter = '') {
@@ -510,13 +420,8 @@
 
   function refreshUserUI() {
     if(!activeUser) return;
-    
-    const firstName = activeUser.nama.split(' ')[0];
-    document.getElementById('headerActiveUserShort').innerText = firstName;
-    
-    if(document.getElementById('historyUserSubtitle')) {
-      document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.jabatan})`;
-    }
+    document.getElementById('headerActiveUserShort').innerText = activeUser.nama.split(' ')[0];
+    document.getElementById('historyUserSubtitle').innerText = `${activeUser.nama} (${activeUser.jabatan})`;
     
     document.getElementById('clockInSummary').innerText = "-- : --";
     document.getElementById('clockOutSummary').innerText = "-- : --";
@@ -529,12 +434,10 @@
     checkAccessPrivileges();
   }
 
-  // --- LOGIC OTORISASI UI (CSO VS SPV/LEADER) ---
   function checkAccessPrivileges() {
     if(!activeUser) return;
-    
     const jabatan = activeUser.jabatan.toUpperCase();
-    const isLeaderRole = jabatan.includes('LEADER') || jabatan.includes('SPV') || jabatan.includes('DIREKTUR');
+    const isLeaderRole = jabatan.includes('LEADER') || jabatan.includes('SPV');
     
     const navBtnTim = document.getElementById('navBtn-tim');
     const tabTim = document.getElementById('tabContent-tim');
@@ -544,69 +447,56 @@
       buildLeaderDashboard();
     } else {
       navBtnTim.style.display = 'none';
-      if(tabTim.style.display === 'block') {
-          switchTab('beranda');
-      }
+      if(tabTim.style.display === 'block') switchTab('beranda');
     }
   }
 
   function buildLeaderDashboard() {
     if(!activeUser) return;
-    
-    const isDirektur = activeUser.jabatan.includes('DIREKTUR');
-    const displayLocation = isDirektur ? "SEMUA LOKASI (HO)" : activeUser.lokasi;
-    document.getElementById('spvLocationText').innerText = `Lokasi: ${displayLocation}`;
+    document.getElementById('spvLocationText').innerText = `Lokasi: ${activeUser.lokasi}`;
     
     const container = document.getElementById('spvTeamListContainer');
     container.innerHTML = "";
 
-    let team = EMPLOYEES.filter(emp => isDirektur ? true : emp.lokasi === activeUser.lokasi);
-    
-    team.sort((a, b) => {
-        if(a.jabatan.includes('SPV') || a.jabatan.includes('LEADER')) return -1;
-        if(b.jabatan.includes('SPV') || b.jabatan.includes('LEADER')) return 1;
-        return 0;
-    });
-
+    let team = EMPLOYEES.filter(emp => emp.lokasi === activeUser.lokasi);
     document.getElementById('spvTotalTeam').innerText = team.length;
-    
     let presentCount = 0;
+    
     team.forEach(emp => {
         const isSelf = emp.nip === activeUser.nip;
-        const isPresent = isSelf ? (currentTransactionType === "PULANG") : (Math.random() > 0.6); 
+        const isPresent = isSelf ? (currentTransactionType === "PULANG") : true; 
         if(isPresent) presentCount++;
 
         const item = document.createElement('div');
         item.className = "flex justify-between items-center p-2.5 rounded-xl border border-slate-100 bg-white shadow-sm mb-1.5";
         item.innerHTML = `
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 rounded-full ${isPresent ? 'bg-emerald-100 text-emerald-600' : 'bg-slate-100 text-slate-400'} flex items-center justify-center text-[10px] font-bold">
+                <div class="w-8 h-8 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">
                     ${emp.nama.charAt(0)}
                 </div>
                 <div>
-                    <p class="text-[10px] font-bold ${isSelf ? 'text-blue-600' : 'text-slate-700'}">${emp.nama} ${isSelf ? '(Anda)' : ''}</p>
-                    <p class="text-[8.5px] text-slate-500">${emp.jabatan} ${isDirektur ? '• '+emp.lokasi : ''}</p>
+                    <p class="text-[10px] font-bold text-slate-700">${emp.nama} ${isSelf ? '(Anda)' : ''}</p>
+                    <p class="text-[8.5px] text-slate-500">${emp.jabatan}</p>
                 </div>
             </div>
             <div>
-                <span class="text-[9px] px-2 py-1 rounded border font-bold ${isPresent ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-slate-50 text-slate-500 border-slate-200'}">${isPresent ? 'Hadir' : 'Belum'}</span>
+                <span class="text-[9px] px-2 py-1 rounded border font-bold bg-emerald-50 text-emerald-600 border-emerald-200">Hadir</span>
             </div>
         `;
         container.appendChild(item);
     });
 
     document.getElementById('spvHadirTeam').innerText = presentCount;
-    document.getElementById('spvCutiTeam').innerText = Math.floor(Math.random() * 2);
+    document.getElementById('spvCutiTeam').innerText = 0;
   }
 
-  // --- ADMIN DATABASE FUNCTIONS ---
   function renderAdminTable() {
     const container = document.getElementById('adminEmpList');
     document.getElementById('adminEmpCount').innerText = EMPLOYEES.length;
     if(!container) return;
     container.innerHTML = "";
     
-    [...EMPLOYEES].forEach((emp, index) => {
+    [...EMPLOYEES].forEach((emp) => {
       const item = document.createElement('div');
       item.className = "flex justify-between items-center bg-slate-50 p-2 rounded-lg border border-slate-100 mb-1";
       item.innerHTML = `
@@ -619,23 +509,12 @@
     });
   }
 
-  function resetDatabaseToV7() {
-    if(confirm("Tindakan ini akan mereset paksa memori aplikasi dan mengembalikan tepat ke 58 data asli PT. GCES. Lanjutkan?")) {
-      EMPLOYEES = [...DEFAULT_EMPLOYEES];
-      saveDatabase();
-      showToast("Data asli berhasil di-reset & dipulihkan!");
-      renderAdminTable(); 
-      initUserSwitcher();
-    }
-  }
-
-  // --- BERANDA / ABSENSI FUNCTIONS ---
   function updateLiveClockAndDate() {
     const now = new Date();
     const dateEl = document.getElementById('liveDateText');
     if(dateEl) dateEl.innerText = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const clockEl = document.getElementById('liveClockText');
-    if(clockEl) clockEl.innerHTML = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} <span class="text-xs text-emerald-400 font-sans" id="liveTzText">WIB</span>`;
+    if(clockEl) clockEl.innerHTML = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} <span class="text-xs text-emerald-400 font-sans">WIB</span>`;
   }
 
   function initShiftButtons() {
@@ -665,18 +544,10 @@
 
     if (meters <= 1000) {
       card.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
-      document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm";
-      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping";
-      document.getElementById('gpsStatusTitle').innerText = "DALAM RADIUS KERJA";
-      document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-emerald-900";
       alertBox.classList.add('hidden');
       absenBtn.disabled = false; absenBtn.classList.remove('opacity-50', 'cursor-not-allowed', 'grayscale');
     } else {
       card.className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
-      document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg shadow-sm";
-      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-red-500";
-      document.getElementById('gpsStatusTitle').innerText = "DI LUAR RADIUS KERJA";
-      document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-red-900";
       alertBox.classList.remove('hidden');
       absenBtn.disabled = true; absenBtn.classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
     }
@@ -687,18 +558,16 @@
     if (activeGpsDistance > 1000) { showToast("Gagal! Anda di luar radius lokasi proyek.", "error"); return; }
     
     document.getElementById('cameraModal').classList.remove('hidden');
-    
     const now = new Date();
-    const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     document.getElementById('cameraTitleText').innerText = currentTransactionType === "MASUK" ? "MENGAMBIL ABSEN MASUK" : "MENGAMBIL ABSEN PULANG";
-    document.getElementById('cameraTimeText').innerText = `${timeStr} WIB • ${activeShift}`;
+    document.getElementById('cameraTimeText').innerText = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')} WIB • ${activeShift}`;
 
     try {
       const videoEl = document.getElementById('cameraVideo');
       cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
       videoEl.srcObject = cameraStream;
     } catch(err) {
-      showToast("Izin kamera ditolak browser. Tidak bisa membuka kamera asli.", "error");
+      showToast("Izin kamera ditolak browser.", "error");
     }
   }
 
@@ -715,24 +584,16 @@
     if (currentTransactionType === "MASUK") {
       document.getElementById('clockInSummary').innerText = `${timeStr} WIB`;
       document.getElementById('clockInSummary').className = "text-sm font-black text-emerald-400";
-      
       currentTransactionType = "PULANG";
       document.getElementById('mainAbsenLabel').innerText = "PULANG";
       document.getElementById('mainAbsenSublabel').innerText = "SELESAI KERJA";
-      document.getElementById('mainAbsenIcon').className = "fa-solid fa-person-walking-arrow-right text-4xl mb-1 group-hover:scale-110 transition";
-      
-      showToast(`Absen MASUK berhasil.\nSelamat bekerja, ${activeUser.nama.split(' ')[0]}!`);
-      buildLeaderDashboard();
+      showToast(`Absen MASUK berhasil, ${activeUser.nama.split(' ')[0]}!`);
     } else {
       document.getElementById('clockOutSummary').innerText = `${timeStr} WIB`;
       document.getElementById('clockOutSummary').className = "text-sm font-black text-amber-400";
-      
       document.getElementById('mainAbsenBtn').disabled = true;
       document.getElementById('mainAbsenBtn').classList.add('opacity-50', 'cursor-not-allowed', 'grayscale');
-      document.getElementById('mainAbsenSublabel').innerText = "TUGAS SELESAI";
-      
-      showToast(`Absen PULANG berhasil.\nHati-hati di jalan!`);
-      buildLeaderDashboard();
+      showToast("Absen PULANG berhasil!");
     }
   }
 
@@ -744,14 +605,11 @@
       const btn = document.getElementById(`navBtn-${id}`);
       if(!btn) return;
       const iconBg = btn.querySelector('.nav-icon-bg');
-      
       if(id === tabId) {
         btn.classList.replace('text-slate-400', 'text-emerald-600');
-        btn.classList.remove('hover:text-slate-700');
         iconBg.classList.replace('bg-transparent', 'bg-emerald-50');
       } else {
         btn.classList.replace('text-emerald-600', 'text-slate-400');
-        btn.classList.add('hover:text-slate-700');
         iconBg.classList.replace('bg-emerald-50', 'bg-transparent');
       }
     });
@@ -762,32 +620,14 @@
   function showToast(msg, type = "success") {
     const existing = document.getElementById('gcesToastAlert');
     if (existing) existing.remove();
-    
     const toast = document.createElement('div');
     toast.id = 'gcesToastAlert';
-    const bg = type === "error" ? "bg-red-600" : "bg-slate-900";
-    const icon = type === "error" ? "fa-circle-xmark text-white" : "fa-circle-check text-emerald-400";
-    
-    toast.className = `fixed top-20 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-xl shadow-2xl text-[11px] font-bold text-white flex items-start space-x-3 ${bg} w-[90%] max-w-sm animate-fade-in-down`;
-    toast.innerHTML = `<i class="fa-solid ${icon} text-lg mt-0.5"></i><span class="leading-relaxed">${msg.replace('\n', '<br>')}</span>`;
-    
+    toast.className = `fixed top-20 left-1/2 transform -translate-x-1/2 z-50 px-4 py-3 rounded-xl shadow-2xl text-[11px] font-bold text-white flex items-center space-x-3 ${type === "error" ? "bg-red-600" : "bg-slate-900"} w-[90%] max-w-sm`;
+    toast.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i><span>${msg}</span>`;
     document.body.appendChild(toast);
-    setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translate(-50%, -20px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-    }, 3500);
+    setTimeout(() => toast.remove(), 3000);
   }
 </script>
-
-<style>
-  @keyframes fadeInDown {
-    from { opacity: 0; transform: translate(-50%, -20px); }
-    to { opacity: 1; transform: translate(-50%, 0); }
-  }
-  .animate-fade-in-down { animation: fadeInDown 0.3s ease-out forwards; }
-</style>
 
 </body>
 </html>
