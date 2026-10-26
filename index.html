@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi Operasional PT. GCES V12.0</title>
+  <title>Aplikasi Absensi Operasional PT. GCES V13.1</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -27,35 +27,35 @@
 </head>
 <body class="bg-slate-100 text-slate-800 flex flex-col h-screen max-w-md mx-auto relative overflow-hidden select-none">
 
-<header class="bg-slate-900 text-white px-4 py-3.5 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700">
-  <div class="flex items-center space-x-3.5">
-    <!-- LOGO GCES -->
-    <div class="w-[52px] h-[52px] rounded-xl bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.08)] overflow-hidden border-2 border-slate-300 p-1 shrink-0">
-      <img src="Logo%20GCES%20New.png" alt="Logo GCES" onerror="this.onerror=null; this.src='https://placehold.co/120x120/ffffff/1e293b?text=GCES'" class="w-full h-full object-contain">
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700">
+  <div class="flex items-center space-x-4">
+    <!-- LOGO GCES (DIPERBESAR & ELEGAN) -->
+    <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-[0_0_15px_rgba(255,255,255,0.15)] overflow-hidden border-2 border-slate-300 shrink-0">
+      <img src="Logo%20GCES%20New.png" alt="Logo GCES" onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter\'>GCES</div>'" class="w-full h-full object-contain p-1">
     </div>
-    <div class="flex flex-col justify-center">
-      <h1 class="text-[10px] font-bold text-slate-300 uppercase tracking-[0.15em] mb-1.5 drop-shadow-sm">Absensi Operasional</h1>
+    <div class="flex flex-col justify-center mt-0.5">
+      <h1 class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.18em] mb-0.5 drop-shadow-sm">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
-        <h2 class="text-[17px] font-black tracking-wider uppercase text-white leading-none drop-shadow-md">PT. GCES</h2>
-        <!-- PENANDA VERSI -->
-        <p class="text-[9px] text-emerald-400 font-black bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">
-          V13.0
+        <h2 class="text-xl font-black tracking-widest uppercase text-white leading-none drop-shadow-md">PT. GCES</h2>
+        <!-- PENANDA VERSI (Berubah jadi 13.1 untuk bypass cache) -->
+        <p class="text-[9px] text-emerald-400 font-black bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none shadow-sm">
+          V13.1
         </p>
       </div>
     </div>
   </div>
 
-  <div class="flex items-center space-x-2 shrink-0">
-    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-1.5 rounded-full text-xs font-bold flex items-center space-x-2 transition cursor-pointer shadow-md">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-      <span class="text-[11px]" id="headerActiveUserShort">Pilih Akun</span>
-      <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+  <div class="flex items-center shrink-0">
+    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition cursor-pointer shadow-md max-w-[100px]">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+      <span class="text-[11px] truncate" id="headerActiveUserShort">Pilih Akun</span>
+      <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 shrink-0"></i>
     </button>
   </div>
 </header>
 
 <!-- Dropdown Pilihan Karyawan (Login) -->
-<div id="userDropdownCard" class="hidden absolute top-16 left-4 right-4 z-50 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 flex flex-col max-h-[75vh]">
+<div id="userDropdownCard" class="hidden absolute top-20 left-4 right-4 z-50 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 flex flex-col max-h-[75vh]">
   <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
     <div>
       <span class="text-sm font-bold text-slate-800 block">Identitas Karyawan</span>
@@ -271,6 +271,42 @@
   <span id="toastMessage">Pesan Notifikasi</span>
 </div>
 
+<!-- Modal Kamera Selfie (Simulasi) -->
+<div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+  <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col transform transition-all">
+    <div class="p-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-700">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-camera-rotate text-emerald-400"></i>
+        <h3 class="text-sm font-bold tracking-wide">Verifikasi Wajah</h3>
+      </div>
+      <button onclick="closeCamera()" class="text-slate-400 hover:text-white transition bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+    
+    <div class="relative bg-slate-200 aspect-[3/4] w-full flex items-center justify-center overflow-hidden">
+      <!-- Grid & Frame Wajah (Viewfinder) -->
+      <div class="absolute inset-0 border-[6px] border-black/10 z-10"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-64 border-2 border-dashed border-white rounded-[100px] z-10 shadow-[0_0_0_999px_rgba(0,0,0,0.4)]"></div>
+      
+      <!-- Dummy Camera View -->
+      <div class="flex flex-col items-center text-slate-400 z-0">
+        <i class="fa-solid fa-user-astronaut text-6xl mb-3 opacity-60"></i>
+        <p class="text-xs font-bold animate-pulse text-slate-500 uppercase tracking-widest">Kamera Aktif</p>
+      </div>
+    </div>
+    
+    <div class="p-5 bg-white flex flex-col items-center relative">
+      <p class="text-[10px] text-slate-500 text-center mb-4 font-medium">Posisikan wajah Anda di dalam garis oval dan pastikan pencahayaan cukup sebelum mengambil foto.</p>
+      
+      <!-- Tombol Jepret -->
+      <button onclick="captureAndSubmit()" class="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 border-4 border-emerald-100 shadow-glow-emerald flex items-center justify-center text-white transition-transform active:scale-90 cursor-pointer group">
+        <i class="fa-solid fa-camera text-2xl group-hover:scale-110 transition-transform"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script>
   // ==============================================================
   // 1. DATABASE KARYAWAN 100% AKURAT DARI EXCEL/PDF (54 ORANG)
@@ -362,6 +398,7 @@
   let currentShift = 1;
   let currentGpsDistance = 35; // default simulasi jarak (dalam meter)
   let maxDistance = 1000;
+  let isNonShift = false; // Penanda otomatis untuk pekerja PT / Non-Shift
   
   // Inisialisasi Aplikasi Saat Halaman Dimuat
   window.onload = () => {
@@ -487,6 +524,20 @@
           }
       }
       
+      // --- LOGIKA SHIFT & NON-SHIFT OTOMATIS ---
+      const nonShiftLocations = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"];
+      isNonShift = nonShiftLocations.includes(user.lokasi);
+      
+      const shiftBox = document.getElementById('shiftSelectorBox');
+      if(isNonShift) {
+          shiftBox.classList.add('hidden');
+          document.getElementById('mainAbsenSublabel').textContent = 'NON-SHIFT (OFFICE HOUR)';
+          currentShift = 'Non-Shift';
+      } else {
+          shiftBox.classList.remove('hidden');
+          selectShift(1); // Set default ke shift 1 untuk RS/Klinik
+      }
+      
       renderUserDropdown(); // refresh tanda check
   }
 
@@ -570,11 +621,24 @@
           return;
       }
 
+      // Tampilkan kamera alih-alih langsung sukses
+      document.getElementById('cameraModal').classList.remove('hidden');
+  }
+
+  function closeCamera() {
+      document.getElementById('cameraModal').classList.add('hidden');
+  }
+
+  function captureAndSubmit() {
+      // Tutup kamera & proses absen
+      closeCamera();
+      
       let d = new Date();
       let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
       document.getElementById('clockInSummary').textContent = timeStr;
       
-      showToast(`Absensi Masuk Shift ${currentShift} Berhasil Tersimpan!`);
+      let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+      showToast(`Absensi Masuk ${shiftName} Berhasil Tersimpan!`);
   }
 
   // --- LOGIC NAVIGASI TAB ---
