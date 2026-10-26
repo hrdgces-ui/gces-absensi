@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi Operasional PT. GCES V13.1</title>
+  <title>Aplikasi Absensi Operasional PT. GCES V12.0</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- FontAwesome Icons -->
@@ -399,6 +399,7 @@
   let currentGpsDistance = 35; // default simulasi jarak (dalam meter)
   let maxDistance = 1000;
   let isNonShift = false; // Penanda otomatis untuk pekerja PT / Non-Shift
+  let cameraStream = null; // Variabel penyimpan aliran video kamera
   
   // Inisialisasi Aplikasi Saat Halaman Dimuat
   window.onload = () => {
@@ -609,7 +610,7 @@
   }
 
   // --- LOGIC ABSEN ---
-  function triggerAbsenAction() {
+  async function triggerAbsenAction() {
       if(!currentUser) {
           showToast("Pilih Identitas Karyawan (Pojok Kanan Atas) terlebih dahulu!", true);
           toggleUserDropdown();
@@ -621,24 +622,60 @@
           return;
       }
 
-      // Tampilkan kamera alih-alih langsung sukses
+      // Tampilkan UI Kamera & Loading
       document.getElementById('cameraModal').classList.remove('hidden');
+      document.getElementById('cameraLoading').style.display = 'flex';
+      
+      // Akses Kamera Asli Perangkat
+      try {
+          // Minta akses kamera depan (selfie)
+          cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+          const videoEl = document.getElementById('cameraVideo');
+          videoEl.srcObject = cameraStream;
+          
+          videoEl.onloadedmetadata = () => {
+              videoEl.play();
+              // Sembunyikan loading jika video sudah jalan
+              document.getElementById('cameraLoading').style.display = 'none';
+          };
+      } catch (err) {
+          console.error("Gagal akses kamera:", err);
+          document.getElementById('cameraLoading').innerHTML = '<i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-red-400"></i><p class="text-[10px] font-bold text-red-500 text-center">Gagal akses kamera.<br>Izinkan (Allow) browser untuk menggunakan kamera.</p>';
+      }
   }
 
   function closeCamera() {
       document.getElementById('cameraModal').classList.add('hidden');
+      // Matikan lampu/akses kamera HP saat ditutup
+      if (cameraStream) {
+          cameraStream.getTracks().forEach(track => track.stop());
+          cameraStream = null;
+      }
   }
 
   function captureAndSubmit() {
-      // Tutup kamera & proses absen
-      closeCamera();
+      if(!cameraStream) {
+          showToast("Kamera belum terhubung / ditolak sistem!", true);
+          return;
+      }
       
-      let d = new Date();
-      let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
-      document.getElementById('clockInSummary').textContent = timeStr;
+      // Efek kilat (flash) saat jepret
+      const videoEl = document.getElementById('cameraVideo');
+      videoEl.style.opacity = '0';
       
-      let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
-      showToast(`Absensi Masuk ${shiftName} Berhasil Tersimpan!`);
+      setTimeout(() => { 
+          videoEl.style.opacity = '1'; 
+          
+          // Tutup kamera & proses absen
+          closeCamera();
+          
+          let d = new Date();
+          let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
+          document.getElementById('clockInSummary').textContent = timeStr;
+          
+          let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+          showToast(`Absensi Masuk ${shiftName} Berhasil Tersimpan!`);
+      }, 150);
   }
 
   // --- LOGIC NAVIGASI TAB ---
