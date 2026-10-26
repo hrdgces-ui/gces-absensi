@@ -30,14 +30,14 @@
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-md border-b border-slate-700">
   <div class="flex items-center space-x-3">
     <!-- LOGO GCES -->
-    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden border border-slate-300">
-      <img src="https://ui-avatars.com/api/?name=GCES&background=0f172a&color=ffffff&font-size=0.4&bold=true&rounded=false" alt="Logo GCES" class="w-full h-full object-cover">
+    <div class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-lg overflow-hidden border border-slate-300 p-0.5">
+      <img src="Logo GCES New.png" alt="Logo GCES" class="w-full h-full object-contain">
     </div>
     <div>
       <h1 class="text-sm font-black tracking-wider uppercase text-white leading-tight">PT. GCES</h1>
-      <!-- PENANDA VERSI 12.0 -->
+      <!-- PENANDA VERSI -->
       <p class="text-[10px] text-emerald-400 font-bold bg-emerald-900/50 px-1.5 py-0.5 rounded inline-block mt-0.5 border border-emerald-700/50">
-        V12.0 (DATA AKURAT 100%)
+        V13.0
       </p>
     </div>
   </div>
@@ -218,6 +218,24 @@
     </div>
   </div>
 
+  <!-- ================= RIWAYAT PANE ================= -->
+  <div id="tabContent-riwayat" class="space-y-4 tab-content-pane hidden">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
+      <i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i>
+      <h4 class="text-sm font-bold text-slate-700">Riwayat Kehadiran</h4>
+      <p class="text-xs text-slate-500 mt-1">Belum ada data riwayat absensi yang tersimpan.</p>
+    </div>
+  </div>
+
+  <!-- ================= CUTI / IZIN PANE ================= -->
+  <div id="tabContent-cuti" class="space-y-4 tab-content-pane hidden">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
+      <i class="fa-solid fa-calendar-days text-4xl mb-3 text-slate-300"></i>
+      <h4 class="text-sm font-bold text-slate-700">Pengajuan Cuti & Izin</h4>
+      <p class="text-xs text-slate-500 mt-1">Sistem form cuti sedang dalam pemeliharaan.</p>
+    </div>
+  </div>
+
 </main>
 
 <!-- Navigation Bar Bawah -->
@@ -225,6 +243,14 @@
   <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn">
     <i class="fa-solid fa-fingerprint text-xl"></i>
     <span class="text-[9px] font-bold">Absen</span>
+  </button>
+  <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
+    <i class="fa-solid fa-clock-rotate-left text-xl"></i>
+    <span class="text-[9px] font-bold">Riwayat</span>
+  </button>
+  <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
+    <i class="fa-solid fa-calendar-days text-xl"></i>
+    <span class="text-[9px] font-bold">Cuti</span>
   </button>
   <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn hidden">
     <i class="fa-solid fa-users-gear text-xl"></i>
