@@ -650,8 +650,6 @@
           if(webhookUrl !== "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI") {
               fetch(webhookUrl, {
                   method: "POST",
-                  mode: "no-cors",
-                  headers: { "Content-Type": "application/json" },
                   body: JSON.stringify(payload)
               }).then(() => {
                   showToast(`Absensi ${shiftName} Sukses & Tersimpan ke Cloud!`);
