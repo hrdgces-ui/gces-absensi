@@ -25,24 +25,22 @@
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
   </style>
 </head>
-<body class="bg-slate-100 text-slate-800 flex flex-col h-screen max-w-md mx-auto relative overflow-hidden select-none">
+<!-- PERBAIKAN 1: h-screen diganti menjadi h-[100dvh] -->
+<body class="bg-slate-100 text-slate-800 flex flex-col h-[100dvh] max-w-md mx-auto relative overflow-hidden select-none">
 
-<!-- HEADER BARU (LEBIH ELEGAN, LOGO BESAR, RATA TENGAH) -->
-<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700">
+<!-- HEADER -->
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
-    <!-- LOGO GCES (W-16 H-16, Fallback Text) -->
     <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200">
       <img src="Logo%20GCES%20New.png" alt="Logo GCES" 
            onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter bg-white\'>GCES</div>'" 
            class="w-full h-full object-contain p-1.5">
     </div>
     
-    <!-- TEKS HEADER (Rata vertikal sempurna dengan logo) -->
     <div class="flex flex-col justify-center py-1">
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <!-- PENANDA VERSI -->
         <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">
           V13.2
         </p>
@@ -50,7 +48,6 @@
     </div>
   </div>
 
-  <!-- TOMBOL PILIH AKUN (Pembatasan Lebar agar tidak merusak layout) -->
   <div class="flex items-center shrink-0 ml-2">
     <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition cursor-pointer shadow-md max-w-[110px]">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
@@ -60,7 +57,7 @@
   </div>
 </header>
 
-<!-- Dropdown Pilihan Karyawan (Login) -->
+<!-- Dropdown Pilihan Karyawan -->
 <div id="userDropdownCard" class="hidden absolute top-20 left-4 right-4 z-50 bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 flex flex-col max-h-[75vh]">
   <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
     <div>
@@ -73,15 +70,14 @@
     <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
     <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="Cari nama, NIP, atau lokasi..." class="w-full text-xs border border-emerald-500 rounded-xl pl-9 pr-3 py-3 bg-white outline-none focus:ring-2 focus:ring-emerald-500 transition shadow-sm font-medium" />
   </div>
-  <div class="overflow-y-auto space-y-2 text-xs pb-1 pr-1" id="userListContainer">
-    <!-- List karyawan dimuat via JS -->
-  </div>
+  <div class="overflow-y-auto space-y-2 text-xs pb-1 pr-1" id="userListContainer"></div>
 </div>
 
-<main class="flex-1 overflow-y-auto p-4 pb-24 space-y-4">
+<!-- PERBAIKAN 2: pb-24 dihapus agar lebih rapi -->
+<main class="flex-1 overflow-y-auto p-4 space-y-4">
 
   <!-- ================= BERANDA PANE ================= -->
-  <div id="tabContent-beranda" class="space-y-4 tab-content-pane active">
+  <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
     
     <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
@@ -136,7 +132,7 @@
       </div>
     </div>
 
-    <!-- Pilihan Shift (Otomatis Hilang jika PT / Non-Shift) -->
+    <!-- Pilihan Shift -->
     <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
       <span class="text-xs font-bold text-slate-800 flex items-center">
         <i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift Kerja:
@@ -201,7 +197,6 @@
           <span class="text-[9px] text-slate-500 font-medium">Real-time</span>
         </div>
         <div class="max-h-80 overflow-y-auto p-2 space-y-2 bg-white" id="spvTeamListContainer">
-          <!-- Tim dimuat otomatis via JS -->
         </div>
       </div>
     </div>
@@ -222,7 +217,6 @@
             <h4 class="text-xs font-bold text-slate-800">Daftar Lengkap Pegawai</h4>
         </div>
         <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList">
-            <!-- Data Master ditampilkan di sini -->
         </div>
     </div>
   </div>
@@ -247,27 +241,27 @@
 
 </main>
 
-<!-- Navigation Bar Bawah -->
-<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center fixed bottom-0 w-full max-w-md z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+<!-- PERBAIKAN 3: Navigasi lepas dari "fixed" agar tidak tertutup sistem browser -->
+<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
   <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn">
-    <i class="fa-solid fa-fingerprint text-xl"></i>
-    <span class="text-[9px] font-bold">Absen</span>
+    <i class="fa-solid fa-fingerprint text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Absen</span>
   </button>
   <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-clock-rotate-left text-xl"></i>
-    <span class="text-[9px] font-bold">Riwayat</span>
+    <i class="fa-solid fa-clock-rotate-left text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Riwayat</span>
   </button>
   <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-calendar-days text-xl"></i>
-    <span class="text-[9px] font-bold">Cuti</span>
+    <i class="fa-solid fa-calendar-days text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Cuti</span>
   </button>
   <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn hidden">
-    <i class="fa-solid fa-users-gear text-xl"></i>
-    <span class="text-[9px] font-bold">Tim</span>
+    <i class="fa-solid fa-users-gear text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Tim</span>
   </button>
   <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-server text-xl"></i>
-    <span class="text-[9px] font-bold">Admin DB</span>
+    <i class="fa-solid fa-server text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Admin DB</span>
   </button>
 </nav>
 
@@ -321,7 +315,6 @@
   // 1. DATABASE KARYAWAN 54 NAMA (VERSI FINAL 13.2)
   // ==============================================================
   
-  // Hapus cache lama paksa agar tabel 54 data terbaca bersih
   localStorage.removeItem('gces_employees'); 
 
   const OFFICIAL_EXCEL_EMPLOYEES = [
@@ -431,7 +424,6 @@
     return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
   }
 
-  // --- LOGIC DROPDOWN LOGIN ---
   function toggleUserDropdown() {
     const d = document.getElementById('userDropdownCard');
     d.classList.toggle('hidden');
@@ -488,15 +480,14 @@
       }
   }
 
+  // PERBAIKAN PADA SETUSER UNTUK MENDUKUNG SISTEM NAVIGASI BARU
   function setUser(user) {
       currentUser = user;
       localStorage.setItem('gces_currentUser', JSON.stringify(user));
       
-      // Update Header (Tampilkan maks 1 kata pertama)
       let firstName = user.nama.split(' ')[0];
       document.getElementById('headerActiveUserShort').textContent = firstName.length > 9 ? firstName.substring(0,9)+'...' : firstName;
       
-      // Update UI Hak Akses Leader/SPV
       const isLeader = ['SPV', 'LEADER'].includes(user.jabatan.toUpperCase());
       const navTim = document.getElementById('nav-tim');
       
@@ -506,29 +497,25 @@
           renderLeaderDashboard(user.lokasi);
       } else {
           navTim.classList.add('hidden');
-          if(document.getElementById('tabContent-tim').style.display !== 'none') switchTab('beranda');
+          if(!document.getElementById('tabContent-tim').classList.contains('hidden')) switchTab('beranda');
       }
       
-      // --- LOGIKA SHIFT & NON-SHIFT OTOMATIS ---
-      // Deteksi berdasarkan kata "PT." atau nama PT spesifik
       const nonShiftLocations = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"];
-      
       isNonShift = nonShiftLocations.includes(user.lokasi) || user.lokasi.startsWith("PT.");
       
       const shiftBox = document.getElementById('shiftSelectorBox');
       if(isNonShift) {
-          shiftBox.classList.add('hidden'); // Sembunyikan panel shift
+          shiftBox.classList.add('hidden');
           document.getElementById('mainAbsenSublabel').textContent = 'NON-SHIFT (OFFICE HOUR)';
           currentShift = 'Non-Shift';
       } else {
-          shiftBox.classList.remove('hidden'); // Tampilkan panel shift
+          shiftBox.classList.remove('hidden');
           selectShift(1);
       }
       
       renderUserDropdown();
   }
 
-  // --- LOGIC JAM ---
   function updateClock() {
       const now = new Date();
       const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
@@ -538,7 +525,6 @@
       document.getElementById('liveDateText').textContent = dateString;
   }
 
-  // --- LOGIC SHIFT ---
   function selectShift(num) {
       if(isNonShift) return;
       currentShift = num;
@@ -553,7 +539,6 @@
       document.getElementById('mainAbsenSublabel').textContent = `MASUK SHIFT ${num}`;
   }
 
-  // --- LOGIC GPS ---
   function setQuickGps(dist) {
       currentGpsDistance = dist;
       updateGpsUI();
@@ -590,7 +575,6 @@
       }
   }
 
-  // --- LOGIC ABSEN & KAMERA ASLI (WebRTC) ---
   async function triggerAbsenAction() {
       if(!currentUser) {
           showToast("Pilih Identitas Karyawan (Pojok Kanan Atas) terlebih dahulu!", true);
@@ -603,19 +587,16 @@
           return;
       }
 
-      // Tampilkan Modal Kamera
       document.getElementById('cameraModal').classList.remove('hidden');
       document.getElementById('cameraLoading').style.display = 'flex';
       
       try {
-          // Meminta izin browser untuk mengakses kamera depan
           cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
           const videoEl = document.getElementById('cameraVideo');
           videoEl.srcObject = cameraStream;
           
           videoEl.onloadedmetadata = () => {
               videoEl.play();
-              // Sembunyikan layar loading animasi
               document.getElementById('cameraLoading').style.display = 'none';
           };
       } catch (err) {
@@ -629,7 +610,6 @@
 
   function closeCamera() {
       document.getElementById('cameraModal').classList.add('hidden');
-      // Matikan lampu / akses kamera di perangkat
       if (cameraStream) {
           cameraStream.getTracks().forEach(track => track.stop());
           cameraStream = null;
@@ -642,23 +622,18 @@
           return;
       }
       
-      // Efek kilat (flash) saat jepret foto
       const videoEl = document.getElementById('cameraVideo');
       videoEl.style.opacity = '0';
       
       setTimeout(() => { 
           videoEl.style.opacity = '1'; 
-          closeCamera(); // Tutup & Matikan Kamera
+          closeCamera();
           
           let d = new Date();
           let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
           document.getElementById('clockInSummary').textContent = timeStr;
           
           let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
-          
-          // ==========================================================
-          // KIRIM DATA KE GOOGLE SHEETS VIA WEBHOOK (APPS SCRIPT)
-          // ==========================================================
           
           // PASTE LINK GOOGLE SCRIPT ANDA DI SINI
           const webhookUrl = "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI"; 
@@ -672,8 +647,7 @@
               jamMasuk: timeStr
           };
 
-          // Proses pengiriman latar belakang (Background Fetch)
-          if(webhookUrl !== "const webhookUrl = "https://script.google.com/macros/s/AKfycbwXYZ123ContohSaja/exec";) {
+          if(webhookUrl !== "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI") {
               fetch(webhookUrl, {
                   method: "POST",
                   mode: "no-cors",
@@ -686,28 +660,36 @@
                   showToast("Absen tersimpan lokal (Gagal sync ke Sheets)", true);
               });
           } else {
-              // Jika Webhook belum diganti, tampilkan sukses lokal
               showToast(`Absensi ${shiftName} Sukses! (Mode Lokal)`);
           }
 
       }, 150);
   }
 
-  // --- LOGIC NAVIGASI TAB ---
+  // PERBAIKAN JAVASCRIPT SWITCH TAB MENGGUNAKAN CLASS .HIDDEN
   function switchTab(tabId) {
-      document.querySelectorAll('.tab-content-pane').forEach(el => el.style.display = 'none');
-      document.getElementById('tabContent-' + tabId).style.display = 'block';
+      document.querySelectorAll('.tab-content-pane').forEach(el => {
+          el.classList.add('hidden'); 
+          el.style.display = ''; 
+      });
+      
+      const activeTab = document.getElementById('tabContent-' + tabId);
+      if(activeTab) {
+          activeTab.classList.remove('hidden');
+      }
       
       document.querySelectorAll('.nav-btn').forEach(btn => {
           btn.classList.remove('text-emerald-600');
           btn.classList.add('text-slate-400');
       });
+      
       const activeBtn = document.getElementById('nav-' + tabId);
-      activeBtn.classList.remove('text-slate-400');
-      activeBtn.classList.add('text-emerald-600');
+      if(activeBtn) {
+          activeBtn.classList.remove('text-slate-400');
+          activeBtn.classList.add('text-emerald-600');
+      }
   }
 
-  // --- LOGIC LEADER DASHBOARD ---
   function renderLeaderDashboard(lokasi) {
       const container = document.getElementById('spvTeamListContainer');
       container.innerHTML = '';
@@ -736,7 +718,6 @@
       });
   }
 
-  // --- LOGIC ADMIN DB ---
   function renderAdminDB() {
       const container = document.getElementById('adminDatabaseList');
       container.innerHTML = '';
