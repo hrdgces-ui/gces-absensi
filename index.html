@@ -28,34 +28,25 @@
 <!-- PERBAIKAN 1: h-screen diganti menjadi h-[100dvh] -->
 <body class="bg-slate-100 text-slate-800 flex flex-col h-[100dvh] max-w-md mx-auto relative overflow-hidden select-none">
 
-<!-- HEADER -->
-<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
-  <div class="flex items-center space-x-3 w-full">
-    <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200">
-      <img src="Logo%20GCES%20New.png" alt="Logo GCES" 
-           onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter bg-white\'>GCES</div>'" 
-           class="w-full h-full object-contain p-1.5">
+<!-- HEADER START -->
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700">
+    <div class="flex items-center space-x-3 w-full">
+        <!-- Bagian Logo -->
+        <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 p-1.5">
+            <img src="Logo GCES New-01.png" alt="Logo GCES" class="w-full h-full object-contain">
+        </div>
+        
+        <!-- Bagian Teks PT. GCES (Dipaksa 1 Baris dengan whitespace-nowrap) -->
+        <div class="flex flex-col justify-center py-1">
+            <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
+            <div class="flex items-center gap-2">
+                <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none whitespace-nowrap">PT. GCES</h2>
+                <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50">V13.2</p>
+            </div>
+        </div>
     </div>
-    
-    <div class="flex flex-col justify-center py-1">
-      <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
-      <div class="flex items-center gap-2">
-        <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">
-          V13.2
-        </p>
-      </div>
-    </div>
-  </div>
-
-  <div class="flex items-center shrink-0 ml-2">
-    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition cursor-pointer shadow-md max-w-[110px]">
-      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
-      <span class="text-[11px] truncate w-full text-left" id="headerActiveUserShort">Pilih Akun</span>
-      <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 shrink-0"></i>
-    </button>
-  </div>
 </header>
+<!-- HEADER END -->
 
 <!-- Dropdown Pilihan Karyawan -->
 <div id="userDropdownCard" class="hidden absolute top-20 left-4 right-4 z-50 bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 flex flex-col max-h-[75vh]">
@@ -242,29 +233,35 @@
 </main>
 
 <!-- PERBAIKAN 3: Navigasi lepas dari "fixed" agar tidak tertutup sistem browser -->
-<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-  <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn">
-    <i class="fa-solid fa-fingerprint text-xl pointer-events-none"></i>
-    <span class="text-[9px] font-bold pointer-events-none">Absen</span>
-  </button>
-  <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-clock-rotate-left text-xl pointer-events-none"></i>
-    <span class="text-[9px] font-bold pointer-events-none">Riwayat</span>
-  </button>
-  <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-calendar-days text-xl pointer-events-none"></i>
-    <span class="text-[9px] font-bold pointer-events-none">Cuti</span>
-  </button>
-  <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn hidden">
-    <i class="fa-solid fa-users-gear text-xl pointer-events-none"></i>
-    <span class="text-[9px] font-bold pointer-events-none">Tim</span>
-  </button>
-  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
-    <i class="fa-solid fa-server text-xl pointer-events-none"></i>
-    <span class="text-[9px] font-bold pointer-events-none">Admin DB</span>
-  </button>
-</nav>
+<nav class="fixed bottom-0 left-0 w-full bg-white border-t border-slate-200 z-[9999] shadow-[0_-4px_10px_rgba(0,0,0,0.05)] pb-safe pointer-events-auto">
+    <div class="flex justify-around items-center p-3">
+        <!-- Tombol Absen -->
+        <button class="flex flex-col items-center justify-center w-16 text-emerald-600 focus:outline-none" onclick="window.scrollTo(0,0)">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path></svg>
+            <span class="text-[10px] font-bold">Absen</span>
+        </button>
 
+        <!-- Tombol Riwayat -->
+        <button class="flex flex-col items-center justify-center w-16 text-slate-400 focus:outline-none hover:text-slate-600">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <span class="text-[10px] font-bold">Riwayat</span>
+        </button>
+
+        <!-- Tombol Cuti -->
+        <button class="flex flex-col items-center justify-center w-16 text-slate-400 focus:outline-none hover:text-slate-600">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span class="text-[10px] font-bold">Cuti</span>
+        </button>
+
+        <!-- Tombol Admin DB -->
+        <button class="flex flex-col items-center justify-center w-16 text-slate-400 focus:outline-none hover:text-slate-600">
+            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4"></path></svg>
+            <span class="text-[10px] font-bold">Admin DB</span>
+        </button>
+    </div>
+</nav>
+<!-- Menambahkan jarak ekstra di bawah halaman agar konten tidak tertutup navigasi -->
+<div class="h-24 w-full"></div>
 <!-- Notifikasi Toast -->
 <div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
   <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
@@ -517,13 +514,23 @@
   }
 
   function updateClock() {
-      const now = new Date();
-      const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
-      const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-      
-      document.getElementById('liveClockText').innerHTML = timeString + ' <span class="text-xs text-emerald-400 font-sans">WIB</span>';
-      document.getElementById('liveDateText').textContent = dateString;
-  }
+    const liveClockEl = document.getElementById('liveClockText');
+    const liveDateEl = document.getElementById('liveDateText');
+    
+    // Proteksi: Hanya jalankan jika elemen ditemukan (Mencegah crash di HP)
+    if(liveClockEl && liveDateEl) {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+        const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+        
+        liveClockEl.innerHTML = timeString + ' <span class="text-xs text-emerald-400 font-sans">WIB</span>';
+        liveDateEl.textContent = dateString;
+    }
+}
+
+// Jalankan jam pertama kali, lalu update setiap 1 detik
+updateClock();
+setInterval(updateClock, 1000);
 
   function selectShift(num) {
       if(isNonShift) return;
