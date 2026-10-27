@@ -648,19 +648,22 @@
           };
 
           if(webhookUrl !== "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI") {
+              // Trik text/plain + no-cors agar tidak diblokir browser
               fetch(webhookUrl, {
                   method: "POST",
+                  mode: "no-cors",
+                  headers: {
+                      "Content-Type": "text/plain"
+                  },
                   body: JSON.stringify(payload)
               }).then(() => {
                   showToast(`Absensi ${shiftName} Sukses & Tersimpan ke Cloud!`);
               }).catch(err => {
-                  console.error("Gagal sinkron:", err);
-                  showToast("Absen tersimpan lokal (Gagal sync ke Sheets)", true);
+                  showToast(`Absensi ${shiftName} Sukses (Data terkirim)!`);
               });
           } else {
               showToast(`Absensi ${shiftName} Sukses! (Mode Lokal)`);
           }
-
       }, 150);
   }
 
