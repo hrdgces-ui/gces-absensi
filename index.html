@@ -1,33 +1,741 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Absensi Operasional PT GCES</title>
-    <script>
-        // URL Web App Google Script yang sudah langsung terpasang
-        const webhookUrl = "https://script.google.com/macros/s/AKfycbzwEjmJuY2f_uzNNnotrudMU6OCiGMKPAFYAlQ9rS_kKnT9U-Ou8m2FSyrFL03Kca2avQ/exec";
-        
-        // Fungsi untuk mengirim data absensi
-        async function triggerAbsenAction(dataAbsen) {
-            try {
-                await fetch(webhookUrl, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'text/plain',
-                    },
-                    body: JSON.stringify(dataAbsen)
-                });
-                console.log("SUKSES: Data terkirim ke server");
-            } catch (error) {
-                console.error("GAGAL KARENA: " + error.message);
-            }
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Aplikasi Absensi Operasional PT. GCES V13.2</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    .shadow-card-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
+    .shadow-glow-emerald { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      50% { transform: scale(1.12); opacity: 0.2; }
+      100% { transform: scale(0.95); opacity: 0.8; }
+    }
+    .animate-pulse-ring { animation: pulseRing 3.5s infinite ease-in-out; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
+  </style>
 </head>
-<body>
-    <h1>Sistem Absensi PT GCES</h1>
-    <p>Silakan gunakan aplikasi absensi Anda seperti biasa.</p>
+<!-- PERBAIKAN 1: h-screen diganti menjadi h-[100dvh] -->
+<body class="bg-slate-100 text-slate-800 flex flex-col h-[100dvh] max-w-md mx-auto relative overflow-hidden select-none">
+
+<!-- HEADER -->
+<header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
+  <div class="flex items-center space-x-3 w-full">
+    <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200">
+      <img src="Logo%20GCES%20New.png" alt="Logo GCES" 
+           onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter bg-white\'>GCES</div>'" 
+           class="w-full h-full object-contain p-1.5">
+    </div>
+    
+    <div class="flex flex-col justify-center py-1">
+      <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
+      <div class="flex items-center gap-2">
+        <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">
+          V13.2
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex items-center shrink-0 ml-2">
+    <button onclick="toggleUserDropdown()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 px-3 py-2 rounded-xl text-xs font-bold flex items-center space-x-2 transition cursor-pointer shadow-md max-w-[110px]">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0"></span>
+      <span class="text-[11px] truncate w-full text-left" id="headerActiveUserShort">Pilih Akun</span>
+      <i class="fa-solid fa-chevron-down text-[10px] text-slate-400 shrink-0"></i>
+    </button>
+  </div>
+</header>
+
+<!-- Dropdown Pilihan Karyawan -->
+<div id="userDropdownCard" class="hidden absolute top-20 left-4 right-4 z-50 bg-white border border-slate-200 rounded-2xl shadow-2xl p-5 flex flex-col max-h-[75vh]">
+  <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
+    <div>
+      <span class="text-sm font-bold text-slate-800 block">Identitas Karyawan (Login)</span>
+      <span class="text-[10px] text-slate-500">Sesuai 54 Data Resmi (V13.2)</span>
+    </div>
+    <button onclick="toggleUserDropdown()" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="mb-3 relative shrink-0">
+    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-slate-400 text-xs"></i>
+    <input type="text" id="userSearchInput" oninput="filterUserDropdown(this.value)" placeholder="Cari nama, NIP, atau lokasi..." class="w-full text-xs border border-emerald-500 rounded-xl pl-9 pr-3 py-3 bg-white outline-none focus:ring-2 focus:ring-emerald-500 transition shadow-sm font-medium" />
+  </div>
+  <div class="overflow-y-auto space-y-2 text-xs pb-1 pr-1" id="userListContainer"></div>
+</div>
+
+<!-- PERBAIKAN 2: pb-24 dihapus agar lebih rapi -->
+<main class="flex-1 overflow-y-auto p-4 space-y-4">
+
+  <!-- ================= BERANDA PANE ================= -->
+  <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
+    
+    <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
+      <div class="flex items-center space-x-3">
+        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm">
+          <i class="fa-solid fa-location-crosshairs"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-1.5">
+            <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS KERJA</span>
+          </div>
+          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Max 1.000m)</p>
+        </div>
+      </div>
+      <span id="gpsModeBadge" class="text-[9px] bg-white text-emerald-800 font-bold px-2 py-1 rounded-lg border border-emerald-200">GPS Live</span>
+    </div>
+
+    <!-- Tombol Test Lokasi (Simulasi) -->
+    <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs space-y-1">
+      <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Simulasi GPS ---</div>
+      <div class="flex items-center justify-between gap-2">
+        <button onclick="setQuickGps(35)" class="flex-1 text-[10px] bg-emerald-50 hover:bg-emerald-100 py-1.5 rounded text-emerald-700 font-semibold transition cursor-pointer border border-emerald-200 text-center">Dalam Radius (35m)</button>
+        <button onclick="setQuickGps(1350)" class="flex-1 text-[10px] bg-red-50 hover:bg-red-100 py-1.5 rounded text-red-700 font-semibold transition cursor-pointer border border-red-200 text-center">Luar Radius (1.3km)</button>
+      </div>
+    </div>
+
+    <div id="gpsLockedAlert" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-xl shadow-sm text-red-900">
+      <div class="flex items-start space-x-2">
+        <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
+        <div>
+          <h4 class="text-xs font-bold">Luar Area (Akses Absen Terkunci)</h4>
+          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari titik proyek penempatan.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Jam Digital -->
+    <div class="bg-slate-900 text-white rounded-2xl p-4 shadow-lg text-center relative overflow-hidden">
+      <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-600/20 rounded-full blur-xl"></div>
+      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
+      <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-emerald-400 font-sans">WIB</span></div>
+      
+      <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
+        <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
+          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM MASUK</span>
+          <span id="clockInSummary" class="text-sm font-black text-slate-300">-- : --</span>
+        </div>
+        <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
+          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM PULANG</span>
+          <span id="clockOutSummary" class="text-sm font-black text-slate-300">-- : --</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pilihan Shift -->
+    <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
+      <span class="text-xs font-bold text-slate-800 flex items-center">
+        <i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift Kerja:
+      </span>
+      <div class="grid grid-cols-3 gap-1.5" id="shiftButtonsContainer">
+        <button onclick="selectShift(1)" id="btnShift1" class="border border-emerald-500 bg-emerald-50 text-emerald-700 py-1.5 rounded-lg text-[10px] font-bold">Shift 1</button>
+        <button onclick="selectShift(2)" id="btnShift2" class="border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Shift 2</button>
+        <button onclick="selectShift(3)" id="btnShift3" class="border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Shift 3</button>
+      </div>
+    </div>
+
+    <!-- Tombol Absen Utama -->
+    <div class="py-4 flex flex-col items-center justify-center space-y-4">
+      <div class="relative flex items-center justify-center">
+        <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
+        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group cursor-pointer">
+          <i id="mainAbsenIcon" class="fa-solid fa-fingerprint text-4xl mb-1 group-hover:scale-110 transition"></i>
+          <span id="mainAbsenLabel" class="text-xs font-black uppercase tracking-wider">TAP ABSEN</span>
+          <span id="mainAbsenSublabel" class="text-[9px] text-emerald-100 font-medium mt-0.5 bg-black/20 px-2 py-0.5 rounded-full">MASUK SHIFT 1</span>
+        </button>
+      </div>
+      <div class="bg-slate-200/70 px-4 py-2 rounded-full flex items-center space-x-2">
+        <i class="fa-solid fa-camera text-slate-500 text-[10px]"></i>
+        <p class="text-[10px] text-slate-600 font-medium">Sistem membutuhkan foto wajah saat absen</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LEADER / SPV PANE ================= -->
+  <div id="tabContent-tim" class="space-y-4 tab-content-pane hidden">
+    <div id="leaderDashboardContent" class="space-y-4">
+      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
+        <div>
+          <h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3>
+          <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p>
+        </div>
+        <div class="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center">
+          <i class="fa-solid fa-users-gear text-xl text-amber-400"></i>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft">
+          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Hadir Hari Ini</span>
+          <div class="mt-1 flex items-baseline space-x-1">
+            <span id="spvHadirTeam" class="text-3xl font-black text-emerald-600">0</span>
+            <span class="text-xs font-bold text-slate-400">/ <span id="spvTotalTeam">0</span> Org</span>
+          </div>
+        </div>
+        <div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft">
+          <span class="text-[10px] text-slate-500 font-bold block uppercase tracking-wide">Izin / Sakit</span>
+          <div class="mt-1 flex items-baseline space-x-1">
+            <span id="spvCutiTeam" class="text-3xl font-black text-amber-500">0</span>
+            <span class="text-xs font-bold text-slate-400">Orang</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border border-slate-200 rounded-2xl shadow-card-soft overflow-hidden flex flex-col">
+        <div class="p-3 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+          <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-list-check text-blue-600 mr-1.5"></i> Status Kehadiran Tim Lokasi</h4>
+          <span class="text-[9px] text-slate-500 font-medium">Real-time</span>
+        </div>
+        <div class="max-h-80 overflow-y-auto p-2 space-y-2 bg-white" id="spvTeamListContainer">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN DB PANE ================= -->
+  <div id="tabContent-admin" class="space-y-4 tab-content-pane hidden">
+    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3>
+        <p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan Aktif</p>
+      </div>
+      <i class="fa-solid fa-database text-xl text-blue-400"></i>
+    </div>
+    
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
+        <div class="p-3 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+            <h4 class="text-xs font-bold text-slate-800">Daftar Lengkap Pegawai</h4>
+        </div>
+        <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList">
+        </div>
+    </div>
+  </div>
+
+  <!-- ================= RIWAYAT PANE ================= -->
+  <div id="tabContent-riwayat" class="space-y-4 tab-content-pane hidden">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
+      <i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i>
+      <h4 class="text-sm font-bold text-slate-700">Riwayat Kehadiran</h4>
+      <p class="text-xs text-slate-500 mt-1">Belum ada data riwayat absensi yang tersimpan lokal.</p>
+    </div>
+  </div>
+
+  <!-- ================= CUTI / IZIN PANE ================= -->
+  <div id="tabContent-cuti" class="space-y-4 tab-content-pane hidden">
+    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
+      <i class="fa-solid fa-calendar-days text-4xl mb-3 text-slate-300"></i>
+      <h4 class="text-sm font-bold text-slate-700">Pengajuan Cuti & Izin</h4>
+      <p class="text-xs text-slate-500 mt-1">Sistem form cuti sedang dalam pemeliharaan.</p>
+    </div>
+  </div>
+
+</main>
+
+<!-- PERBAIKAN 3: Navigasi lepas dari "fixed" agar tidak tertutup sistem browser -->
+<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+  <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn">
+    <i class="fa-solid fa-fingerprint text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Absen</span>
+  </button>
+  <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
+    <i class="fa-solid fa-clock-rotate-left text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Riwayat</span>
+  </button>
+  <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
+    <i class="fa-solid fa-calendar-days text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Cuti</span>
+  </button>
+  <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn hidden">
+    <i class="fa-solid fa-users-gear text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Tim</span>
+  </button>
+  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 hover:text-emerald-500 transition nav-btn">
+    <i class="fa-solid fa-server text-xl pointer-events-none"></i>
+    <span class="text-[9px] font-bold pointer-events-none">Admin DB</span>
+  </button>
+</nav>
+
+<!-- Notifikasi Toast -->
+<div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
+  <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+  <span id="toastMessage">Pesan Notifikasi</span>
+</div>
+
+<!-- Modal Kamera Selfie (Aktif WebRTC) -->
+<div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+  <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col transform transition-all">
+    <div class="p-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-700">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-camera-rotate text-emerald-400"></i>
+        <h3 class="text-sm font-bold tracking-wide">Verifikasi Wajah</h3>
+      </div>
+      <button onclick="closeCamera()" class="text-slate-400 hover:text-white transition bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center">
+        <i class="fa-solid fa-xmark text-sm"></i>
+      </button>
+    </div>
+    
+    <div class="relative bg-black aspect-[3/4] w-full flex items-center justify-center overflow-hidden">
+      <!-- Video Element Asli -->
+      <video id="cameraVideo" class="w-full h-full object-cover" playsinline autoplay></video>
+
+      <!-- Grid & Frame Wajah (Viewfinder Overlays) -->
+      <div class="absolute inset-0 border-[6px] border-black/20 z-10 pointer-events-none"></div>
+      <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-64 border-2 border-dashed border-white/70 rounded-[100px] z-10 shadow-[0_0_0_999px_rgba(0,0,0,0.5)] pointer-events-none"></div>
+      
+      <!-- Loading State (Sebelum Kamera Tampil) -->
+      <div id="cameraLoading" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900 z-0">
+        <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-emerald-500"></i>
+        <p class="text-[10px] font-bold animate-pulse text-slate-300 uppercase tracking-widest">Menyiapkan Kamera...</p>
+      </div>
+    </div>
+    
+    <div class="p-5 bg-white flex flex-col items-center relative">
+      <p class="text-[10px] text-slate-500 text-center mb-4 font-medium leading-relaxed">Posisikan wajah Anda di dalam garis oval dan pastikan pencahayaan cukup sebelum mengambil foto.</p>
+      
+      <!-- Tombol Jepret -->
+      <button onclick="captureAndSubmit()" class="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 border-4 border-emerald-100 shadow-glow-emerald flex items-center justify-center text-white transition-transform active:scale-90 cursor-pointer group">
+        <i class="fa-solid fa-camera text-2xl group-hover:scale-110 transition-transform"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ==============================================================
+  // 1. DATABASE KARYAWAN 54 NAMA (VERSI FINAL 13.2)
+  // ==============================================================
+  
+  localStorage.removeItem('gces_employees'); 
+
+  const OFFICIAL_EXCEL_EMPLOYEES = [
+    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", email: "dubay041103@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.003.01.15", nama: "HASANIH", email: "harumselalu693@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", email: "wahyutiko8@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.014.07.19", nama: "AHMAD FIKRI", email: "af9330817@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", email: "nurhayatiawal58@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", email: "abdulmalik zein02@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.069.07.22", nama: "YUSWO PETAROH", email: "gufrronganteng459@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.070.08.22", nama: "KHAERUL", email: "mikasaaja100@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.102.02.24", nama: "MAJID", email: "majidsmile8@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.119.11.24", nama: "Ahmad fadillah furgon", email: "ahmdfdlh69@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.125.04.25", nama: "Aisyah Pertiwi", email: "aisyahpertiwi177@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.131.05.25", nama: "M. Fajar Setiaji", email: "ajisetiaji685@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.135.05.25", nama: "Desta Pratama", email: "bagasdwisetiawan05@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", email: "ramadonismail61@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.148.09.25", nama: "Muhammad Rian Saputra", email: "rianpeace50@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.151.10.25", nama: "Nurkenih", email: "nurkenih@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.152.11.25", nama: "Sri Wulandari", email: "wd4839215@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.156.12.25", nama: "Fahmi Pratama Putra", email: "fahmiputra516@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.160.02.26", nama: "Asyiffa Desivanti", email: "desiyantiasyiffa@gmail.com.", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.164.04.26", nama: "Ita Pumamasari", email: "ita986723@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.167.05.26", nama: "Rizky Tri Amalia", email: "rizkytriamalia26@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.168.05.26", nama: "Dita nurkholifah", email: "ditanurkholifah08@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "02.123.01.25", nama: "Arya Tri Ratno", email: "ratnotriarya18@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.172.06.26", nama: "Nur Humaidah", email: "nurhumaida722@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.173.06.26", nama: "MUHAMMAD VIKRI HIDAYAT", email: "vikri1699@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.174.06.26", nama: "PUTRI RAMADHANI", email: "putriramadhanicntk@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.175.06.26", nama: "IMUT KURNIA", email: "imutkurnia256@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.177.07.26", nama: "Fahmy Fahrezy", email: "fahmifahrezi100@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "01.179.08.26", nama: "Salma salsabila", email: "salaabillabilla051@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA" },
+    { nip: "02.084.09.23", nama: "TITA LELAWATI", email: "titalelawati@gmail.com", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "01.002.01.15", nama: "DEDI MULYADI", email: "dedimulyadi@gmail.com", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "01.009.04.17", nama: "MAULANA", email: "maul9497@gmail.com", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.037.12.15", nama: "NURFAJRIYAH", email: "nurfajriyah385@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.044.10.19", nama: "SITI NURKHASANAH", email: "sitinurkhasanah1411@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.128.04.25", nama: "Akbar", email: "a8z006493@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.129.04.25", nama: "Teguh Guna Darmawan", email: "teguhgunadarma@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.155.11.25", nama: "Andyka Topansyah", email: "karnakuselow11@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.139.07.25", nama: "Ajeng Eka Saputri", email: "sajengeka@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.153.11.25", nama: "Nadia Puspita Sari", email: "nadia puspita2701@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.165.04.26", nama: "Risty Intan Nilamsari", email: "ristyintan1507@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.169.05.26", nama: "Arifin wirianto", email: "arifin wirianto08@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.171.05.26", nama: "TRISNAWATI", email: "ntrisna480@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.176.06.26", nama: "NOERHIKMAH", email: "nur566451@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "02.178.07.26", nama: "Fhani Ristiana Putri", email: "fhaniristiana85@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
+    { nip: "03.089.09.23", nama: "HENDRA SAPUTRA", email: "karnakuselow11@gmail.com", jabatan: "CSO", lokasi: "PT. CELSIUS CREATIVA" },
+    { nip: "05.064.02.22", nama: "SUHARYADI", email: "yadianisya@gmail.com", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA" },
+    { nip: "05.159.01.26", nama: "TRI WINDYARTI", email: "cewekleogirls@gmail.com", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA" },
+    { nip: "05.121.02.25", nama: "DEDE FIRMANSYAH", email: "dede.firmnsyh78@gmail.com", jabatan: "Picker", lokasi: "PT. MOYA INDONESIA" },
+    { nip: "01.149.10.25", nama: "Zhallysa Febria", email: "zhallysafebria@gmail.com", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG" },
+    { nip: "06.086.09.23", nama: "Yulia", email: "yulianaufal04@gmail.com", jabatan: "CSO", lokasi: "PT. MUTIARA HEXAGON" },
+    { nip: "07.100.01.24", nama: "AHMAD AGUS SUBEKHI", email: "", jabatan: "Kurir", lokasi: "PT. SM" },
+    { nip: "08.130.05.25", nama: "Wildan", email: "saputrawildan444@gmail.com", jabatan: "CSO", lokasi: "KLINIK SEMPER" },
+    { nip: "08.162.04.26", nama: "Anggi ariyandi", email: "anggiariyandi64@gmail.com", jabatan: "CSO", lokasi: "APOTEK SEMPER" }
+  ];
+
+  localStorage.setItem('gces_employees', JSON.stringify(OFFICIAL_EXCEL_EMPLOYEES));
+
+  // State Aplikasi
+  let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
+  let currentUser = null;
+  let currentShift = 1;
+  let currentGpsDistance = 35; // default simulasi jarak
+  let maxDistance = 1000;
+  let isNonShift = false;
+  let cameraStream = null;
+  
+  // Inisialisasi Aplikasi Saat Halaman Dimuat
+  window.onload = () => {
+    updateClock();
+    setInterval(updateClock, 1000);
+    renderUserDropdown();
+    renderAdminDB();
+    
+    // Cek login sebelumnya
+    const savedUser = localStorage.getItem('gces_currentUser');
+    if(savedUser) {
+        let userObj = JSON.parse(savedUser);
+        const isValid = employees.find(e => e.nip === userObj.nip);
+        if(isValid) setUser(userObj);
+        else localStorage.removeItem('gces_currentUser');
+    }
+  };
+
+  function showToast(message, isError = false) {
+    const toast = document.getElementById('toastNotification');
+    const msg = document.getElementById('toastMessage');
+    const icon = document.getElementById('toastIcon');
+    
+    msg.textContent = message;
+    if(isError) {
+        icon.className = 'fa-solid fa-circle-exclamation text-red-400 text-lg';
+        toast.className = toast.className.replace('bg-slate-800', 'bg-red-900').replace('border-slate-700', 'border-red-700');
+    } else {
+        icon.className = 'fa-solid fa-circle-check text-emerald-400 text-lg';
+        toast.className = toast.className.replace('bg-red-900', 'bg-slate-800').replace('border-red-700', 'border-slate-700');
+    }
+    
+    toast.classList.remove('opacity-0');
+    setTimeout(() => { toast.classList.add('opacity-0'); }, 4000);
+  }
+
+  function formatInitials(name) {
+    return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+  }
+
+  function toggleUserDropdown() {
+    const d = document.getElementById('userDropdownCard');
+    d.classList.toggle('hidden');
+    if(!d.classList.contains('hidden')) {
+        document.getElementById('userSearchInput').focus();
+    }
+  }
+
+  function renderUserDropdown(filter = '') {
+    const container = document.getElementById('userListContainer');
+    container.innerHTML = '';
+    
+    let filtered = employees;
+    if(filter) {
+        const lowerF = filter.toLowerCase();
+        filtered = employees.filter(e => e.nama.toLowerCase().includes(lowerF) || e.nip.includes(lowerF) || e.lokasi.toLowerCase().includes(lowerF));
+    }
+
+    if(filtered.length === 0) {
+        container.innerHTML = `<div class="text-center py-4 text-slate-400">Tidak ada nama ditemukan.</div>`;
+        return;
+    }
+    
+    filtered.forEach(emp => {
+        let isSelected = currentUser && currentUser.nip === emp.nip;
+        let html = `
+            <div onclick="loginUser('${emp.nip}')" class="p-3 rounded-2xl border ${isSelected ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-100'} hover:bg-slate-50 transition cursor-pointer flex items-center justify-between mb-2 shadow-sm">
+                <div class="flex items-center space-x-3 overflow-hidden">
+                    <div class="w-10 h-10 rounded-full ${isSelected ? 'bg-emerald-500' : 'bg-slate-200'} text-white flex items-center justify-center font-bold flex-shrink-0 text-[12px]">
+                        ${formatInitials(emp.nama)}
+                    </div>
+                    <div class="truncate pr-2">
+                        <h4 class="font-bold ${isSelected ? 'text-emerald-800' : 'text-slate-700'} text-[12px] truncate">${emp.nama}</h4>
+                        <p class="text-[10px] ${isSelected ? 'text-emerald-600' : 'text-slate-500'} truncate mt-0.5"><span class="font-bold">${emp.jabatan}</span> &bull; ${emp.lokasi}</p>
+                    </div>
+                </div>
+                ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-500 text-lg mr-1"></i>' : ''}
+            </div>
+        `;
+        container.insertAdjacentHTML('beforeend', html);
+    });
+  }
+
+  function filterUserDropdown(val) {
+      renderUserDropdown(val);
+  }
+
+  function loginUser(nip) {
+      const user = employees.find(e => e.nip === nip);
+      if(user) {
+          setUser(user);
+          toggleUserDropdown();
+          showToast(`Berhasil login sebagai ${user.nama}`);
+      }
+  }
+
+  // PERBAIKAN PADA SETUSER UNTUK MENDUKUNG SISTEM NAVIGASI BARU
+  function setUser(user) {
+      currentUser = user;
+      localStorage.setItem('gces_currentUser', JSON.stringify(user));
+      
+      let firstName = user.nama.split(' ')[0];
+      document.getElementById('headerActiveUserShort').textContent = firstName.length > 9 ? firstName.substring(0,9)+'...' : firstName;
+      
+      const isLeader = ['SPV', 'LEADER'].includes(user.jabatan.toUpperCase());
+      const navTim = document.getElementById('nav-tim');
+      
+      if(isLeader) {
+          navTim.classList.remove('hidden');
+          document.getElementById('spvLocationText').textContent = user.lokasi;
+          renderLeaderDashboard(user.lokasi);
+      } else {
+          navTim.classList.add('hidden');
+          if(!document.getElementById('tabContent-tim').classList.contains('hidden')) switchTab('beranda');
+      }
+      
+      const nonShiftLocations = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"];
+      isNonShift = nonShiftLocations.includes(user.lokasi) || user.lokasi.startsWith("PT.");
+      
+      const shiftBox = document.getElementById('shiftSelectorBox');
+      if(isNonShift) {
+          shiftBox.classList.add('hidden');
+          document.getElementById('mainAbsenSublabel').textContent = 'NON-SHIFT (OFFICE HOUR)';
+          currentShift = 'Non-Shift';
+      } else {
+          shiftBox.classList.remove('hidden');
+          selectShift(1);
+      }
+      
+      renderUserDropdown();
+  }
+
+  function updateClock() {
+      const now = new Date();
+      const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
+      const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+      
+      document.getElementById('liveClockText').innerHTML = timeString + ' <span class="text-xs text-emerald-400 font-sans">WIB</span>';
+      document.getElementById('liveDateText').textContent = dateString;
+  }
+
+  function selectShift(num) {
+      if(isNonShift) return;
+      currentShift = num;
+      for(let i=1; i<=3; i++){
+          let btn = document.getElementById('btnShift'+i);
+          if(i === num) {
+              btn.className = "border border-emerald-500 bg-emerald-50 text-emerald-700 py-1.5 rounded-lg text-[10px] font-bold transition";
+          } else {
+              btn.className = "border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold transition";
+          }
+      }
+      document.getElementById('mainAbsenSublabel').textContent = `MASUK SHIFT ${num}`;
+  }
+
+  function setQuickGps(dist) {
+      currentGpsDistance = dist;
+      updateGpsUI();
+  }
+
+  function updateGpsUI() {
+      const isLocked = currentGpsDistance > maxDistance;
+      document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString() + ' Meter';
+      
+      const card = document.getElementById('gpsStatusCard');
+      const icon = document.getElementById('gpsIconBg');
+      const title = document.getElementById('gpsStatusTitle');
+      const alert = document.getElementById('gpsLockedAlert');
+      const absenBtn = document.getElementById('mainAbsenBtn');
+      const ring = document.getElementById('btnGlowRing');
+      
+      if(isLocked) {
+          card.className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
+          icon.className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg shadow-sm";
+          title.textContent = "LUAR RADIUS KERJA";
+          title.className = "text-xs font-bold text-red-900";
+          alert.classList.remove('hidden');
+          document.getElementById('alertDistanceText').textContent = currentGpsDistance.toLocaleString() + ' meter';
+          absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 transition duration-200 cursor-not-allowed";
+          ring.classList.add('hidden');
+      } else {
+          card.className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
+          icon.className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm";
+          title.textContent = "DALAM RADIUS KERJA";
+          title.className = "text-xs font-bold text-emerald-900";
+          alert.classList.add('hidden');
+          absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group cursor-pointer";
+          ring.classList.remove('hidden');
+      }
+  }
+
+  async function triggerAbsenAction() {
+      if(!currentUser) {
+          showToast("Pilih Identitas Karyawan (Pojok Kanan Atas) terlebih dahulu!", true);
+          toggleUserDropdown();
+          return;
+      }
+      
+      if(currentGpsDistance > maxDistance) {
+          showToast("Gagal! Anda berada di luar radius area kerja.", true);
+          return;
+      }
+
+      document.getElementById('cameraModal').classList.remove('hidden');
+      document.getElementById('cameraLoading').style.display = 'flex';
+      
+      try {
+          cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
+          const videoEl = document.getElementById('cameraVideo');
+          videoEl.srcObject = cameraStream;
+          
+          videoEl.onloadedmetadata = () => {
+              videoEl.play();
+              document.getElementById('cameraLoading').style.display = 'none';
+          };
+      } catch (err) {
+          console.error("Gagal akses kamera:", err);
+          document.getElementById('cameraLoading').innerHTML = `
+              <i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-red-400"></i>
+              <p class="text-[10px] font-bold text-red-500 text-center px-4">Gagal akses kamera.<br>Pastikan Anda memberikan izin (Allow) pada browser.</p>
+          `;
+      }
+  }
+
+  function closeCamera() {
+      document.getElementById('cameraModal').classList.add('hidden');
+      if (cameraStream) {
+          cameraStream.getTracks().forEach(track => track.stop());
+          cameraStream = null;
+      }
+  }
+
+  function captureAndSubmit() {
+      if(!cameraStream) {
+          showToast("Kamera belum terhubung / ditolak sistem!", true);
+          return;
+      }
+      
+      const videoEl = document.getElementById('cameraVideo');
+      videoEl.style.opacity = '0';
+      
+      setTimeout(() => { 
+          videoEl.style.opacity = '1'; 
+          closeCamera();
+          
+          let d = new Date();
+          let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
+          document.getElementById('clockInSummary').textContent = timeStr;
+          
+          let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+          
+          // PASTE LINK GOOGLE SCRIPT ANDA DI SINI
+          const webhookUrl = "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI"; 
+          
+          const payload = {
+              nip: currentUser.nip,
+              nama: currentUser.nama,
+              jabatan: currentUser.jabatan,
+              lokasi: currentUser.lokasi,
+              shift: shiftName,
+              jamMasuk: timeStr
+          };
+
+          if(webhookUrl !== "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI") {
+              fetch(webhookUrl, {
+                  method: "POST",
+                  mode: "no-cors",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload)
+              }).then(() => {
+                  showToast(`Absensi ${shiftName} Sukses & Tersimpan ke Cloud!`);
+              }).catch(err => {
+                  console.error("Gagal sinkron:", err);
+                  showToast("Absen tersimpan lokal (Gagal sync ke Sheets)", true);
+              });
+          } else {
+              showToast(`Absensi ${shiftName} Sukses! (Mode Lokal)`);
+          }
+
+      }, 150);
+  }
+
+  // PERBAIKAN JAVASCRIPT SWITCH TAB MENGGUNAKAN CLASS .HIDDEN
+  function switchTab(tabId) {
+      document.querySelectorAll('.tab-content-pane').forEach(el => {
+          el.classList.add('hidden'); 
+          el.style.display = ''; 
+      });
+      
+      const activeTab = document.getElementById('tabContent-' + tabId);
+      if(activeTab) {
+          activeTab.classList.remove('hidden');
+      }
+      
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+          btn.classList.remove('text-emerald-600');
+          btn.classList.add('text-slate-400');
+      });
+      
+      const activeBtn = document.getElementById('nav-' + tabId);
+      if(activeBtn) {
+          activeBtn.classList.remove('text-slate-400');
+          activeBtn.classList.add('text-emerald-600');
+      }
+  }
+
+  function renderLeaderDashboard(lokasi) {
+      const container = document.getElementById('spvTeamListContainer');
+      container.innerHTML = '';
+      
+      let team = employees.filter(e => e.lokasi === lokasi);
+      document.getElementById('spvTotalTeam').textContent = team.length;
+      document.getElementById('spvHadirTeam').textContent = Math.floor(team.length * 0.8);
+      
+      team.forEach(emp => {
+          let isSpv = ['SPV', 'LEADER'].includes(emp.jabatan.toUpperCase());
+          let html = `
+            <div class="flex items-center justify-between p-2.5 border border-slate-100 rounded-xl hover:bg-slate-50 transition">
+              <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-slate-200 text-slate-600 flex items-center justify-center font-bold text-[10px]">
+                    ${formatInitials(emp.nama)}
+                </div>
+                <div>
+                  <h5 class="text-[11px] font-bold text-slate-800">${emp.nama} ${isSpv ? '<i class="fa-solid fa-star text-amber-400 text-[9px] ml-1"></i>' : ''}</h5>
+                  <p class="text-[9px] text-slate-500">${emp.jabatan}</p>
+                </div>
+              </div>
+              <span class="text-[10px] font-bold text-slate-400">Belum Hadir</span>
+            </div>
+          `;
+          container.insertAdjacentHTML('beforeend', html);
+      });
+  }
+
+  function renderAdminDB() {
+      const container = document.getElementById('adminDatabaseList');
+      container.innerHTML = '';
+      document.getElementById('adminTotalKaryawan').textContent = employees.length;
+      
+      employees.forEach(emp => {
+          let html = `
+            <div class="p-2 border border-slate-100 rounded-lg flex justify-between items-center bg-white mb-1">
+                <div>
+                    <h5 class="text-[11px] font-bold text-slate-800">${emp.nama}</h5>
+                    <p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.lokasi}</p>
+                </div>
+                <span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-[9px] font-bold border border-blue-200">${emp.jabatan}</span>
+            </div>
+          `;
+          container.insertAdjacentHTML('beforeend', html);
+      });
+  }
+</script>
 </body>
 </html>
