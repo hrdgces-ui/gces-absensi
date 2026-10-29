@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi Operasional PT. GCES V14.0</title>
+  <title>Aplikasi Absensi PT. GCES V15.0</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -11,14 +11,9 @@
     body { font-family: 'Inter', sans-serif; }
     .shadow-card-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
     .shadow-glow-emerald { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
-    @keyframes pulseRing {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.12); opacity: 0.2; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
+    @keyframes pulseRing { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.2; } 100% { transform: scale(0.95); opacity: 0.8; } }
     .animate-pulse-ring { animation: pulseRing 3.5s infinite ease-in-out; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     .pb-safe { padding-bottom: env(safe-area-inset-bottom, 20px); }
   </style>
 </head>
@@ -27,15 +22,13 @@
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
     <div class="w-16 h-16 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200">
-      <img src="Logo%20GCES%20New.png" alt="Logo GCES" 
-           onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter bg-white\'>GCES</div>'" 
-           class="w-full h-full object-contain p-1.5">
+      <img src="Logo%20GCES%20New.png" alt="Logo GCES" onerror="this.onerror=null; this.outerHTML='<div class=\'w-full h-full flex items-center justify-center font-black text-slate-800 text-[18px] tracking-tighter bg-white\'>GCES</div>'" class="w-full h-full object-contain p-1.5">
     </div>
     <div class="flex flex-col justify-center py-1">
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V14.0</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.0</p>
       </div>
     </div>
   </div>
@@ -52,7 +45,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
     <div>
       <span class="text-sm font-bold text-slate-800 block">Identitas Karyawan</span>
-      <span class="text-[10px] text-slate-500">Sesuai 55 Data Resmi (V14.0)</span>
+      <span class="text-[10px] text-slate-500">Sesuai 55 Data Resmi</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -64,14 +57,11 @@
 </div>
 
 <main class="flex-1 overflow-y-auto p-4 space-y-4">
-  
   <!-- BERANDA -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
     <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
-        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm">
-          <i class="fa-solid fa-location-crosshairs"></i>
-        </div>
+        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-location-crosshairs"></i></div>
         <div>
           <div class="flex items-center space-x-1.5">
             <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
@@ -95,8 +85,8 @@
       <div class="flex items-start space-x-2">
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
-          <h4 class="text-xs font-bold">Luar Area (Akses Absen Terkunci)</h4>
-          <p class="text-[11px] text-red-700">Anda berada <span id="alertDistanceText" class="font-bold">1.350 meter</span> dari titik proyek penempatan.</p>
+          <h4 class="text-xs font-bold">Luar Area (Akses Terkunci)</h4>
+          <p class="text-[11px] text-red-700">Jarak: <span id="alertDistanceText" class="font-bold">1.350 meter</span></p>
         </div>
       </div>
     </div>
@@ -106,7 +96,6 @@
       <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-emerald-600/20 rounded-full blur-xl"></div>
       <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-widest" id="liveDateText">Memuat Tanggal...</p>
       <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-emerald-400 font-sans">WIB</span></div>
-      
       <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
           <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM MASUK</span>
@@ -119,16 +108,13 @@
       </div>
     </div>
 
-    <!-- Pilihan Shift Khusus -->
+    <!-- Pilihan Shift -->
     <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
-      <span class="text-xs font-bold text-slate-800 flex items-center">
-        <i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift Kerja:
-      </span>
+      <span class="text-xs font-bold text-slate-800 flex items-center"><i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift:</span>
       <div class="flex gap-1.5" id="shiftButtonsContainer">
         <button onclick="selectShift('1')" id="btnShift1" class="flex-1 border border-emerald-500 bg-emerald-50 text-emerald-700 py-1.5 rounded-lg text-[10px] font-bold">Shift 1</button>
         <button onclick="selectShift('2')" id="btnShift2" class="flex-1 border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Shift 2</button>
         <button onclick="selectShift('3')" id="btnShift3" class="flex-1 border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Shift 3</button>
-        <!-- Tombol Middle disembunyikan secara default, hanya muncul untuk Semper -->
         <button onclick="selectShift('Middle')" id="btnShiftMiddle" class="hidden flex-1 border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Middle</button>
       </div>
     </div>
@@ -139,7 +125,6 @@
         <button onclick="setJenisAbsen('masuk')" id="btnJenisMasuk" class="flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-emerald-600 shadow-sm transition">MASUK</button>
         <button onclick="setJenisAbsen('pulang')" id="btnJenisPulang" class="flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer">PULANG</button>
       </div>
-
       <div class="relative flex items-center justify-center mt-2">
         <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
         <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group">
@@ -148,84 +133,87 @@
           <span id="mainAbsenSublabel" class="hidden text-[9px] text-emerald-100 font-bold mt-0.5 bg-black/20 px-2 py-0.5 rounded-full">MASUK SHIFT 1</span>
         </button>
       </div>
-      <div class="bg-slate-200/70 px-4 py-2 rounded-full flex items-center space-x-2">
-        <i class="fa-solid fa-camera text-slate-500 text-[10px]"></i>
-        <p class="text-[10px] text-slate-600 font-medium">Sistem membutuhkan foto wajah saat absen</p>
-      </div>
     </div>
   </div>
 
-  <!-- CUTI (PERSIAPAN OPSI B) -->
+  <!-- CUTI PANE -->
   <div id="tabContent-cuti" class="space-y-4 tab-content-pane hidden">
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft">
-      <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan (Preview)</h3>
-      <div class="space-y-3">
+    <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-card-soft">
+      <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan</h3>
+      
+      <div class="space-y-4" id="formCutiContainer">
          <div>
             <label class="text-[10px] font-bold text-slate-500">Jenis Pengajuan</label>
-            <select class="w-full text-xs border border-slate-300 rounded-lg p-2 mt-1 focus:ring-emerald-500 outline-none">
-                <option>Cuti Tahunan (Min H-14)</option>
-                <option>Izin</option>
-                <option>Sakit Tanpa Surat</option>
-                <option>Sakit Dengan Surat Dokter</option>
+            <select id="cutiJenis" onchange="checkCutiRules()" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 focus:ring-emerald-500 outline-none bg-slate-50">
+                <option value="Cuti Tahunan">Cuti Tahunan (Min H-14)</option>
+                <option value="Izin">Izin / Keperluan Mendadak</option>
+                <option value="Sakit Tanpa Surat">Sakit (Tanpa Surat)</option>
+                <option value="Sakit Dengan Surat">Sakit (Dengan Surat Dokter)</option>
             </select>
          </div>
-         <div class="grid grid-cols-2 gap-2">
+         
+         <div class="grid grid-cols-2 gap-3">
             <div>
-                <label class="text-[10px] font-bold text-slate-500">Mulai Tanggal</label>
-                <input type="date" class="w-full text-xs border border-slate-300 rounded-lg p-2 mt-1 outline-none">
+                <label class="text-[10px] font-bold text-slate-500">Tanggal Mulai</label>
+                <input type="date" id="cutiMulai" onchange="checkCutiRules()" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
             </div>
             <div>
-                <label class="text-[10px] font-bold text-slate-500">Sampai Tanggal</label>
-                <input type="date" class="w-full text-xs border border-slate-300 rounded-lg p-2 mt-1 outline-none">
+                <label class="text-[10px] font-bold text-slate-500">Tanggal Selesai</label>
+                <input type="date" id="cutiSampai" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
             </div>
          </div>
+         
+         <div id="cutiWarningBox" class="hidden bg-rose-50 p-2 rounded-lg border border-rose-200">
+             <p class="text-[9px] text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="cutiWarningText">Peringatan aturan!</span></p>
+         </div>
+         
          <div>
-            <label class="text-[10px] font-bold text-slate-500">Alasan Lengkap</label>
-            <textarea class="w-full text-xs border border-slate-300 rounded-lg p-2 mt-1 outline-none h-16" placeholder="Wajib diisi..."></textarea>
+            <label class="text-[10px] font-bold text-slate-500">Alasan Lengkap (Wajib)</label>
+            <textarea id="cutiAlasan" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none h-20 bg-slate-50" placeholder="Jelaskan alasan secara detail..."></textarea>
          </div>
-         <div class="bg-slate-50 p-3 rounded-lg border border-dashed border-slate-300 flex flex-col items-center justify-center">
-             <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-xl mb-1"></i>
-             <p class="text-[9px] text-slate-500 text-center">Upload Bukti Dokumen<br>(Khusus Sakit/Dokter)</p>
+         
+         <!-- Tombol Upload File -->
+         <div id="uploadBox" class="hidden">
+             <label class="text-[10px] font-bold text-slate-500 mb-1 block">Upload Bukti Medis (Foto/PDF)</label>
+             <div class="relative bg-slate-50 p-4 rounded-xl border-2 border-dashed border-emerald-300 flex flex-col items-center justify-center hover:bg-emerald-50 transition cursor-pointer">
+                 <input type="file" id="cutiFile" accept="image/*,application/pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="handleFileSelect(event)">
+                 <i id="uploadIcon" class="fa-solid fa-cloud-arrow-up text-emerald-500 text-2xl mb-1"></i>
+                 <p id="uploadText" class="text-[10px] text-emerald-700 font-bold text-center">Tap untuk Upload Surat Dokter</p>
+                 <p id="uploadSubText" class="text-[8px] text-slate-400 mt-1">Maks. 2MB</p>
+             </div>
          </div>
-         <button class="w-full bg-slate-300 text-slate-500 font-bold text-xs py-3 rounded-xl cursor-not-allowed">Kirim Pengajuan</button>
-         <p class="text-[9px] text-amber-600 bg-amber-50 p-2 rounded-lg border border-amber-200 mt-2 text-center">
-            <i class="fa-solid fa-lock mr-1"></i> Form terkunci. Menunggu konfigurasi Google Drive pada Tahap 4.
-         </p>
+         
+         <button id="btnSubmitCuti" onclick="submitCuti()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg transition active:scale-95 flex justify-center items-center">
+            <i class="fa-regular fa-paper-plane mr-2"></i> Kirim Pengajuan
+         </button>
+      </div>
+      
+      <div id="cutiLoading" class="hidden flex flex-col items-center justify-center py-10">
+          <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500 mb-3"></i>
+          <p class="text-xs font-bold text-slate-600">Mengirim data & upload file ke Server...</p>
       </div>
     </div>
   </div>
 
-  <!-- LEADER / SPV PANE -->
   <div id="tabContent-tim" class="space-y-4 tab-content-pane hidden">
      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
-        <div>
-          <h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3>
-          <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p>
-        </div>
+        <div><h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3><p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p></div>
         <i class="fa-solid fa-users-gear text-xl text-amber-400"></i>
      </div>
   </div>
 
-  <!-- ADMIN DB PANE -->
   <div id="tabContent-admin" class="space-y-4 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
-      <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3>
-        <p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan Aktif</p>
-      </div>
+      <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
-        <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div>
-    </div>
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
   </div>
 
-  <!-- RIWAYAT PANE -->
   <div id="tabContent-riwayat" class="space-y-4 tab-content-pane hidden">
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
       <i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i>
-      <h4 class="text-sm font-bold text-slate-700">Riwayat Kehadiran</h4>
-      <p class="text-xs text-slate-500 mt-1">Belum ada data riwayat absensi yang tersimpan lokal.</p>
+      <h4 class="text-sm font-bold text-slate-700">Riwayat Kehadiran</h4><p class="text-xs text-slate-500 mt-1">Belum ada data riwayat absensi lokal.</p>
     </div>
   </div>
 </main>
@@ -239,44 +227,24 @@
 </nav>
 
 <div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
-  <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
-  <span id="toastMessage">Pesan Notifikasi</span>
+  <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i><span id="toastMessage">Pesan Notifikasi</span>
 </div>
 
-<!-- Modal Kamera Selfie -->
 <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
   <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col transform transition-all">
-    <div class="p-4 bg-slate-900 text-white flex justify-between items-center border-b border-slate-700">
-      <div class="flex items-center space-x-2">
-        <i class="fa-solid fa-camera-rotate text-emerald-400"></i>
-        <h3 class="text-sm font-bold tracking-wide">Verifikasi Wajah</h3>
-      </div>
-      <button onclick="closeCamera()" class="text-slate-400 hover:text-white transition bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center">
-        <i class="fa-solid fa-xmark text-sm"></i>
-      </button>
-    </div>
+    <div class="p-4 bg-slate-900 text-white flex justify-between items-center"><div class="flex items-center space-x-2"><i class="fa-solid fa-camera-rotate text-emerald-400"></i><h3 class="text-sm font-bold tracking-wide">Verifikasi Wajah</h3></div><button onclick="closeCamera()" class="text-slate-400 bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button></div>
     <div class="relative bg-black aspect-[3/4] w-full flex items-center justify-center overflow-hidden">
       <video id="cameraVideo" class="w-full h-full object-cover" playsinline autoplay></video>
       <div class="absolute inset-0 border-[6px] border-black/20 z-10 pointer-events-none"></div>
       <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-64 border-2 border-dashed border-white/70 rounded-[100px] z-10 shadow-[0_0_0_999px_rgba(0,0,0,0.5)] pointer-events-none"></div>
-      <div id="cameraLoading" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900 z-0">
-        <i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-emerald-500"></i>
-        <p class="text-[10px] font-bold animate-pulse text-slate-300 uppercase tracking-widest">Menyiapkan Kamera...</p>
-      </div>
+      <div id="cameraLoading" class="absolute inset-0 flex flex-col items-center justify-center text-slate-400 bg-slate-900 z-0"><i class="fa-solid fa-circle-notch fa-spin text-3xl mb-3 text-emerald-500"></i></div>
     </div>
-    <div class="p-5 bg-white flex flex-col items-center relative">
-      <p class="text-[10px] text-slate-500 text-center mb-4 font-medium leading-relaxed">Posisikan wajah Anda di dalam garis oval dan pastikan pencahayaan cukup sebelum mengambil foto.</p>
-      <button onclick="captureAndSubmit()" class="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 border-4 border-emerald-100 shadow-glow-emerald flex items-center justify-center text-white transition-transform active:scale-90 cursor-pointer group">
-        <i class="fa-solid fa-camera text-2xl group-hover:scale-110 transition-transform"></i>
-      </button>
-    </div>
+    <div class="p-5 bg-white flex flex-col items-center relative"><button onclick="captureAndSubmit()" class="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 border-4 border-emerald-100 shadow-glow-emerald flex items-center justify-center text-white transition-transform active:scale-90"><i class="fa-solid fa-camera text-2xl"></i></button></div>
   </div>
 </div>
 
 <script>
-  localStorage.removeItem('gces_employees'); 
   const OFFICIAL_EXCEL_EMPLOYEES = [
-    // PENAMBAHAN KARYAWAN BARU DI BARIS PERTAMA AGAR MUDAH DICARI
     { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA" },
     { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", email: "dubay041103@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA" },
@@ -334,228 +302,109 @@
     { nip: "08.162.04.26", nama: "Anggi ariyandi", email: "anggiariyandi64@gmail.com", jabatan: "CSO", lokasi: "APOTEK SEMPER" }
   ];
 
-  localStorage.setItem('gces_employees', JSON.stringify(OFFICIAL_EXCEL_EMPLOYEES));
-
   let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
   let currentUser = null;
   let currentShift = "1";
-  let currentGpsDistance = 35; 
-  let maxDistance = 1000;
+  let currentGpsDistance = 35; let maxDistance = 1000;
   let isNonShift = false;
   let cameraStream = null;
   let jenisAbsen = "masuk"; 
   
+  // Variabel Global Cuti
+  let cutiBase64 = "";
+  let cutiFileName = "";
+
   window.onload = () => {
-    updateClock();
-    setInterval(updateClock, 1000);
-    renderUserDropdown();
-    renderAdminDB();
-    
+    updateClock(); setInterval(updateClock, 1000); renderUserDropdown(); renderAdminDB();
     const savedUser = localStorage.getItem('gces_currentUser');
-    if(savedUser) {
-        let userObj = JSON.parse(savedUser);
-        if(userObj && userObj.nip) {
-            const isValid = employees.find(e => e.nip === userObj.nip);
-            if(isValid) setUser(userObj);
-            else localStorage.removeItem('gces_currentUser');
-        }
-    }
+    if(savedUser) { let userObj = JSON.parse(savedUser); if(userObj && userObj.nip) { const isValid = employees.find(e => e.nip === userObj.nip); if(isValid) setUser(userObj); } }
   };
 
-  function setJenisAbsen(jenis) {
-      jenisAbsen = jenis;
-      const btnMasuk = document.getElementById('btnJenisMasuk');
-      const btnPulang = document.getElementById('btnJenisPulang');
-      
-      if (jenis === 'masuk') {
-          btnMasuk.className = "flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-emerald-600 shadow-sm transition";
-          btnPulang.className = "flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer";
-      } else {
-          btnPulang.className = "flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-rose-600 shadow-sm transition";
-          btnMasuk.className = "flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer";
-      }
-      updateMainSublabel();
-  }
-
-  function updateMainSublabel() {
-      const sublabel = document.getElementById('mainAbsenSublabel');
-      const shiftText = isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`;
-      const jenisText = jenisAbsen.toUpperCase();
-      sublabel.textContent = `${jenisText} ${shiftText}`;
-      sublabel.classList.remove('hidden'); 
-  }
-
-  function showToast(message, isError = false) {
+  function showToast(msg, isErr = false) {
     const toast = document.getElementById('toastNotification');
-    const msg = document.getElementById('toastMessage');
-    const icon = document.getElementById('toastIcon');
-    msg.textContent = message;
-    if(isError) {
-        icon.className = 'fa-solid fa-circle-exclamation text-red-400 text-lg';
-        toast.className = toast.className.replace('bg-slate-800', 'bg-red-900').replace('border-slate-700', 'border-red-700');
-    } else {
-        icon.className = 'fa-solid fa-circle-check text-emerald-400 text-lg';
-        toast.className = toast.className.replace('bg-red-900', 'bg-slate-800').replace('border-red-700', 'border-slate-700');
-    }
+    document.getElementById('toastMessage').textContent = msg;
+    document.getElementById('toastIcon').className = isErr ? 'fa-solid fa-circle-exclamation text-red-400 text-lg' : 'fa-solid fa-circle-check text-emerald-400 text-lg';
+    toast.className = isErr ? toast.className.replace('bg-slate-800', 'bg-red-900').replace('border-slate-700', 'border-red-700') : toast.className.replace('bg-red-900', 'bg-slate-800').replace('border-red-700', 'border-slate-700');
     toast.classList.remove('opacity-0');
     setTimeout(() => { toast.classList.add('opacity-0'); }, 4000);
   }
 
-  function formatInitials(name) {
-    if(!name) return "ID";
-    return name.split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase();
+  function setJenisAbsen(jenis) {
+      jenisAbsen = jenis;
+      document.getElementById('btnJenisMasuk').className = jenis === 'masuk' ? "flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-emerald-600 shadow-sm transition" : "flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer";
+      document.getElementById('btnJenisPulang').className = jenis === 'pulang' ? "flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-rose-600 shadow-sm transition" : "flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer";
+      updateMainSublabel();
   }
 
-  function toggleUserDropdown() {
-    const d = document.getElementById('userDropdownCard');
-    d.classList.toggle('hidden');
-    if(!d.classList.contains('hidden')) document.getElementById('userSearchInput').focus();
+  function updateMainSublabel() {
+      document.getElementById('mainAbsenSublabel').textContent = `${jenisAbsen.toUpperCase()} ${isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`}`;
+      document.getElementById('mainAbsenSublabel').classList.remove('hidden'); 
   }
 
+  function formatInitials(name) { return (name || "ID").split(' ').map(n => n[0]).join('').substring(0,2).toUpperCase(); }
+  function toggleUserDropdown() { document.getElementById('userDropdownCard').classList.toggle('hidden'); }
   function renderUserDropdown(filter = '') {
-    const container = document.getElementById('userListContainer');
-    container.innerHTML = '';
-    let filtered = employees;
-    if(filter) {
-        const lowerF = filter.toLowerCase();
-        filtered = employees.filter(e => e.nama.toLowerCase().includes(lowerF) || e.nip.toLowerCase().includes(lowerF) || e.lokasi.toLowerCase().includes(lowerF));
-    }
-    if(filtered.length === 0) {
-        container.innerHTML = `<div class="text-center py-4 text-slate-400">Tidak ada nama ditemukan.</div>`;
-        return;
-    }
+    const container = document.getElementById('userListContainer'); container.innerHTML = '';
+    let filtered = filter ? employees.filter(e => e.nama.toLowerCase().includes(filter.toLowerCase()) || e.nip.toLowerCase().includes(filter.toLowerCase())) : employees;
     filtered.forEach(emp => {
-        let isSelected = currentUser && currentUser.nip === emp.nip;
-        let html = `
-            <div onclick="loginUser('${emp.nip}')" class="p-3 rounded-2xl border ${isSelected ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-100'} hover:bg-slate-50 transition cursor-pointer flex items-center justify-between mb-2 shadow-sm">
-                <div class="flex items-center space-x-3 overflow-hidden">
-                    <div class="w-10 h-10 rounded-full ${isSelected ? 'bg-emerald-500' : 'bg-slate-200'} text-white flex items-center justify-center font-bold flex-shrink-0 text-[12px]">
-                        ${formatInitials(emp.nama)}
-                    </div>
-                    <div class="truncate pr-2">
-                        <h4 class="font-bold ${isSelected ? 'text-emerald-800' : 'text-slate-700'} text-[12px] truncate">${emp.nama}</h4>
-                        <p class="text-[10px] ${isSelected ? 'text-emerald-600' : 'text-slate-500'} truncate mt-0.5"><span class="font-bold">${emp.jabatan}</span> &bull; ${emp.lokasi}</p>
-                    </div>
-                </div>
-                ${isSelected ? '<i class="fa-solid fa-circle-check text-emerald-500 text-lg mr-1"></i>' : ''}
-            </div>`;
-        container.insertAdjacentHTML('beforeend', html);
+        let isSel = currentUser && currentUser.nip === emp.nip;
+        container.insertAdjacentHTML('beforeend', `<div onclick="loginUser('${emp.nip}')" class="p-3 rounded-2xl border ${isSel ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-100'} hover:bg-slate-50 transition cursor-pointer flex items-center justify-between mb-2"><div class="flex items-center space-x-3"><div class="w-10 h-10 rounded-full ${isSel ? 'bg-emerald-500' : 'bg-slate-200'} text-white flex items-center justify-center font-bold text-[12px]">${formatInitials(emp.nama)}</div><div><h4 class="font-bold text-[12px]">${emp.nama}</h4><p class="text-[10px]"><span class="font-bold">${emp.jabatan}</span> &bull; ${emp.lokasi}</p></div></div></div>`);
     });
   }
-
   function filterUserDropdown(val) { renderUserDropdown(val); }
 
   function loginUser(nip) {
       const user = employees.find(e => e.nip === nip);
-      if(user) {
-          setUser(user);
-          toggleUserDropdown();
-          showToast(`Berhasil login sebagai ${user.nama}`);
-      }
+      if(user) { setUser(user); toggleUserDropdown(); showToast(`Berhasil login: ${user.nama}`); }
   }
 
   function setUser(user) {
-      currentUser = user;
-      localStorage.setItem('gces_currentUser', JSON.stringify(user));
-      let firstName = user.nama.split(' ')[0];
-      document.getElementById('headerActiveUserShort').textContent = firstName.length > 9 ? firstName.substring(0,9)+'...' : firstName;
+      currentUser = user; localStorage.setItem('gces_currentUser', JSON.stringify(user));
+      document.getElementById('headerActiveUserShort').textContent = user.nama.split(' ')[0].substring(0,9);
+      if(['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) { document.getElementById('nav-tim').classList.remove('hidden'); } else { document.getElementById('nav-tim').classList.add('hidden'); }
       
-      const isLeader = ['SPV', 'LEADER'].includes(user.jabatan.toUpperCase());
-      const navTim = document.getElementById('nav-tim');
-      
-      if(isLeader) {
-          navTim.classList.remove('hidden');
-          document.getElementById('spvLocationText').textContent = user.lokasi;
-          renderLeaderDashboard(user.lokasi);
-      } else {
-          navTim.classList.add('hidden');
-          if(!document.getElementById('tabContent-tim').classList.contains('hidden')) switchTab('beranda');
+      isNonShift = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
+      if(isNonShift) { document.getElementById('shiftSelectorBox').classList.add('hidden'); currentShift = 'Non-Shift'; } 
+      else { 
+          document.getElementById('shiftSelectorBox').classList.remove('hidden');
+          if(user.lokasi.toLowerCase().includes("semper")) { document.getElementById('btnShiftMiddle').classList.remove('hidden'); document.getElementById('btnShift3').classList.add('hidden'); }
+          else { document.getElementById('btnShiftMiddle').classList.add('hidden'); document.getElementById('btnShift3').classList.remove('hidden'); }
+          selectShift('1'); 
       }
-      
-      const nonShiftLocations = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"];
-      isNonShift = nonShiftLocations.includes(user.lokasi) || user.lokasi.startsWith("PT.");
-      
-      const shiftBox = document.getElementById('shiftSelectorBox');
-      const btnMiddle = document.getElementById('btnShiftMiddle');
-      const btnShift3 = document.getElementById('btnShift3');
-
-      if(isNonShift) {
-          shiftBox.classList.add('hidden');
-          currentShift = 'Non-Shift';
-      } else {
-          shiftBox.classList.remove('hidden');
-          
-          // SENSOR KHUSUS SEMPER UNTUK MIDDLE SHIFT
-          if(user.lokasi.toLowerCase().includes("semper")) {
-              btnMiddle.classList.remove('hidden');
-              btnShift3.classList.add('hidden');
-          } else {
-              btnMiddle.classList.add('hidden');
-              btnShift3.classList.remove('hidden');
-          }
-          selectShift('1');
-      }
-      updateMainSublabel();
-      renderUserDropdown();
+      updateMainSublabel(); renderUserDropdown();
   }
 
   function updateClock() {
       const now = new Date();
-      const timeString = now.toLocaleTimeString('id-ID', { hour12: false });
-      const dateString = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
-      document.getElementById('liveClockText').innerHTML = timeString + ' <span class="text-xs text-emerald-400 font-sans">WIB</span>';
-      document.getElementById('liveDateText').textContent = dateString;
+      document.getElementById('liveClockText').innerHTML = now.toLocaleTimeString('id-ID', { hour12: false }) + ' <span class="text-xs text-emerald-400">WIB</span>';
+      document.getElementById('liveDateText').textContent = now.toLocaleDateString('id-ID', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
   }
 
   function selectShift(numStr) {
       if(isNonShift) return;
       currentShift = numStr;
-      
-      const buttons = ['1', '2', '3', 'Middle'];
-      buttons.forEach(val => {
+      ['1', '2', '3', 'Middle'].forEach(val => {
           let btn = document.getElementById('btnShift' + val);
-          if(btn) {
-              if(val === numStr) {
-                  btn.className = "flex-1 border border-emerald-500 bg-emerald-50 text-emerald-700 py-1.5 rounded-lg text-[10px] font-bold transition";
-              } else {
-                  // Tetap pertahankan 'hidden' jika memang disembunyikan
-                  let isHidden = btn.classList.contains('hidden');
-                  btn.className = `flex-1 border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold transition ${isHidden ? 'hidden' : ''}`;
-              }
-          }
+          if(btn) btn.className = `flex-1 border py-1.5 rounded-lg text-[10px] font-bold transition ${val === numStr ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-slate-50 text-slate-500'} ${btn.classList.contains('hidden') ? 'hidden' : ''}`;
       });
       updateMainSublabel();
   }
 
   function setQuickGps(dist) { currentGpsDistance = dist; updateGpsUI(); }
-
   function updateGpsUI() {
-      const isLocked = currentGpsDistance > maxDistance;
       document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString() + ' Meter';
-      const alert = document.getElementById('gpsLockedAlert');
-      const absenBtn = document.getElementById('mainAbsenBtn');
-      const ring = document.getElementById('btnGlowRing');
-      
-      if(isLocked) {
-          alert.classList.remove('hidden');
-          document.getElementById('alertDistanceText').textContent = currentGpsDistance.toLocaleString() + ' meter';
-          absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 transition duration-200 cursor-not-allowed";
-          ring.classList.add('hidden');
+      if(currentGpsDistance > maxDistance) {
+          document.getElementById('gpsLockedAlert').classList.remove('hidden');
+          document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed";
       } else {
-          alert.classList.add('hidden');
-          absenBtn.className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group";
-          ring.classList.remove('hidden');
+          document.getElementById('gpsLockedAlert').classList.add('hidden');
+          document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition cursor-pointer";
       }
   }
 
   async function triggerAbsenAction() {
-      if(!currentUser) {
-          showToast("Pilih Identitas Karyawan (Pojok Kanan Atas) terlebih dahulu!", true);
-          toggleUserDropdown(); return;
-      }
-      if(currentGpsDistance > maxDistance) {
-          showToast("Gagal! Anda berada di luar radius area kerja.", true); return;
-      }
+      if(!currentUser) { showToast("Pilih Akun dulu!", true); return; }
+      if(currentGpsDistance > maxDistance) { showToast("Di luar radius!", true); return; }
       document.getElementById('cameraModal').classList.remove('hidden');
       document.getElementById('cameraLoading').style.display = 'flex';
       try {
@@ -563,62 +412,137 @@
           const videoEl = document.getElementById('cameraVideo');
           videoEl.srcObject = cameraStream;
           videoEl.onloadedmetadata = () => { videoEl.play(); document.getElementById('cameraLoading').style.display = 'none'; };
-      } catch (err) {
-          document.getElementById('cameraLoading').innerHTML = `<i class="fa-solid fa-triangle-exclamation text-3xl mb-2 text-red-400"></i><p class="text-[10px] font-bold text-red-500 text-center px-4">Gagal akses kamera.<br>Pastikan izin diberikan.</p>`;
-      }
+      } catch (err) { document.getElementById('cameraLoading').innerHTML = `<p class="text-red-500 text-center font-bold">Gagal akses kamera</p>`; }
   }
 
-  function closeCamera() {
-      document.getElementById('cameraModal').classList.add('hidden');
-      if (cameraStream) { cameraStream.getTracks().forEach(track => track.stop()); cameraStream = null; }
-  }
+  function closeCamera() { document.getElementById('cameraModal').classList.add('hidden'); if (cameraStream) { cameraStream.getTracks().forEach(track => track.stop()); cameraStream = null; } }
 
   function captureAndSubmit() {
-      if(!cameraStream) { showToast("Kamera belum terhubung!", true); return; }
-      const videoEl = document.getElementById('cameraVideo');
-      videoEl.style.opacity = '0';
+      if(!cameraStream) return;
+      closeCamera();
+      let timeStr = new Date().toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
+      if(jenisAbsen === "masuk") document.getElementById('clockInSummary').textContent = timeStr;
+      else document.getElementById('clockOutSummary').textContent = timeStr;
       
-      setTimeout(() => { 
-          videoEl.style.opacity = '1'; closeCamera();
-          let d = new Date();
-          let timeStr = d.toLocaleTimeString('id-ID', { hour12: false }).substring(0,5);
-          
-          if(jenisAbsen === "masuk") document.getElementById('clockInSummary').textContent = timeStr;
-          else document.getElementById('clockOutSummary').textContent = timeStr;
-          
-          let shiftName = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
-          const webhookUrl = "https://script.google.com/macros/s/AKfycbzwEjmJuY2f_uzNNnotrudMU6OCiGMKPAFYAlQ9rS_kKnT9U-Ou8m2FSyrFL03Kca2avQ/exec"; 
-          
-          const payload = { nip: currentUser.nip, nama: currentUser.nama, jabatan: currentUser.jabatan, lokasi: currentUser.lokasi, shift: shiftName, jenisAbsen: jenisAbsen, jamMasuk: timeStr };
-
-          if(webhookUrl !== "MASUKKAN_URL_WEB_APP_GOOGLE_SCRIPT_ANDA_DISINI") {
-              fetch(webhookUrl, { method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) })
-              .then(() => { showToast(`Absen ${jenisAbsen.toUpperCase()} ${shiftName} Sukses!`); })
-              .catch(err => { showToast("Absen tersimpan lokal (Gagal sync)", true); });
-          }
-      }, 150);
+      const payload = { nip: currentUser.nip, nama: currentUser.nama, jabatan: currentUser.jabatan, lokasi: currentUser.lokasi, shift: isNonShift ? "Non-Shift" : `Shift ${currentShift}`, jenisAbsen: jenisAbsen };
+      
+      // LINK WEBHOOK ANDA
+      fetch("https://script.google.com/macros/s/AKfycbzwEjmJuY2f_uzNNnotrudMU6OCiGMKPAFYAlQ9rS_kKnT9U-Ou8m2FSyrFL03Kca2avQ/exec", {
+          method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+      }).then(() => showToast(`Absen ${jenisAbsen.toUpperCase()} Sukses!`)).catch(() => showToast("Tersimpan Lokal", true));
   }
 
   function switchTab(tabId) {
-      document.querySelectorAll('.tab-content-pane').forEach(el => { el.classList.add('hidden'); el.style.display = ''; });
-      const activeTab = document.getElementById('tabContent-' + tabId);
-      if(activeTab) activeTab.classList.remove('hidden');
+      document.querySelectorAll('.tab-content-pane').forEach(el => el.classList.add('hidden'));
+      document.getElementById('tabContent-' + tabId).classList.remove('hidden');
       document.querySelectorAll('.nav-btn').forEach(btn => { btn.classList.remove('text-emerald-600'); btn.classList.add('text-slate-400'); });
-      const activeBtn = document.getElementById('nav-' + tabId);
-      if(activeBtn) { activeBtn.classList.remove('text-slate-400'); activeBtn.classList.add('text-emerald-600'); }
+      document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
+      document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
   }
 
-  function renderLeaderDashboard(lokasi) {
-      document.getElementById('spvTotalTeam').textContent = employees.filter(e => e.lokasi === lokasi).length;
+  // ==========================================
+  // FITUR CUTI, IZIN & UPLOAD SURAT DOKTER
+  // ==========================================
+  
+  function checkCutiRules() {
+      const jenis = document.getElementById('cutiJenis').value;
+      const tglMulai = document.getElementById('cutiMulai').value;
+      const warnBox = document.getElementById('cutiWarningBox');
+      const warnText = document.getElementById('cutiWarningText');
+      const uploadBox = document.getElementById('uploadBox');
+      
+      warnBox.classList.add('hidden');
+      
+      // Tampilkan Upload hanya untuk Sakit Dengan Surat
+      if (jenis === "Sakit Dengan Surat") {
+          uploadBox.classList.remove('hidden');
+      } else {
+          uploadBox.classList.add('hidden');
+      }
+
+      // Validasi H-14 Khusus Cuti Tahunan
+      if (jenis === "Cuti Tahunan" && tglMulai) {
+          const selisihHari = (new Date(tglMulai) - new Date()) / (1000 * 60 * 60 * 24);
+          if (selisihHari < 14) {
+              warnText.textContent = "Pengajuan Cuti Tahunan wajib minimal H-14!";
+              warnBox.classList.remove('hidden');
+          }
+      }
   }
 
-  function renderAdminDB() {
-      const container = document.getElementById('adminDatabaseList');
-      container.innerHTML = '';
-      document.getElementById('adminTotalKaryawan').textContent = employees.length;
-      employees.forEach(emp => {
-          let html = `<div class="p-2 border border-slate-100 rounded-lg flex justify-between items-center bg-white mb-1"><div><h5 class="text-[11px] font-bold text-slate-800">${emp.nama}</h5><p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.lokasi}</p></div><span class="bg-blue-50 text-blue-600 px-2 py-0.5 rounded text-[9px] font-bold border border-blue-200">${emp.jabatan}</span></div>`;
-          container.insertAdjacentHTML('beforeend', html);
+  function handleFileSelect(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      
+      // Batas maksimal file 3MB
+      if (file.size > 3 * 1024 * 1024) {
+          showToast("Gagal! Ukuran file maksimal 3 MB", true);
+          return;
+      }
+      
+      document.getElementById('uploadText').textContent = file.name;
+      document.getElementById('uploadIcon').className = "fa-solid fa-file-circle-check text-emerald-500 text-2xl mb-1";
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+          cutiBase64 = e.target.result;
+          cutiFileName = currentUser.nama.split(' ')[0] + "_" + file.name;
+      };
+      reader.readAsDataURL(file);
+  }
+
+  function submitCuti() {
+      if (!currentUser) { showToast("Pilih Identitas Akun dulu!", true); return; }
+      
+      const jenis = document.getElementById('cutiJenis').value;
+      const mulai = document.getElementById('cutiMulai').value;
+      const sampai = document.getElementById('cutiSampai').value;
+      const alasan = document.getElementById('cutiAlasan').value;
+      
+      if (!mulai || !sampai || !alasan) {
+          showToast("Lengkapi tanggal dan alasan pengajuan!", true);
+          return;
+      }
+      
+      if (jenis === "Cuti Tahunan") {
+          const selisihHari = (new Date(mulai) - new Date()) / (1000 * 60 * 60 * 24);
+          if (selisihHari < 14) {
+              showToast("Cuti Tahunan ditolak: Kurang dari H-14", true);
+              return;
+          }
+      }
+      
+      if (jenis === "Sakit Dengan Surat" && !cutiBase64) {
+          showToast("Wajib melampirkan foto Surat Dokter!", true);
+          return;
+      }
+
+      document.getElementById('formCutiContainer').classList.add('hidden');
+      document.getElementById('cutiLoading').classList.remove('hidden');
+
+      const payload = {
+          action: "pengajuan_cuti",
+          nip: currentUser.nip,
+          nama: currentUser.nama,
+          jabatan: currentUser.jabatan,
+          lokasi: currentUser.lokasi,
+          jenisCuti: jenis,
+          tglMulai: mulai,
+          tglSampai: sampai,
+          alasan: alasan,
+          fileBase64: cutiBase64,
+          fileName: cutiFileName
+      };
+
+      // LINK WEBHOOK ANDA
+      fetch("https://script.google.com/macros/s/AKfycbzwEjmJuY2f_uzNNnotrudMU6OCiGMKPAFYAlQ9rS_kKnT9U-Ou8m2FSyrFL03Kca2avQ/exec", {
+          method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
+      }).then(() => {
+          document.getElementById('cutiLoading').classList.add('hidden');
+          document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Data Anda sedang diproses oleh HRD. Lampiran tersimpan di Cloud.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
+          showToast("Form Cuti/Izin Berhasil Masuk!");
+      }).catch(() => {
+          showToast("Gagal mengirim form!", true);
       });
   }
 </script>
