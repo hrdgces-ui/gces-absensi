@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi PT. GCES V15.0</title>
+  <title>Aplikasi Absensi PT. GCES V15.0 - Real GPS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -57,7 +57,7 @@
 </div>
 
 <main class="flex-1 overflow-y-auto p-4 space-y-4">
-  <!-- BERANDA -->
+  <!-- BERANDA PANE -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
     <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
@@ -65,19 +65,10 @@
         <div>
           <div class="flex items-center space-x-1.5">
             <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-            <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS KERJA</span>
+            <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">MENUNGGU LOKASI...</span>
           </div>
-          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Max 1.000m)</p>
+          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak: <span id="gpsDistanceText" class="font-bold">Mencari satelit...</span></p>
         </div>
-      </div>
-    </div>
-
-    <!-- Simulasi GPS -->
-    <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs space-y-1">
-      <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Simulasi GPS ---</div>
-      <div class="flex items-center justify-between gap-2">
-        <button onclick="setQuickGps(35)" class="flex-1 text-[10px] bg-emerald-50 hover:bg-emerald-100 py-1.5 rounded text-emerald-700 border border-emerald-200">Dalam Radius (35m)</button>
-        <button onclick="setQuickGps(1350)" class="flex-1 text-[10px] bg-red-50 hover:bg-red-100 py-1.5 rounded text-red-700 border border-red-200">Luar Radius (1.3km)</button>
       </div>
     </div>
 
@@ -86,7 +77,7 @@
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
           <h4 class="text-xs font-bold">Luar Area (Akses Terkunci)</h4>
-          <p class="text-[11px] text-red-700">Jarak: <span id="alertDistanceText" class="font-bold">1.350 meter</span></p>
+          <p class="text-[11px] text-red-700">Maksimal jarak absen adalah 1.000 meter dari titik lokasi Anda.</p>
         </div>
       </div>
     </div>
@@ -127,7 +118,7 @@
       </div>
       <div class="relative flex items-center justify-center mt-2">
         <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
-        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group">
+        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed transition duration-200 group">
           <i id="mainAbsenIcon" class="fa-solid fa-fingerprint text-4xl mb-1 group-hover:scale-110 transition"></i>
           <span id="mainAbsenLabel" class="text-xs font-black uppercase tracking-wider">TAP ABSEN</span>
           <span id="mainAbsenSublabel" class="hidden text-[9px] text-emerald-100 font-bold mt-0.5 bg-black/20 px-2 py-0.5 rounded-full">MASUK SHIFT 1</span>
@@ -140,7 +131,6 @@
   <div id="tabContent-cuti" class="space-y-4 tab-content-pane hidden">
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-card-soft">
       <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan</h3>
-      
       <div class="space-y-4" id="formCutiContainer">
          <div>
             <label class="text-[10px] font-bold text-slate-500">Jenis Pengajuan</label>
@@ -151,7 +141,6 @@
                 <option value="Sakit Dengan Surat">Sakit (Dengan Surat Dokter)</option>
             </select>
          </div>
-         
          <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="text-[10px] font-bold text-slate-500">Tanggal Mulai</label>
@@ -162,17 +151,13 @@
                 <input type="date" id="cutiSampai" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
             </div>
          </div>
-         
          <div id="cutiWarningBox" class="hidden bg-rose-50 p-2 rounded-lg border border-rose-200">
              <p class="text-[9px] text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="cutiWarningText">Peringatan aturan!</span></p>
          </div>
-         
          <div>
             <label class="text-[10px] font-bold text-slate-500">Alasan Lengkap (Wajib)</label>
             <textarea id="cutiAlasan" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none h-20 bg-slate-50" placeholder="Jelaskan alasan secara detail..."></textarea>
          </div>
-         
-         <!-- Tombol Upload File -->
          <div id="uploadBox" class="hidden">
              <label class="text-[10px] font-bold text-slate-500 mb-1 block">Upload Bukti Medis (Foto/PDF)</label>
              <div class="relative bg-slate-50 p-4 rounded-xl border-2 border-dashed border-emerald-300 flex flex-col items-center justify-center hover:bg-emerald-50 transition cursor-pointer">
@@ -182,12 +167,10 @@
                  <p id="uploadSubText" class="text-[8px] text-slate-400 mt-1">Maks. 2MB</p>
              </div>
          </div>
-         
          <button id="btnSubmitCuti" onclick="submitCuti()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg transition active:scale-95 flex justify-center items-center">
             <i class="fa-regular fa-paper-plane mr-2"></i> Kirim Pengajuan
          </button>
       </div>
-      
       <div id="cutiLoading" class="hidden flex flex-col items-center justify-center py-10">
           <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500 mb-3"></i>
           <p class="text-xs font-bold text-slate-600">Mengirim data & upload file ke Server...</p>
@@ -195,13 +178,13 @@
     </div>
   </div>
 
+  <!-- PANE LAINNYA -->
   <div id="tabContent-tim" class="space-y-4 tab-content-pane hidden">
      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
         <div><h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3><p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p></div>
         <i class="fa-solid fa-users-gear text-xl text-amber-400"></i>
      </div>
   </div>
-
   <div id="tabContent-admin" class="space-y-4 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
       <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
@@ -209,7 +192,6 @@
     </div>
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
   </div>
-
   <div id="tabContent-riwayat" class="space-y-4 tab-content-pane hidden">
     <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48">
       <i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i>
@@ -218,6 +200,7 @@
   </div>
 </main>
 
+<!-- BOTTOM NAVIGATION -->
 <nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
   <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn"><i class="fa-solid fa-fingerprint text-xl"></i><span class="text-[9px] font-bold">Absen</span></button>
   <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[9px] font-bold">Riwayat</span></button>
@@ -226,6 +209,7 @@
   <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-bold">Admin DB</span></button>
 </nav>
 
+<!-- TOAST & MODAL -->
 <div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
   <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i><span id="toastMessage">Pesan Notifikasi</span>
 </div>
@@ -244,6 +228,7 @@
 </div>
 
 <script>
+  // --- DATA KARYAWAN ---
   const OFFICIAL_EXCEL_EMPLOYEES = [
     { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA" },
     { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA" },
@@ -302,15 +287,27 @@
     { nip: "08.162.04.26", nama: "Anggi ariyandi", email: "anggiariyandi64@gmail.com", jabatan: "CSO", lokasi: "APOTEK SEMPER" }
   ];
 
+  // --- DATABASE TITIK KOORDINAT KANTOR/RS (SUDAH DIKALIBRASI KE ALAMAT ASLI) ---
+  const LOKASI_KOORDINAT = {
+    "RS. HARUM SISMA MEDIKA": { lat: -6.262573, lng: 106.897818 },
+    "RS. SUKMUL SISMA MEDIKA": { lat: -6.115859, lng: 106.892784 },
+    "PT. MOYA INDONESIA": { lat: -6.321972, lng: 107.149805 }, // Tegalgede, Cikarang
+    "PT. SM": { lat: -6.150070, lng: 106.886051 }, // Wisma Mitra Sunter
+    "PT. CELSIUS CREATIVA": { lat: -6.277423, lng: 106.796533 }, // Golden Plaza Fatmawati
+    "PT. SAPTA WARNA CEMERLANG": { lat: -6.187220, lng: 106.763810 }, // Graha Mas Kebon Jeruk
+    "PT. MUTIARA HEXAGON": { lat: -6.187220, lng: 106.763810 }, // Graha Mas Kebon Jeruk
+    "KLINIK SEMPER": { lat: -6.121300, lng: 106.917400 }, // Jl. Kesemek, Semper
+    "APOTEK SEMPER": { lat: -6.121300, lng: 106.917400 } // Jl. Kesemek, Semper
+  };
+
   let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
   let currentUser = null;
   let currentShift = "1";
-  let currentGpsDistance = 35; let maxDistance = 1000;
+  let currentGpsDistance = 9999; 
+  let maxDistance = 1000;
   let isNonShift = false;
   let cameraStream = null;
   let jenisAbsen = "masuk"; 
-  
-  // Variabel Global Cuti
   let cutiBase64 = "";
   let cutiFileName = "";
 
@@ -319,6 +316,60 @@
     const savedUser = localStorage.getItem('gces_currentUser');
     if(savedUser) { let userObj = JSON.parse(savedUser); if(userObj && userObj.nip) { const isValid = employees.find(e => e.nip === userObj.nip); if(isValid) setUser(userObj); } }
   };
+
+  function hitungJarakBumi(lat1, lon1, lat2, lon2) {
+      const R = 6371e3; 
+      const radian = Math.PI / 180;
+      const dLat = (lat2 - lat1) * radian;
+      const dLon = (lon2 - lon1) * radian;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(lat1 * radian) * Math.cos(lat2 * radian) * Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c; 
+  }
+
+  let gpsWatcher = null;
+  function aktifkanGPSAsli() {
+      if(!currentUser) return;
+      const koordinatKantor = LOKASI_KOORDINAT[currentUser.lokasi];
+      if(!koordinatKantor) {
+          showToast("Koordinat lokasi belum disetel!", true);
+          return;
+      }
+
+      document.getElementById('gpsDistanceText').textContent = "Mencari satelit...";
+      document.getElementById('gpsStatusTitle').textContent = "MELACAK POSISI...";
+
+      if (navigator.geolocation) {
+          if(gpsWatcher) navigator.geolocation.clearWatch(gpsWatcher);
+          
+          gpsWatcher = navigator.geolocation.watchPosition(
+              function(position) {
+                  const latKaryawan = position.coords.latitude;
+                  const lngKaryawan = position.coords.longitude;
+                  const jarakMeter = Math.round(hitungJarakBumi(latKaryawan, lngKaryawan, koordinatKantor.lat, koordinatKantor.lng));
+                  
+                  currentGpsDistance = jarakMeter;
+                  updateGpsUI();
+
+                  if(jarakMeter <= maxDistance) {
+                      document.getElementById('gpsStatusTitle').textContent = "DALAM RADIUS KERJA";
+                  } else {
+                      document.getElementById('gpsStatusTitle').textContent = "LUAR RADIUS";
+                  }
+              },
+              function(error) {
+                  showToast("Mohon Izinkan Akses Lokasi (GPS) di HP/Browser Anda!", true);
+                  document.getElementById('gpsDistanceText').textContent = "GPS Diblokir";
+                  document.getElementById('gpsStatusTitle').textContent = "GPS OFF";
+                  currentGpsDistance = 9999;
+                  updateGpsUI();
+              },
+              { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 }
+          );
+      } else {
+          showToast("Browser/HP tidak mendukung GPS", true);
+      }
+  }
 
   function showToast(msg, isErr = false) {
     const toast = document.getElementById('toastNotification');
@@ -372,6 +423,7 @@
           selectShift('1'); 
       }
       updateMainSublabel(); renderUserDropdown();
+      aktifkanGPSAsli();
   }
 
   function updateClock() {
@@ -390,9 +442,13 @@
       updateMainSublabel();
   }
 
-  function setQuickGps(dist) { currentGpsDistance = dist; updateGpsUI(); }
   function updateGpsUI() {
-      document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString() + ' Meter';
+      if(currentGpsDistance === 9999) {
+          // Tetap biarkan teks error
+      } else {
+          document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString() + ' Meter';
+      }
+
       if(currentGpsDistance > maxDistance) {
           document.getElementById('gpsLockedAlert').classList.remove('hidden');
           document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed";
@@ -426,7 +482,7 @@
       
       const payload = { nip: currentUser.nip, nama: currentUser.nama, jabatan: currentUser.jabatan, lokasi: currentUser.lokasi, shift: isNonShift ? "Non-Shift" : `Shift ${currentShift}`, jenisAbsen: jenisAbsen };
       
-      // LINK WEBHOOK ANDA
+      // PASTIKAN LINK WEBHOOK ANDA BENAR
       fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
           method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
       }).then(() => showToast(`Absen ${jenisAbsen.toUpperCase()} Sukses!`)).catch(() => showToast("Tersimpan Lokal", true));
@@ -440,10 +496,6 @@
       document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
   }
 
-  // ==========================================
-  // FITUR CUTI, IZIN & UPLOAD SURAT DOKTER
-  // ==========================================
-  
   function checkCutiRules() {
       const jenis = document.getElementById('cutiJenis').value;
       const tglMulai = document.getElementById('cutiMulai').value;
@@ -452,99 +504,51 @@
       const uploadBox = document.getElementById('uploadBox');
       
       warnBox.classList.add('hidden');
-      
-      // Tampilkan Upload hanya untuk Sakit Dengan Surat
-      if (jenis === "Sakit Dengan Surat") {
-          uploadBox.classList.remove('hidden');
-      } else {
-          uploadBox.classList.add('hidden');
-      }
+      if (jenis === "Sakit Dengan Surat") { uploadBox.classList.remove('hidden'); } else { uploadBox.classList.add('hidden'); }
 
-      // Validasi H-14 Khusus Cuti Tahunan
       if (jenis === "Cuti Tahunan" && tglMulai) {
           const selisihHari = (new Date(tglMulai) - new Date()) / (1000 * 60 * 60 * 24);
-          if (selisihHari < 14) {
-              warnText.textContent = "Pengajuan Cuti Tahunan wajib minimal H-14!";
-              warnBox.classList.remove('hidden');
-          }
+          if (selisihHari < 14) { warnText.textContent = "Pengajuan Cuti Tahunan wajib minimal H-14!"; warnBox.classList.remove('hidden'); }
       }
   }
 
   function handleFileSelect(event) {
       const file = event.target.files[0];
       if (!file) return;
-      
-      // Batas maksimal file 3MB
-      if (file.size > 3 * 1024 * 1024) {
-          showToast("Gagal! Ukuran file maksimal 3 MB", true);
-          return;
-      }
-      
+      if (file.size > 3 * 1024 * 1024) { showToast("Gagal! Ukuran file maksimal 3 MB", true); return; }
       document.getElementById('uploadText').textContent = file.name;
       document.getElementById('uploadIcon').className = "fa-solid fa-file-circle-check text-emerald-500 text-2xl mb-1";
-      
       const reader = new FileReader();
-      reader.onload = function(e) {
-          cutiBase64 = e.target.result;
-          cutiFileName = currentUser.nama.split(' ')[0] + "_" + file.name;
-      };
+      reader.onload = function(e) { cutiBase64 = e.target.result; cutiFileName = currentUser.nama.split(' ')[0] + "_" + file.name; };
       reader.readAsDataURL(file);
   }
 
   function submitCuti() {
       if (!currentUser) { showToast("Pilih Identitas Akun dulu!", true); return; }
-      
       const jenis = document.getElementById('cutiJenis').value;
       const mulai = document.getElementById('cutiMulai').value;
       const sampai = document.getElementById('cutiSampai').value;
       const alasan = document.getElementById('cutiAlasan').value;
       
-      if (!mulai || !sampai || !alasan) {
-          showToast("Lengkapi tanggal dan alasan pengajuan!", true);
-          return;
-      }
-      
-      if (jenis === "Cuti Tahunan") {
-          const selisihHari = (new Date(mulai) - new Date()) / (1000 * 60 * 60 * 24);
-          if (selisihHari < 14) {
-              showToast("Cuti Tahunan ditolak: Kurang dari H-14", true);
-              return;
-          }
-      }
-      
-      if (jenis === "Sakit Dengan Surat" && !cutiBase64) {
-          showToast("Wajib melampirkan foto Surat Dokter!", true);
-          return;
-      }
+      if (!mulai || !sampai || !alasan) { showToast("Lengkapi tanggal dan alasan pengajuan!", true); return; }
+      if (jenis === "Cuti Tahunan") { const selisihHari = (new Date(mulai) - new Date()) / (1000 * 60 * 60 * 24); if (selisihHari < 14) { showToast("Cuti Tahunan ditolak: Kurang dari H-14", true); return; } }
+      if (jenis === "Sakit Dengan Surat" && !cutiBase64) { showToast("Wajib melampirkan foto Surat Dokter!", true); return; }
 
       document.getElementById('formCutiContainer').classList.add('hidden');
       document.getElementById('cutiLoading').classList.remove('hidden');
 
       const payload = {
-          action: "pengajuan_cuti",
-          nip: currentUser.nip,
-          nama: currentUser.nama,
-          jabatan: currentUser.jabatan,
-          lokasi: currentUser.lokasi,
-          email: currentUser.email,
-          jenisCuti: jenis,
-          tglMulai: mulai,
-          tglSampai: sampai,
-          alasan: alasan,
-          fileBase64: cutiBase64,
-          fileName: cutiFileName
+          action: "pengajuan_cuti", nip: currentUser.nip, nama: currentUser.nama, jabatan: currentUser.jabatan, lokasi: currentUser.lokasi, email: currentUser.email,
+          jenisCuti: jenis, tglMulai: mulai, tglSampai: sampai, alasan: alasan, fileBase64: cutiBase64, fileName: cutiFileName
       };
 
-      // LINK WEBHOOK ANDA
       fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
           method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
       }).then(() => {
           document.getElementById('cutiLoading').classList.add('hidden');
           document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Data Anda sedang diproses oleh HRD. Lampiran tersimpan di Cloud.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
           showToast("Form Cuti/Izin Berhasil Masuk!");
-      }).catch(() => {
-          showToast("Gagal mengirim form!", true);
-      });
+      }).catch(() => { showToast("Gagal mengirim form!", true); });
   }
 </script>
 </body>
