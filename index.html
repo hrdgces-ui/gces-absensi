@@ -427,7 +427,7 @@
       const payload = { nip: currentUser.nip, nama: currentUser.nama, jabatan: currentUser.jabatan, lokasi: currentUser.lokasi, shift: isNonShift ? "Non-Shift" : `Shift ${currentShift}`, jenisAbsen: jenisAbsen };
       
       // LINK WEBHOOK ANDA
-      fetch("https://script.google.com/macros/s/AKfycbzxf2ZqjIf-eSkwINcbIwN9YTdo5s6i8N2S4QShsKYYLbE-7goxpti1UzYJ8GDCimXk/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
           method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
       }).then(() => showToast(`Absen ${jenisAbsen.toUpperCase()} Sukses!`)).catch(() => showToast("Tersimpan Lokal", true));
   }
@@ -535,7 +535,7 @@
       };
 
       // LINK WEBHOOK ANDA
-      fetch("https://script.google.com/macros/s/AKfycbzxf2ZqjIf-eSkwINcbIwN9YTdo5s6i8N2S4QShsKYYLbE-7goxpti1UzYJ8GDCimXk/exec", {
+      fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
           method: "POST", mode: "no-cors", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload)
       }).then(() => {
           document.getElementById('cutiLoading').classList.add('hidden');
