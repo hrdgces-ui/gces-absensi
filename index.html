@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi PT. GCES V15.1</title>
+  <title>Aplikasi Absensi PT. GCES V15.2</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.1</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.2</p>
       </div>
     </div>
   </div>
@@ -79,38 +79,30 @@
 <main class="flex-1 overflow-y-auto p-4 space-y-4">
   <!-- BERANDA -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
-    <div id="gpsStatusCard" class="bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
+    <!-- Status GPS Murni Tanpa Tombol Simulasi -->
+    <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
-        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-location-crosshairs"></i></div>
+        <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-location-crosshairs"></i></div>
         <div>
           <div class="flex items-center space-x-1.5">
-            <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
-            <span id="gpsStatusTitle" class="text-xs font-bold text-emerald-900">DALAM RADIUS KERJA</span>
+            <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
+            <span id="gpsStatusTitle" class="text-xs font-bold text-amber-900">MENDETEKSI LOKASI GPS...</span>
           </div>
-          <p id="gpsStatusDesc" class="text-[11px] text-emerald-700 font-medium">Jarak/Akurasi: <span id="gpsDistanceText" class="font-bold">35 Meter</span> (Max 1.000m)</p>
+          <p id="gpsStatusDesc" class="text-[11px] text-amber-700 font-medium">Jarak ke Titik Kerja: <span id="gpsDistanceText" class="font-bold">Menghitung...</span> (Max 1.000m)</p>
+          <p id="gpsTargetSiteText" class="text-[9px] text-slate-500 font-semibold mt-0.5">Titik Lokasi: Pilih akun karyawan terlebih dahulu</p>
         </div>
       </div>
-      <button onclick="initRealGps()" title="Refresh GPS" class="bg-white hover:bg-emerald-100 text-emerald-700 border border-emerald-200 w-8 h-8 rounded-xl flex items-center justify-center shadow-xs transition active:scale-90">
+      <button onclick="initRealGps()" title="Segarkan Titik GPS" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 w-8 h-8 rounded-xl flex items-center justify-center shadow-xs transition active:scale-90 shrink-0">
         <i class="fa-solid fa-arrows-rotate text-xs"></i>
       </button>
-    </div>
-
-    <!-- Kontrol GPS & Simulasi -->
-    <div class="bg-white border border-slate-200 rounded-xl p-2 shadow-2xs space-y-1">
-      <div class="text-[9px] font-bold text-slate-500 text-center uppercase tracking-wider mb-1">--- Kontrol & Simulasi GPS ---</div>
-      <div class="flex items-center justify-between gap-2">
-        <button onclick="initRealGps()" class="flex-1 text-[10px] bg-blue-50 hover:bg-blue-100 py-1.5 rounded text-blue-700 border border-blue-200 font-bold"><i class="fa-solid fa-satellite-dish mr-1"></i>GPS Asli</button>
-        <button onclick="setQuickGps(35)" class="flex-1 text-[10px] bg-emerald-50 hover:bg-emerald-100 py-1.5 rounded text-emerald-700 border border-emerald-200">Dalam (35m)</button>
-        <button onclick="setQuickGps(1350)" class="flex-1 text-[10px] bg-red-50 hover:bg-red-100 py-1.5 rounded text-red-700 border border-red-200">Luar (1.3km)</button>
-      </div>
     </div>
 
     <div id="gpsLockedAlert" class="hidden bg-red-50 border-l-4 border-red-500 p-3 rounded-xl shadow-sm text-red-900">
       <div class="flex items-start space-x-2">
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
-          <h4 class="text-xs font-bold">Luar Area (Akses Terkunci)</h4>
-          <p class="text-[11px] text-red-700">Jarak: <span id="alertDistanceText" class="font-bold">1.350 meter</span></p>
+          <h4 class="text-xs font-bold">Luar Area Kerja (Akses Absen Terkunci)</h4>
+          <p class="text-[11px] text-red-700" id="alertDistanceDesc">Jarak Anda dari lokasi kerja: <span id="alertDistanceText" class="font-bold">-- meter</span>. Anda wajib berada di lokasi kerja untuk melakukan absen.</p>
         </div>
       </div>
     </div>
@@ -240,6 +232,14 @@
       <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
+    <!-- Info Koordinat GPS Saat Ini untuk Kalibrasi Admin -->
+    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
+      <div>
+        <span class="font-bold text-blue-900 block text-[11px]">Titik GPS Perangkat Anda Saat Ini:</span>
+        <span id="adminCurrentCoords" class="text-[10px] font-mono text-blue-700">Mendeteksi...</span>
+      </div>
+      <button onclick="initRealGps()" class="bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Cek Ulang</button>
+    </div>
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
   </div>
 
@@ -292,6 +292,21 @@
 </div>
 
 <script>
+  // =========================================================================
+  // DAFTAR TITIK KOORDINAT GPS RESMI LOKASI PROYEK PT. GCES
+  // =========================================================================
+  const SITE_COORDINATES = {
+    "RS. HARUM SISMA MEDIKA":     { lat: -6.2483, lng: 106.9080 }, // Cipinang Melayu
+    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1215, lng: 106.8805 }, // Tanjung Priok
+    "PT. MOYA INDONESIA":         { lat: -6.3262, lng: 107.1352 }, // Cikarang Selatan, Bekasi
+    "PT. CELSIUS CREATIVA":       { lat: -6.2905, lng: 106.7965 }, // Cilandak
+    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1872, lng: 106.7638 }, // Kebon Jeruk
+    "PT. MUTIARA HEXAGON":        { lat: -6.1872, lng: 106.7638 }, // Kebon Jeruk
+    "PT. SM":                     { lat: -6.1218, lng: 106.8808 }, // PT. Sismadi Mancorpindo, Tanjung Priok
+    "KLINIK SEMPER":              { lat: -6.1278, lng: 106.9242 }, // Semper Barat
+    "APOTEK SEMPER":              { lat: -6.1278, lng: 106.9242 }  // Semper Barat
+  };
+
   const OFFICIAL_EXCEL_EMPLOYEES = [
     { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
     { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
@@ -354,8 +369,9 @@
   let currentUser = null;
   let pendingPinUser = null;
   let currentShift = "1";
-  let currentGpsDistance = 35;
-  let maxDistance = 1000;
+  let currentGpsDistance = 999999; // Default terkunci sebelum GPS terbaca
+  let maxDistance = 1000; // Maksimal radius 1.000 meter dari lokasi kerja
+  let userLiveCoords = null;
   let isNonShift = false;
   let cameraStream = null;
   let jenisAbsen = "masuk";
@@ -371,7 +387,6 @@
     renderUserDropdown();
     renderAdminDB();
     renderRiwayat();
-    initRealGps();
 
     // Cek parameter lokasi jika masuk dari scan QR Code Mading (?lokasi=...)
     const urlParams = new URLSearchParams(window.location.search);
@@ -392,6 +407,8 @@
         }
       } catch (e) {}
     }
+
+    initRealGps();
   };
 
   function showToast(msg, isErr = false) {
@@ -473,6 +490,7 @@
     currentUser = user;
     localStorage.setItem('gces_currentUser', JSON.stringify(user));
     document.getElementById('headerActiveUserShort').textContent = user.nama.split(' ')[0].substring(0, 9);
+    document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${user.lokasi}`;
     if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
@@ -497,6 +515,7 @@
     }
     updateMainSublabel();
     renderUserDropdown();
+    recalculateSiteDistance();
   }
 
   // RENDER DATABASE MASTER (55 KARYAWAN) & TIM LEADER
@@ -565,48 +584,99 @@
     updateMainSublabel();
   }
 
-  // AKURASI GPS REAL-TIME & SIMULASI
+  // =========================================================================
+  // PERHITUNGAN JARAK GEOFENCING REAL-TIME (HAVERSINE FORMULA)
+  // =========================================================================
+  function hitungJarakMeter(lat1, lon1, lat2, lon2) {
+    const R = 6371000; // Radius bumi dalam meter
+    const dLat = (lat2 - lat1) * Math.PI / 180;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return Math.round(R * c);
+  }
+
   function initRealGps() {
     if (!navigator.geolocation) {
-      showToast("Browser tidak mendukung GPS, menggunakan mode default.", true);
+      showToast("Perangkat tidak mendukung GPS!", true);
       return;
     }
-    document.getElementById('gpsDistanceText').textContent = "Mencari GPS...";
+    document.getElementById('gpsDistanceText').textContent = "Mencari Sinyal GPS...";
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        const acc = Math.round(pos.coords.accuracy);
-        currentGpsDistance = acc < 10 ? 10 : acc;
-        updateGpsUI();
+        userLiveCoords = {
+          lat: pos.coords.latitude,
+          lng: pos.coords.longitude,
+          acc: Math.round(pos.coords.accuracy)
+        };
+        const adminCoordsEl = document.getElementById('adminCurrentCoords');
+        if (adminCoordsEl) {
+          adminCoordsEl.textContent = `lat: ${userLiveCoords.lat.toFixed(5)}, lng: ${userLiveCoords.lng.toFixed(5)} (±${userLiveCoords.acc}m)`;
+        }
+        recalculateSiteDistance();
       },
-      () => {
-        currentGpsDistance = 35;
-        updateGpsUI();
+      (err) => {
+        currentGpsDistance = 999999;
+        document.getElementById('gpsStatusTitle').textContent = "AKSES GPS TIDAK AKTIF";
+        document.getElementById('gpsDistanceText').textContent = "Wajib Aktifkan Lokasi HP";
+        updateGpsUI(true);
+        showToast("Wajib aktifkan & izinkan lokasi GPS di HP Anda!", true);
       },
-      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
     );
   }
 
-  function setQuickGps(dist) {
-    currentGpsDistance = dist;
-    updateGpsUI();
+  function recalculateSiteDistance() {
+    if (!userLiveCoords) return;
+
+    // Jika karyawan sudah login, hitung jarak ke lokasi kerjanya
+    if (currentUser && SITE_COORDINATES[currentUser.lokasi]) {
+      const target = SITE_COORDINATES[currentUser.lokasi];
+      currentGpsDistance = hitungJarakMeter(userLiveCoords.lat, userLiveCoords.lng, target.lat, target.lng);
+      document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${currentUser.lokasi}`;
+      updateGpsUI(false);
+    } else {
+      // Jika belum pilih akun, cari jarak ke lokasi proyek PT. GCES terdekat
+      let minJarak = 999999;
+      let namaTerdekat = "";
+      for (const [namaSite, koor] of Object.entries(SITE_COORDINATES)) {
+        const j = hitungJarakMeter(userLiveCoords.lat, userLiveCoords.lng, koor.lat, koor.lng);
+        if (j < minJarak) {
+          minJarak = j;
+          namaTerdekat = namaSite;
+        }
+      }
+      currentGpsDistance = minJarak;
+      document.getElementById('gpsTargetSiteText').textContent = `Terdekat: ${namaTerdekat} (Pilih Akun Anda)`;
+      updateGpsUI(false);
+    }
   }
 
-  function updateGpsUI() {
-    document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' Meter';
-    document.getElementById('alertDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' meter';
-    if (currentGpsDistance > maxDistance) {
+  function updateGpsUI(isGpsError = false) {
+    if (!isGpsError) {
+      document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' Meter';
+      document.getElementById('alertDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' meter';
+    }
+
+    if (isGpsError || currentGpsDistance > maxDistance) {
       document.getElementById('gpsLockedAlert').classList.remove('hidden');
       document.getElementById('gpsStatusCard').className = "bg-red-50 border border-red-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
       document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center text-lg shadow-sm";
-      document.getElementById('gpsStatusTitle').textContent = "DI LUAR RADIUS KERJA";
+      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-red-500 animate-ping";
+      if (!isGpsError) document.getElementById('gpsStatusTitle').textContent = "DI LUAR RADIUS KERJA";
       document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-red-900";
+      document.getElementById('gpsStatusDesc').className = "text-[11px] text-red-700 font-medium";
       document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed";
     } else {
       document.getElementById('gpsLockedAlert').classList.add('hidden');
       document.getElementById('gpsStatusCard').className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
       document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center text-lg shadow-sm";
+      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping";
       document.getElementById('gpsStatusTitle').textContent = "DALAM RADIUS KERJA";
       document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-emerald-900";
+      document.getElementById('gpsStatusDesc').className = "text-[11px] text-emerald-700 font-medium";
       document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition cursor-pointer";
     }
   }
@@ -617,8 +687,8 @@
       toggleUserDropdown();
       return;
     }
-    if (currentGpsDistance > maxDistance) {
-      showToast("Di luar radius kerja!", true);
+    if (!userLiveCoords || currentGpsDistance > maxDistance) {
+      showToast("Akses ditolak: Anda berada di luar radius lokasi kerja!", true);
       return;
     }
     document.getElementById('cameraModal').classList.remove('hidden');
