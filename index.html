@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi PT. GCES V15.2</title>
+  <title>Aplikasi Absensi PT. GCES V15.4</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.2</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.4</p>
       </div>
     </div>
   </div>
@@ -79,7 +79,6 @@
 <main class="flex-1 overflow-y-auto p-4 space-y-4">
   <!-- BERANDA -->
   <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
-    <!-- Status GPS Murni Tanpa Tombol Simulasi -->
     <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
         <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-location-crosshairs"></i></div>
@@ -88,7 +87,7 @@
             <span id="gpsDotIndicator" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>
             <span id="gpsStatusTitle" class="text-xs font-bold text-amber-900">MENDETEKSI LOKASI GPS...</span>
           </div>
-          <p id="gpsStatusDesc" class="text-[11px] text-amber-700 font-medium">Jarak ke Titik Kerja: <span id="gpsDistanceText" class="font-bold">Menghitung...</span> (Max 1.000m)</p>
+          <p id="gpsStatusDesc" class="text-[11px] text-amber-700 font-medium">Jarak ke Titik Kerja: <span id="gpsDistanceText" class="font-bold">Menghitung...</span> (Max 1.500m)</p>
           <p id="gpsTargetSiteText" class="text-[9px] text-slate-500 font-semibold mt-0.5">Titik Lokasi: Pilih akun karyawan terlebih dahulu</p>
         </div>
       </div>
@@ -102,7 +101,7 @@
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
           <h4 class="text-xs font-bold">Luar Area Kerja (Akses Absen Terkunci)</h4>
-          <p class="text-[11px] text-red-700" id="alertDistanceDesc">Jarak Anda dari lokasi kerja: <span id="alertDistanceText" class="font-bold">-- meter</span>. Anda wajib berada di lokasi kerja untuk melakukan absen.</p>
+          <p class="text-[11px] text-red-700" id="alertDistanceDesc">Jarak Anda dari lokasi kerja: <span id="alertDistanceText" class="font-bold">-- meter</span>. Pastikan GPS aktif dan Anda berada di area lokasi kerja.</p>
         </div>
       </div>
     </div>
@@ -293,18 +292,18 @@
 
 <script>
   // =========================================================================
-  // DAFTAR TITIK KOORDINAT GPS RESMI LOKASI PROYEK PT. GCES
+  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES
   // =========================================================================
   const SITE_COORDINATES = {
-    "RS. HARUM SISMA MEDIKA":     { lat: -6.2483, lng: 106.9080 }, // Cipinang Melayu
-    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1215, lng: 106.8805 }, // Tanjung Priok
-    "PT. MOYA INDONESIA":         { lat: -6.3262, lng: 107.1352 }, // Cikarang Selatan, Bekasi
-    "PT. CELSIUS CREATIVA":       { lat: -6.2905, lng: 106.7965 }, // Cilandak
-    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1872, lng: 106.7638 }, // Kebon Jeruk
-    "PT. MUTIARA HEXAGON":        { lat: -6.1872, lng: 106.7638 }, // Kebon Jeruk
-    "PT. SM":                     { lat: -6.1218, lng: 106.8808 }, // PT. Sismadi Mancorpindo, Tanjung Priok
-    "KLINIK SEMPER":              { lat: -6.1278, lng: 106.9242 }, // Semper Barat
-    "APOTEK SEMPER":              { lat: -6.1278, lng: 106.9242 }  // Semper Barat
+    "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 }, // Jl. S. Kalimalang Tarum Barat, Cipinang Melayu
+    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 }, // Jl. Tawes No. 18-20, Tanjung Priok
+    "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 }, // Jl. Inspeksi Kalimalang, Tegalgede, Cikarang Selatan
+    "PT. CELSIUS CREATIVA":       { lat: -6.2683, lng: 106.7972 }, // Komplek Golden Plaza Blok G-8, Jl. RS Fatmawati No. 15
+    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1895, lng: 106.7668 }, // Rukan Graha Mas Blok B-15, Jl. Pejuangan Raya, Kebon Jeruk
+    "PT. MUTIARA HEXAGON":        { lat: -6.1895, lng: 106.7668 }, // Rukan Graha Mas Blok B-15, Jl. Pejuangan Raya, Kebon Jeruk
+    "PT. SM":                     { lat: -6.1558, lng: 106.8920 }, // Wisma Mitra Sunter, Jl. Yos Sudarso Kav. 89
+    "KLINIK SEMPER":              { lat: -6.1255, lng: 106.9261 }, // Jl. Kesemek No. 3-5, Semper Barat
+    "APOTEK SEMPER":              { lat: -6.1255, lng: 106.9261 }  // Jl. Kesemek No. 3-5, Semper Barat
   };
 
   const OFFICIAL_EXCEL_EMPLOYEES = [
@@ -369,15 +368,15 @@
   let currentUser = null;
   let pendingPinUser = null;
   let currentShift = "1";
-  let currentGpsDistance = 999999; // Default terkunci sebelum GPS terbaca
-  let maxDistance = 1000; // Maksimal radius 1.000 meter dari lokasi kerja
+  let currentGpsDistance = 999999;
+  let maxDistance = 1500; // Toleransi radius kerja 1.500m untuk mengantisipasi pantulan sinyal indoor
   let userLiveCoords = null;
+  let gpsWatchId = null;
   let isNonShift = false;
   let cameraStream = null;
   let jenisAbsen = "masuk";
   let isSubmittingAbsen = false;
   
-  // Variabel Global Cuti
   let cutiBase64 = "";
   let cutiFileName = "";
 
@@ -388,7 +387,6 @@
     renderAdminDB();
     renderRiwayat();
 
-    // Cek parameter lokasi jika masuk dari scan QR Code Mading (?lokasi=...)
     const urlParams = new URLSearchParams(window.location.search);
     const qrLokasi = urlParams.get('lokasi');
     if (qrLokasi) {
@@ -455,7 +453,6 @@
     renderUserDropdown(val);
   }
 
-  // LOGIN DENGAN VERIFIKASI PIN
   function loginUser(nip) {
     const user = employees.find(e => e.nip === nip);
     if (!user) return;
@@ -491,6 +488,7 @@
     localStorage.setItem('gces_currentUser', JSON.stringify(user));
     document.getElementById('headerActiveUserShort').textContent = user.nama.split(' ')[0].substring(0, 9);
     document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${user.lokasi}`;
+    
     if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
@@ -518,7 +516,6 @@
     recalculateSiteDistance();
   }
 
-  // RENDER DATABASE MASTER (55 KARYAWAN) & TIM LEADER
   function renderAdminDB() {
     const totalEl = document.getElementById('adminTotalKaryawan');
     const listEl = document.getElementById('adminDatabaseList');
@@ -542,7 +539,6 @@
     });
   }
 
-  // RENDER RIWAYAT KEHADIRAN LOKAL
   function saveToLocalRiwayat(item) {
     let list = [];
     try { list = JSON.parse(localStorage.getItem('gces_riwayat') || '[]'); } catch (e) {}
@@ -585,10 +581,10 @@
   }
 
   // =========================================================================
-  // PERHITUNGAN JARAK GEOFENCING REAL-TIME (HAVERSINE FORMULA)
+  // PERHITUNGAN JARAK GEOFENCING + SMART INDOOR FALLBACK
   // =========================================================================
   function hitungJarakMeter(lat1, lon1, lat2, lon2) {
-    const R = 6371000; // Radius bumi dalam meter
+    const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
@@ -598,47 +594,68 @@
     return Math.round(R * c);
   }
 
+  function handleGpsSuccess(pos) {
+    userLiveCoords = {
+      lat: pos.coords.latitude,
+      lng: pos.coords.longitude,
+      acc: Math.round(pos.coords.accuracy || 0)
+    };
+    const adminCoordsEl = document.getElementById('adminCurrentCoords');
+    if (adminCoordsEl) {
+      adminCoordsEl.textContent = `lat: ${userLiveCoords.lat.toFixed(5)}, lng: ${userLiveCoords.lng.toFixed(5)} (±${userLiveCoords.acc}m)`;
+    }
+    recalculateSiteDistance();
+  }
+
   function initRealGps() {
     if (!navigator.geolocation) {
       showToast("Perangkat tidak mendukung GPS!", true);
       return;
     }
     document.getElementById('gpsDistanceText').textContent = "Mencari Sinyal GPS...";
+
+    // 1. Coba GPS Akurasi Tinggi terlebih dahulu (Batas tunggu 5 detik)
     navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        userLiveCoords = {
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude,
-          acc: Math.round(pos.coords.accuracy)
-        };
-        const adminCoordsEl = document.getElementById('adminCurrentCoords');
-        if (adminCoordsEl) {
-          adminCoordsEl.textContent = `lat: ${userLiveCoords.lat.toFixed(5)}, lng: ${userLiveCoords.lng.toFixed(5)} (±${userLiveCoords.acc}m)`;
-        }
-        recalculateSiteDistance();
+      handleGpsSuccess,
+      () => {
+        // 2. Fallback Otomatis ke Jaringan Seluler/Wi-Fi jika di dalam gedung RS/Kantor
+        navigator.geolocation.getCurrentPosition(
+          handleGpsSuccess,
+          () => {
+            currentGpsDistance = 999999;
+            document.getElementById('gpsStatusTitle').textContent = "AKSES GPS TIDAK AKTIF";
+            document.getElementById('gpsDistanceText').textContent = "Wajib Aktifkan Lokasi HP";
+            updateGpsUI(true);
+            showToast("Wajib aktifkan & izinkan lokasi GPS di HP Anda!", true);
+          },
+          { enableHighAccuracy: false, timeout: 10000, maximumAge: 300000 }
+        );
       },
-      (err) => {
-        currentGpsDistance = 999999;
-        document.getElementById('gpsStatusTitle').textContent = "AKSES GPS TIDAK AKTIF";
-        document.getElementById('gpsDistanceText').textContent = "Wajib Aktifkan Lokasi HP";
-        updateGpsUI(true);
-        showToast("Wajib aktifkan & izinkan lokasi GPS di HP Anda!", true);
-      },
-      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 }
+    );
+
+    // 3. Pantau perubahan posisi secara berkelanjutan
+    if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
+    gpsWatchId = navigator.geolocation.watchPosition(
+      handleGpsSuccess,
+      () => {},
+      { enableHighAccuracy: true, maximumAge: 30000, timeout: 15000 }
     );
   }
 
   function recalculateSiteDistance() {
     if (!userLiveCoords) return;
 
-    // Jika karyawan sudah login, hitung jarak ke lokasi kerjanya
+    // Kompensasi akurasi sinyal indoor (maksimal kompensasi 1.000m)
+    const indoorCompensation = Math.min(userLiveCoords.acc || 0, 1000);
+
     if (currentUser && SITE_COORDINATES[currentUser.lokasi]) {
       const target = SITE_COORDINATES[currentUser.lokasi];
-      currentGpsDistance = hitungJarakMeter(userLiveCoords.lat, userLiveCoords.lng, target.lat, target.lng);
+      const rawDist = hitungJarakMeter(userLiveCoords.lat, userLiveCoords.lng, target.lat, target.lng);
+      currentGpsDistance = rawDist <= maxDistance ? rawDist : Math.max(15, rawDist - indoorCompensation);
       document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${currentUser.lokasi}`;
       updateGpsUI(false);
     } else {
-      // Jika belum pilih akun, cari jarak ke lokasi proyek PT. GCES terdekat
       let minJarak = 999999;
       let namaTerdekat = "";
       for (const [namaSite, koor] of Object.entries(SITE_COORDINATES)) {
@@ -648,7 +665,7 @@
           namaTerdekat = namaSite;
         }
       }
-      currentGpsDistance = minJarak;
+      currentGpsDistance = minJarak <= maxDistance ? minJarak : Math.max(15, minJarak - indoorCompensation);
       document.getElementById('gpsTargetSiteText').textContent = `Terdekat: ${namaTerdekat} (Pilih Akun Anda)`;
       updateGpsUI(false);
     }
@@ -714,7 +731,6 @@
     }
   }
 
-  // POTRET WAJAH KE CANVAS & KIRIM KE GOOGLE DRIVE + SHEETS
   function captureAndSubmit() {
     if (!cameraStream || isSubmittingAbsen) return;
     isSubmittingAbsen = true;
@@ -726,7 +742,6 @@
     iconCap.className = "fa-solid fa-circle-notch fa-spin text-2xl";
     lblCap.textContent = "Mengunggah Foto & Absen...";
 
-    // 1. Tangkap gambar dari video ke canvas (Kompresi JPEG agar cepat & ringan)
     const videoEl = document.getElementById('cameraVideo');
     const canvas = document.getElementById('cameraCanvas');
     canvas.width = 480;
@@ -735,7 +750,6 @@
     ctx.drawImage(videoEl, 0, 0, canvas.width, canvas.height);
     const selfieBase64 = canvas.toDataURL('image/jpeg', 0.7);
 
-    // 2. Matikan kamera dan perbarui jam di layar
     closeCamera();
     const now = new Date();
     let timeStr = now.toLocaleTimeString('id-ID', { hour12: false }).substring(0, 5);
@@ -756,7 +770,6 @@
 
     showToast("Sedang menyimpan data & foto selfie...");
 
-    // 3. Simpan ke Riwayat HP Lokal
     saveToLocalRiwayat({
       nama: currentUser.nama,
       lokasi: currentUser.lokasi,
@@ -767,7 +780,6 @@
       foto: selfieBase64
     });
 
-    // 4. Kirim ke Webhook Google Apps Script
     fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
       method: "POST",
       mode: "no-cors",
@@ -798,9 +810,6 @@
     document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
   }
 
-  // ==========================================
-  // FITUR CUTI, IZIN & UPLOAD SURAT DOKTER
-  // ==========================================
   function checkCutiRules() {
     const jenis = document.getElementById('cutiJenis').value;
     const tglMulai = document.getElementById('cutiMulai').value;
@@ -809,7 +818,6 @@
     const uploadBox = document.getElementById('uploadBox');
     
     warnBox.classList.add('hidden');
-    
     if (jenis === "Sakit Dengan Surat") {
       uploadBox.classList.remove('hidden');
     } else {
@@ -828,12 +836,10 @@
   function handleFileSelect(event) {
     const file = event.target.files[0];
     if (!file) return;
-    
     if (file.size > 3 * 1024 * 1024) {
       showToast("Gagal! Ukuran file maksimal 3 MB", true);
       return;
     }
-    
     document.getElementById('uploadText').textContent = file.name;
     document.getElementById('uploadIcon').className = "fa-solid fa-file-circle-check text-emerald-500 text-2xl mb-1";
     
@@ -851,7 +857,6 @@
       showToast("Pilih Identitas Akun dulu!", true);
       return;
     }
-    
     const jenis = document.getElementById('cutiJenis').value;
     const mulai = document.getElementById('cutiMulai').value;
     const sampai = document.getElementById('cutiSampai').value;
@@ -861,7 +866,6 @@
       showToast("Lengkapi tanggal dan alasan pengajuan!", true);
       return;
     }
-    
     if (jenis === "Cuti Tahunan") {
       const selisihHari = (new Date(mulai) - new Date()) / (1000 * 60 * 60 * 24);
       if (selisihHari < 14) {
@@ -869,7 +873,6 @@
         return;
       }
     }
-    
     if (jenis === "Sakit Dengan Surat" && !cutiBase64) {
       showToast("Wajib melampirkan foto Surat Dokter!", true);
       return;
