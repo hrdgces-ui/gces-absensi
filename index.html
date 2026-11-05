@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi PT. GCES V15.4</title>
+  <title>Aplikasi Absensi PT. GCES V15.5</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.4</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.5</p>
       </div>
     </div>
   </div>
@@ -76,9 +76,9 @@
   </div>
 </div>
 
-<main class="flex-1 overflow-y-auto p-4 space-y-4">
+<main class="flex-1 overflow-y-auto p-4 space-y-3.5">
   <!-- BERANDA -->
-  <div id="tabContent-beranda" class="space-y-4 tab-content-pane">
+  <div id="tabContent-beranda" class="space-y-3.5 tab-content-pane">
     <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
         <div id="gpsIconBg" class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-lg shadow-sm"><i class="fa-solid fa-location-crosshairs"></i></div>
@@ -113,19 +113,19 @@
       <div class="text-3xl font-black text-white tracking-wider my-1 font-mono" id="liveClockText">00:00:00 <span class="text-xs text-emerald-400 font-sans">WIB</span></div>
       <div class="mt-3 pt-3 border-t border-slate-800 grid grid-cols-2 gap-2 text-left">
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
-          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM MASUK</span>
-          <span id="clockInSummary" class="text-sm font-black text-slate-300">-- : --</span>
+          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM MASUK HARI INI</span>
+          <span id="clockInSummary" class="text-sm font-black text-emerald-400">-- : --</span>
         </div>
         <div class="bg-slate-800/70 p-2 rounded-xl border border-slate-700/50 flex flex-col justify-center items-center">
-          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM PULANG</span>
-          <span id="clockOutSummary" class="text-sm font-black text-slate-300">-- : --</span>
+          <span class="text-[9px] text-slate-400 font-medium block mb-0.5">JAM PULANG HARI INI</span>
+          <span id="clockOutSummary" class="text-sm font-black text-rose-400">-- : --</span>
         </div>
       </div>
     </div>
 
     <!-- Pilihan Shift -->
     <div id="shiftSelectorBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
-      <span class="text-xs font-bold text-slate-800 flex items-center"><i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift:</span>
+      <span class="text-xs font-bold text-slate-800 flex items-center"><i class="fa-solid fa-clock-rotate-left text-emerald-600 mr-1.5"></i> Pilih Shift Kerja:</span>
       <div class="flex gap-1.5" id="shiftButtonsContainer">
         <button onclick="selectShift('1')" id="btnShift1" class="flex-1 border border-emerald-500 bg-emerald-50 text-emerald-700 py-1.5 rounded-lg text-[10px] font-bold">Shift 1</button>
         <button onclick="selectShift('2')" id="btnShift2" class="flex-1 border border-slate-200 bg-slate-50 text-slate-500 py-1.5 rounded-lg text-[10px] font-bold">Shift 2</button>
@@ -134,18 +134,40 @@
       </div>
     </div>
 
-    <!-- Area Absen -->
-    <div class="py-4 flex flex-col items-center justify-center space-y-4">
-      <div class="flex bg-slate-200/70 p-1.5 rounded-xl w-60 z-10 relative shadow-inner">
-        <button onclick="setJenisAbsen('masuk')" id="btnJenisMasuk" class="flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-emerald-600 shadow-sm transition">MASUK</button>
-        <button onclick="setJenisAbsen('pulang')" id="btnJenisPulang" class="flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer">PULANG</button>
+    <!-- Pilihan Kategori Kehadiran: Reguler (H) / Lembur (L) / Long Shift (LS) -->
+    <div id="kategoriKerjaBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
+      <div class="flex items-center justify-between">
+        <span class="text-xs font-bold text-slate-800 flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> Kategori Kehadiran:</span>
+        <span id="kategoriBadgeInfo" class="text-[9px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700">Kode Rekap: H (Reguler)</span>
       </div>
-      <div class="relative flex items-center justify-center mt-2">
+      <div class="grid grid-cols-3 gap-1.5">
+        <button onclick="selectKategoriKerja('H')" id="btnKatH" class="border border-emerald-500 bg-emerald-50 text-emerald-700 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition shadow-xs">
+          <span class="font-black text-[11px]">REGULER</span>
+          <span class="text-[8px] opacity-80">Hadir Normal (H)</span>
+        </button>
+        <button onclick="selectKategoriKerja('L')" id="btnKatL" class="border border-slate-200 bg-slate-50 text-slate-500 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition">
+          <span class="font-black text-[11px]">LEMBUR (L)</span>
+          <span class="text-[8px] opacity-80">Jam Tambahan</span>
+        </button>
+        <button onclick="selectKategoriKerja('LS')" id="btnKatLS" class="border border-slate-200 bg-slate-50 text-slate-500 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition">
+          <span class="font-black text-[11px]">LONG SHIFT</span>
+          <span class="text-[8px] opacity-80">Double Shift (LS)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Area Absen -->
+    <div class="py-2 flex flex-col items-center justify-center space-y-3.5">
+      <div class="flex bg-slate-200/70 p-1.5 rounded-xl w-64 z-10 relative shadow-inner">
+        <button onclick="setJenisAbsen('masuk')" id="btnJenisMasuk" class="flex-1 text-[11px] font-bold py-2 rounded-lg bg-white text-emerald-600 shadow-sm transition">ABSEN MASUK</button>
+        <button onclick="setJenisAbsen('pulang')" id="btnJenisPulang" class="flex-1 text-[11px] font-bold py-2 rounded-lg text-slate-500 hover:text-slate-700 transition cursor-pointer">ABSEN PULANG</button>
+      </div>
+      <div class="relative flex items-center justify-center mt-1">
         <div id="btnGlowRing" class="absolute w-44 h-44 rounded-full bg-emerald-500/20 animate-pulse-ring"></div>
-        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group">
+        <button id="mainAbsenBtn" onclick="triggerAbsenAction()" class="relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition duration-200 group px-2 text-center">
           <i id="mainAbsenIcon" class="fa-solid fa-fingerprint text-4xl mb-1 group-hover:scale-110 transition"></i>
           <span id="mainAbsenLabel" class="text-xs font-black uppercase tracking-wider">TAP ABSEN</span>
-          <span id="mainAbsenSublabel" class="hidden text-[9px] text-emerald-100 font-bold mt-0.5 bg-black/20 px-2 py-0.5 rounded-full">MASUK SHIFT 1</span>
+          <span id="mainAbsenSublabel" class="text-[8px] text-emerald-100 font-bold mt-1 bg-black/25 px-2 py-0.5 rounded-full leading-tight">MASUK SHIFT 1 &bull; REGULER (H)</span>
         </button>
       </div>
     </div>
@@ -187,7 +209,6 @@
             <textarea id="cutiAlasan" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none h-20 bg-slate-50" placeholder="Jelaskan alasan secara detail..."></textarea>
          </div>
          
-         <!-- Tombol Upload File -->
          <div id="uploadBox" class="hidden">
              <label class="text-[10px] font-bold text-slate-500 mb-1 block">Upload Bukti Medis (Foto/PDF)</label>
              <div class="relative bg-slate-50 p-4 rounded-xl border-2 border-dashed border-emerald-300 flex flex-col items-center justify-center hover:bg-emerald-50 transition cursor-pointer">
@@ -231,7 +252,6 @@
       <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
-    <!-- Info Koordinat GPS Saat Ini untuk Kalibrasi Admin -->
     <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
       <div>
         <span class="font-bold text-blue-900 block text-[11px]">Titik GPS Perangkat Anda Saat Ini:</span>
@@ -242,16 +262,22 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
   </div>
 
-  <!-- RIWAYAT PANE -->
-  <div id="tabContent-riwayat" class="space-y-4 tab-content-pane hidden">
-    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-emerald-500">
+  <!-- RIWAYAT PANE (TERSINKRONISASI SERVER GOOGLE SHEET) -->
+  <div id="tabContent-riwayat" class="space-y-3.5 tab-content-pane hidden">
+    <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-emerald-500">
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Riwayat Kehadiran HP Ini</h3>
-        <p class="text-[10px] text-slate-400">Tersimpan otomatis saat Anda melakukan absen</p>
+        <div class="flex items-center gap-1.5">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Riwayat Absensi Server</h3>
+          <span id="riwayatSyncBadge" class="text-[8px] bg-emerald-900/80 text-emerald-300 px-1.5 py-0.5 rounded border border-emerald-700 font-bold">LIVE SHEET</span>
+        </div>
+        <p id="riwayatSubTitle" class="text-[10px] text-slate-400 mt-0.5">Tersinkronisasi dengan Google Sheet PT. GCES</p>
       </div>
-      <i class="fa-solid fa-clock-rotate-left text-xl text-emerald-400"></i>
+      <button onclick="syncRiwayatFromServer(true)" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-3 py-2 rounded-xl text-[10px] font-bold flex items-center gap-1.5 active:scale-95 transition shrink-0">
+        <i id="riwayatRefreshIcon" class="fa-solid fa-arrows-rotate"></i>
+        <span>Sync</span>
+      </button>
     </div>
-    <div id="riwayatContainer" class="space-y-2"></div>
+    <div id="riwayatContainer" class="space-y-2.5"></div>
   </div>
 </main>
 
@@ -291,19 +317,21 @@
 </div>
 
 <script>
+  const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
+
   // =========================================================================
-  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES
+  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (TERKUNCI)
   // =========================================================================
   const SITE_COORDINATES = {
-    "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 }, // Jl. S. Kalimalang Tarum Barat, Cipinang Melayu
-    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 }, // Jl. Tawes No. 18-20, Tanjung Priok
-    "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 }, // Jl. Inspeksi Kalimalang, Tegalgede, Cikarang Selatan
-    "PT. CELSIUS CREATIVA":       { lat: -6.2683, lng: 106.7972 }, // Komplek Golden Plaza Blok G-8, Jl. RS Fatmawati No. 15
-    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1895, lng: 106.7668 }, // Rukan Graha Mas Blok B-15, Jl. Pejuangan Raya, Kebon Jeruk
-    "PT. MUTIARA HEXAGON":        { lat: -6.1895, lng: 106.7668 }, // Rukan Graha Mas Blok B-15, Jl. Pejuangan Raya, Kebon Jeruk
-    "PT. SM":                     { lat: -6.1558, lng: 106.8920 }, // Wisma Mitra Sunter, Jl. Yos Sudarso Kav. 89
-    "KLINIK SEMPER":              { lat: -6.1255, lng: 106.9261 }, // Jl. Kesemek No. 3-5, Semper Barat
-    "APOTEK SEMPER":              { lat: -6.1255, lng: 106.9261 }  // Jl. Kesemek No. 3-5, Semper Barat
+    "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
+    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 },
+    "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 },
+    "PT. CELSIUS CREATIVA":       { lat: -6.2683, lng: 106.7972 },
+    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1895, lng: 106.7668 },
+    "PT. MUTIARA HEXAGON":        { lat: -6.1895, lng: 106.7668 },
+    "PT. SM":                     { lat: -6.1558, lng: 106.8920 },
+    "KLINIK SEMPER":              { lat: -6.1255, lng: 106.9261 },
+    "APOTEK SEMPER":              { lat: -6.1255, lng: 106.9261 }
   };
 
   const OFFICIAL_EXCEL_EMPLOYEES = [
@@ -368,14 +396,16 @@
   let currentUser = null;
   let pendingPinUser = null;
   let currentShift = "1";
+  let currentKategoriKerja = "H";
   let currentGpsDistance = 999999;
-  let maxDistance = 1500; // Toleransi radius kerja 1.500m untuk mengantisipasi pantulan sinyal indoor
+  let maxDistance = 1500;
   let userLiveCoords = null;
   let gpsWatchId = null;
   let isNonShift = false;
   let cameraStream = null;
   let jenisAbsen = "masuk";
   let isSubmittingAbsen = false;
+  let serverRiwayatCache = [];
   
   let cutiBase64 = "";
   let cutiFileName = "";
@@ -425,9 +455,34 @@
     updateMainSublabel();
   }
 
+  function selectKategoriKerja(kode) {
+    currentKategoriKerja = kode;
+    const badge = document.getElementById('kategoriBadgeInfo');
+    const styles = {
+      'H':  { active: "border border-emerald-500 bg-emerald-50 text-emerald-700 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition shadow-xs", badgeText: "Kode Rekap: H (Reguler)", badgeCls: "text-[9px] font-bold px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700" },
+      'L':  { active: "border border-teal-500 bg-teal-50 text-teal-800 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition shadow-xs", badgeText: "Kode Rekap: L (Lembur)", badgeCls: "text-[9px] font-bold px-2 py-0.5 rounded-md bg-teal-100 text-teal-800" },
+      'LS': { active: "border border-purple-500 bg-purple-50 text-purple-800 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition shadow-xs", badgeText: "Kode Rekap: LS (Long Shift)", badgeCls: "text-[9px] font-bold px-2 py-0.5 rounded-md bg-purple-100 text-purple-800" }
+    };
+    const inactiveCls = "border border-slate-200 bg-slate-50 text-slate-500 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition";
+
+    ['H', 'L', 'LS'].forEach(k => {
+      const btn = document.getElementById('btnKat' + k);
+      if (btn) btn.className = (k === kode) ? styles[k].active : inactiveCls;
+    });
+
+    if (badge && styles[kode]) {
+      badge.textContent = styles[kode].badgeText;
+      badge.className = styles[kode].badgeCls;
+    }
+    updateMainSublabel();
+  }
+
   function updateMainSublabel() {
-    document.getElementById('mainAbsenSublabel').textContent = `${jenisAbsen.toUpperCase()} ${isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`}`;
-    document.getElementById('mainAbsenSublabel').classList.remove('hidden');
+    const labelShift = isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`;
+    const labelKat = currentKategoriKerja === 'L' ? 'LEMBUR (L)' : (currentKategoriKerja === 'LS' ? 'LONG SHIFT (LS)' : 'REGULER (H)');
+    const subEl = document.getElementById('mainAbsenSublabel');
+    subEl.textContent = `${jenisAbsen.toUpperCase()} ${labelShift} • ${labelKat}`;
+    subEl.classList.remove('hidden');
   }
 
   function formatInitials(name) {
@@ -488,6 +543,8 @@
     localStorage.setItem('gces_currentUser', JSON.stringify(user));
     document.getElementById('headerActiveUserShort').textContent = user.nama.split(' ')[0].substring(0, 9);
     document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${user.lokasi}`;
+    document.getElementById('clockInSummary').textContent = "-- : --";
+    document.getElementById('clockOutSummary').textContent = "-- : --";
     
     if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
@@ -511,9 +568,11 @@
       }
       selectShift('1');
     }
+    selectKategoriKerja('H');
     updateMainSublabel();
     renderUserDropdown();
     recalculateSiteDistance();
+    syncRiwayatFromServer(false);
   }
 
   function renderAdminDB() {
@@ -539,6 +598,60 @@
     });
   }
 
+  function getTodayFormatted() {
+    const d = new Date();
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}-${mm}-${yyyy}`;
+  }
+
+  async function syncRiwayatFromServer(showNotif = false) {
+    if (!currentUser) {
+      renderRiwayat();
+      return;
+    }
+    const refreshIcon = document.getElementById('riwayatRefreshIcon');
+    const subTitle = document.getElementById('riwayatSubTitle');
+    if (refreshIcon) refreshIcon.classList.add('fa-spin');
+    if (subTitle) subTitle.textContent = `Menarik data ${currentUser.nama} dari Google Sheet...`;
+
+    try {
+      const url = `${GAS_WEB_APP_URL}?action=get_riwayat&nip=${encodeURIComponent(currentUser.nip)}&lokasi=${encodeURIComponent(currentUser.lokasi)}&_t=${Date.now()}`;
+      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      const data = await res.json();
+
+      if (data && data.status === "success" && Array.isArray(data.records)) {
+        serverRiwayatCache = data.records;
+        localStorage.setItem('gces_server_riwayat_' + currentUser.nip, JSON.stringify(serverRiwayatCache));
+
+        const todayStr = getTodayFormatted();
+        const todayRec = serverRiwayatCache.find(r => r.tanggal === todayStr);
+        if (todayRec) {
+          if (todayRec.clockIn && todayRec.clockIn !== "-") {
+            document.getElementById('clockInSummary').textContent = todayRec.clockIn.substring(0, 5);
+          }
+          if (todayRec.clockOut && todayRec.clockOut !== "-" && todayRec.clockOut !== "") {
+            document.getElementById('clockOutSummary').textContent = todayRec.clockOut.substring(0, 5);
+          }
+        }
+        if (subTitle) subTitle.textContent = `Akun: ${currentUser.nama} (${serverRiwayatCache.length} Data Server)`;
+        if (showNotif) showToast("Riwayat berhasil disinkronkan dari Google Sheet!");
+      }
+    } catch (err) {
+      try {
+        serverRiwayatCache = JSON.parse(localStorage.getItem('gces_server_riwayat_' + currentUser.nip) || '[]');
+      } catch (e) {
+        serverRiwayatCache = [];
+      }
+      if (subTitle) subTitle.textContent = `Mode Offline (${currentUser.nama})`;
+      if (showNotif) showToast("Menampilkan data riwayat tersimpan.", true);
+    } finally {
+      if (refreshIcon) refreshIcon.classList.remove('fa-spin');
+      renderRiwayat();
+    }
+  }
+
   function saveToLocalRiwayat(item) {
     let list = [];
     try { list = JSON.parse(localStorage.getItem('gces_riwayat') || '[]'); } catch (e) {}
@@ -551,16 +664,76 @@
   function renderRiwayat() {
     const container = document.getElementById('riwayatContainer');
     if (!container) return;
+
+    if (currentUser && serverRiwayatCache && serverRiwayatCache.length > 0) {
+      container.innerHTML = '';
+      serverRiwayatCache.forEach(rec => {
+        const isLS = (rec.overtime && rec.overtime.includes("LS")) || (rec.status && rec.status.includes("LS"));
+        const isL  = !isLS && ((rec.overtime && rec.overtime.includes("L")) || (rec.status && rec.status.includes("L")));
+        const katBadge = isLS
+          ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 border border-purple-200">LONG SHIFT (LS)</span>`
+          : (isL
+              ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-teal-100 text-teal-800 border border-teal-200">LEMBUR (L)</span>`
+              : `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 border border-emerald-200">HADIR (H)</span>`);
+
+        const jamMasukTxt = rec.clockIn || "--:--";
+        const jamPulangTxt = rec.clockOut ? rec.clockOut : "Belum Pulang";
+        const pulangColor = rec.clockOut ? "text-rose-600 font-black" : "text-amber-600 font-bold italic";
+        const durasiTxt = rec.totalHours ? rec.totalHours : "-";
+
+        const linkMasuk = (rec.fotoMasuk && rec.fotoMasuk.startsWith("http"))
+          ? `<a href="${rec.fotoMasuk}" target="_blank" class="text-[9px] font-bold text-blue-600 underline"><i class="fa-solid fa-image mr-0.5"></i>Foto Masuk</a>` : '';
+        const linkPulang = (rec.fotoPulang && rec.fotoPulang.startsWith("http"))
+          ? `<a href="${rec.fotoPulang}" target="_blank" class="text-[9px] font-bold text-rose-600 underline"><i class="fa-solid fa-image mr-0.5"></i>Foto Pulang</a>` : '';
+
+        container.insertAdjacentHTML('beforeend', `
+          <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
+            <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+              <div>
+                <span class="text-xs font-black text-slate-800">${rec.tanggal}</span>
+                <span class="text-[10px] font-bold text-slate-500 ml-1.5">&bull; ${rec.shift || 'Shift'}</span>
+              </div>
+              ${katBadge}
+            </div>
+            <div class="grid grid-cols-3 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-center">
+              <div>
+                <span class="text-[8px] font-bold text-slate-400 block uppercase">Clock-In</span>
+                <span class="text-[11px] font-black text-emerald-600">${jamMasukTxt}</span>
+              </div>
+              <div>
+                <span class="text-[8px] font-bold text-slate-400 block uppercase">Clock-Out</span>
+                <span class="text-[11px] ${pulangColor}">${jamPulangTxt}</span>
+              </div>
+              <div>
+                <span class="text-[8px] font-bold text-slate-400 block uppercase">Total Jam</span>
+                <span class="text-[10px] font-bold text-slate-700">${durasiTxt}</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-0.5">
+              <span class="text-[9px] font-semibold text-slate-400"><i class="fa-solid fa-location-dot mr-1 text-emerald-500"></i>${rec.lokasi}</span>
+              <div class="flex items-center gap-3">${linkMasuk}${linkPulang}</div>
+            </div>
+          </div>
+        `);
+      });
+      return;
+    }
+
     let list = [];
     try { list = JSON.parse(localStorage.getItem('gces_riwayat') || '[]'); } catch (e) {}
+    if (currentUser) {
+      list = list.filter(item => item.nip === currentUser.nip || item.nama === currentUser.nama);
+    }
+
     if (list.length === 0) {
-      container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48"><i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i><h4 class="text-sm font-bold text-slate-700">Riwayat Kehadiran</h4><p class="text-xs text-slate-500 mt-1">Belum ada data riwayat absensi lokal di perangkat ini.</p></div>`;
+      container.innerHTML = `<div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-card-soft text-center flex flex-col items-center justify-center h-48"><i class="fa-solid fa-clock-rotate-left text-4xl mb-3 text-slate-300"></i><h4 class="text-sm font-bold text-slate-700">Belum Ada Riwayat Kehadiran</h4><p class="text-xs text-slate-500 mt-1">${currentUser ? 'Klik tombol Sync di kanan atas untuk memuat data dari Google Sheet.' : 'Pilih akun karyawan terlebih dahulu untuk melihat riwayat absensi.'}</p></div>`;
       return;
     }
     container.innerHTML = '';
     list.forEach(item => {
       const badgeColor = item.jenis === 'masuk' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
-      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${item.jam} WIB (${item.shift})</p><p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
+      const katText = item.kategori === 'L' ? ' • LEMBUR (L)' : (item.kategori === 'LS' ? ' • LONG SHIFT (LS)' : '');
+      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}${katText}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${item.jam} WIB (${item.shift})</p><p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
     });
   }
 
@@ -580,9 +753,6 @@
     updateMainSublabel();
   }
 
-  // =========================================================================
-  // PERHITUNGAN JARAK GEOFENCING + SMART INDOOR FALLBACK
-  // =========================================================================
   function hitungJarakMeter(lat1, lon1, lat2, lon2) {
     const R = 6371000;
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -614,11 +784,9 @@
     }
     document.getElementById('gpsDistanceText').textContent = "Mencari Sinyal GPS...";
 
-    // 1. Coba GPS Akurasi Tinggi terlebih dahulu (Batas tunggu 5 detik)
     navigator.geolocation.getCurrentPosition(
       handleGpsSuccess,
       () => {
-        // 2. Fallback Otomatis ke Jaringan Seluler/Wi-Fi jika di dalam gedung RS/Kantor
         navigator.geolocation.getCurrentPosition(
           handleGpsSuccess,
           () => {
@@ -634,7 +802,6 @@
       { enableHighAccuracy: true, timeout: 5000, maximumAge: 60000 }
     );
 
-    // 3. Pantau perubahan posisi secara berkelanjutan
     if (gpsWatchId !== null) navigator.geolocation.clearWatch(gpsWatchId);
     gpsWatchId = navigator.geolocation.watchPosition(
       handleGpsSuccess,
@@ -646,7 +813,6 @@
   function recalculateSiteDistance() {
     if (!userLiveCoords) return;
 
-    // Kompensasi akurasi sinyal indoor (maksimal kompensasi 1.000m)
     const indoorCompensation = Math.min(userLiveCoords.acc || 0, 1000);
 
     if (currentUser && SITE_COORDINATES[currentUser.lokasi]) {
@@ -685,7 +851,7 @@
       if (!isGpsError) document.getElementById('gpsStatusTitle').textContent = "DI LUAR RADIUS KERJA";
       document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-red-900";
       document.getElementById('gpsStatusDesc').className = "text-[11px] text-red-700 font-medium";
-      document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed";
+      document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-slate-300 text-slate-500 flex flex-col items-center justify-center border-4 border-slate-200 cursor-not-allowed px-2 text-center";
     } else {
       document.getElementById('gpsLockedAlert').classList.add('hidden');
       document.getElementById('gpsStatusCard').className = "bg-emerald-50 border border-emerald-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
@@ -694,7 +860,7 @@
       document.getElementById('gpsStatusTitle').textContent = "DALAM RADIUS KERJA";
       document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-emerald-900";
       document.getElementById('gpsStatusDesc').className = "text-[11px] text-emerald-700 font-medium";
-      document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition cursor-pointer";
+      document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-emerald-600 to-emerald-400 text-white shadow-glow-emerald flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition cursor-pointer px-2 text-center";
     }
   }
 
@@ -753,7 +919,7 @@
     closeCamera();
     const now = new Date();
     let timeStr = now.toLocaleTimeString('id-ID', { hour12: false }).substring(0, 5);
-    let dateStr = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+    let dateStr = getTodayFormatted();
     if (jenisAbsen === "masuk") document.getElementById('clockInSummary').textContent = timeStr;
     else document.getElementById('clockOutSummary').textContent = timeStr;
 
@@ -765,28 +931,33 @@
       lokasi: currentUser.lokasi,
       shift: shiftLabel,
       jenisAbsen: jenisAbsen,
+      kategoriKerja: currentKategoriKerja,
       selfieBase64: selfieBase64
     };
 
-    showToast("Sedang menyimpan data & foto selfie...");
+    const katNotif = currentKategoriKerja === 'L' ? ' (LEMBUR)' : (currentKategoriKerja === 'LS' ? ' (LONG SHIFT)' : '');
+    showToast(`Menyimpan Absen ${jenisAbsen.toUpperCase()}${katNotif}...`);
 
     saveToLocalRiwayat({
+      nip: currentUser.nip,
       nama: currentUser.nama,
       lokasi: currentUser.lokasi,
       shift: shiftLabel,
       jenis: jenisAbsen,
+      kategori: currentKategoriKerja,
       jam: timeStr,
       tanggal: dateStr,
       foto: selfieBase64
     });
 
-    fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
+    fetch(GAS_WEB_APP_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     }).then(() => {
-      showToast(`Absen ${jenisAbsen.toUpperCase()} & Foto Berhasil Tersimpan!`);
+      showToast(`Absen ${jenisAbsen.toUpperCase()}${katNotif} Berhasil Tersimpan!`);
+      setTimeout(() => { syncRiwayatFromServer(false); }, 1800);
     }).catch(() => {
       showToast("Tersimpan Lokal (Gangguan Jaringan)", true);
     }).finally(() => {
@@ -808,6 +979,10 @@
     });
     document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
     document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
+
+    if (tabId === 'riwayat') {
+      syncRiwayatFromServer(false);
+    }
   }
 
   function checkCutiRules() {
@@ -896,10 +1071,10 @@
       fileName: cutiFileName
     };
 
-    fetch("https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec", {
+    fetch(GAS_WEB_APP_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     }).then(() => {
       document.getElementById('cutiLoading').classList.add('hidden');
