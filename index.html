@@ -3,7 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Aplikasi Absensi PT. GCES V15.5</title>
+  <title>Absensi PT. GCES V15.6</title>
+
+  <!-- KONFIGURASI IKON PINTASAN HP (PWA / ADD TO HOME SCREEN LOGO PT. GCES) -->
+  <meta name="theme-color" content="#0f172a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Absensi GCES">
+  <meta name="application-name" content="Absensi GCES">
+  <link rel="icon" type="image/png" sizes="192x192" href="Logo%20GCES%20New.png">
+  <link rel="shortcut icon" type="image/png" href="Logo%20GCES%20New.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="Logo%20GCES%20New.png">
+  <link rel="manifest" id="dynamicManifest">
+  <script>
+    (function() {
+      const logoUrl = new URL("Logo%20GCES%20New.png", window.location.href).href;
+      const manifestData = {
+        name: "Absensi Operasional PT. GCES",
+        short_name: "Absensi GCES",
+        start_url: window.location.href.split('?')[0],
+        display: "standalone",
+        background_color: "#0f172a",
+        theme_color: "#0f172a",
+        icons: [
+          { src: logoUrl, sizes: "192x192", type: "image/png", purpose: "any maskable" },
+          { src: logoUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
+      document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
+    })();
+  </script>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -11,6 +43,7 @@
     body { font-family: 'Inter', sans-serif; }
     .shadow-card-soft { box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05); }
     .shadow-glow-emerald { box-shadow: 0 0 25px rgba(16, 185, 129, 0.4); }
+    .shadow-glow-blue { box-shadow: 0 0 25px rgba(37, 99, 235, 0.4); }
     @keyframes pulseRing { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.12); opacity: 0.2; } 100% { transform: scale(0.95); opacity: 0.8; } }
     .animate-pulse-ring { animation: pulseRing 3.5s infinite ease-in-out; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -28,7 +61,7 @@
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.5</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.6</p>
       </div>
     </div>
   </div>
@@ -101,7 +134,7 @@
         <i class="fa-solid fa-circle-xmark text-red-500 text-lg mt-0.5"></i>
         <div>
           <h4 class="text-xs font-bold">Luar Area Kerja (Akses Absen Terkunci)</h4>
-          <p class="text-[11px] text-red-700" id="alertDistanceDesc">Jarak Anda dari lokasi kerja: <span id="alertDistanceText" class="font-bold">-- meter</span>. Pastikan GPS aktif dan Anda berada di area lokasi kerja.</p>
+          <p class="text-[11px] text-red-700" id="alertDistanceDesc">Jarak Anda dari lokasi kerja: <span id="alertDistanceText" class="font-bold">-- meter</span>. Jika sedang mem-backup lokasi lain atau perbantuan, aktifkan tombol <b>Dinas Luar</b> di bawah.</p>
         </div>
       </div>
     </div>
@@ -156,6 +189,28 @@
       </div>
     </div>
 
+    <!-- OPSI TOMBOL DINAS LUAR (BACKUP LOKASI LAIN / PERBANTUAN OWNER) -->
+    <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <div id="dinasLuarIconBox" class="w-8 h-8 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center text-xs transition">
+            <i class="fa-solid fa-route"></i>
+          </div>
+          <div>
+            <span class="text-xs font-bold text-slate-800 block leading-tight">Dinas Luar / Backup Lokasi</span>
+            <span class="text-[9px] text-slate-500 block">Aktifkan jika absen di luar titik lokasi asli</span>
+          </div>
+        </div>
+        <button onclick="toggleDinasLuar()" id="btnToggleDinasLuar" class="px-3 py-1.5 rounded-xl text-[10px] font-black border border-slate-200 bg-slate-100 text-slate-600 transition active:scale-95">
+          NONAKTIF
+        </button>
+      </div>
+      <div id="dinasLuarInputWrapper" class="hidden pt-1 border-t border-slate-100 space-y-1">
+        <label class="text-[10px] font-bold text-blue-700 block"><i class="fa-solid fa-pen-to-square mr-1"></i>Keterangan Dinas Luar (Wajib Diisi):</label>
+        <input type="text" id="inputKeteranganDinasLuar" oninput="updateMainSublabel()" placeholder="Contoh: Backup MP PT. Celsius / Perbantuan di Rumah Owner" class="w-full text-xs font-medium border border-blue-400 rounded-xl px-3 py-2 bg-blue-50/40 text-slate-800 outline-none focus:ring-2 focus:ring-blue-500" />
+      </div>
+    </div>
+
     <!-- Area Absen -->
     <div class="py-2 flex flex-col items-center justify-center space-y-3.5">
       <div class="flex bg-slate-200/70 p-1.5 rounded-xl w-64 z-10 relative shadow-inner">
@@ -173,16 +228,44 @@
     </div>
   </div>
 
-  <!-- CUTI PANE -->
-  <div id="tabContent-cuti" class="space-y-4 tab-content-pane hidden">
+  <!-- CUTI PANE (DILENGKAPI INFORMASI SISA KUOTA CUTI 12 HARI) -->
+  <div id="tabContent-cuti" class="space-y-3.5 tab-content-pane hidden">
+    <!-- Kartu Kuota Cuti Tahunan (12 Hari) -->
+    <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 block">Hak Cuti Tahunan PT. GCES</span>
+          <h4 id="cutiUserQuotaTitle" class="text-xs font-bold text-slate-200 mt-0.5">Pilih Akun Karyawan</h4>
+        </div>
+        <button onclick="syncSisaCutiFromServer()" class="bg-slate-800 hover:bg-slate-700 text-emerald-400 border border-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition">
+          <i id="cutiQuotaRefreshIcon" class="fa-solid fa-arrows-rotate"></i>
+          <span>Cek Kuota</span>
+        </button>
+      </div>
+      <div class="grid grid-cols-3 gap-2 pt-1 text-center">
+        <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700">
+          <span class="text-[8px] text-slate-400 font-bold block uppercase">Kuota Tahun</span>
+          <span id="quotaTotalVal" class="text-sm font-black text-white">12 Hari</span>
+        </div>
+        <div class="bg-slate-800/80 p-2 rounded-xl border border-slate-700">
+          <span class="text-[8px] text-slate-400 font-bold block uppercase">Terpakai</span>
+          <span id="quotaUsedVal" class="text-sm font-black text-amber-400">0 Hari</span>
+        </div>
+        <div class="bg-emerald-950/80 p-2 rounded-xl border border-emerald-700/60">
+          <span class="text-[8px] text-emerald-300 font-bold block uppercase">Sisa Cuti</span>
+          <span id="quotaRemainVal" class="text-sm font-black text-emerald-400">12 Hari</span>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-card-soft">
-      <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan</h3>
+      <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan Cuti & Izin</h3>
       
       <div class="space-y-4" id="formCutiContainer">
          <div>
             <label class="text-[10px] font-bold text-slate-500">Jenis Pengajuan</label>
             <select id="cutiJenis" onchange="checkCutiRules()" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 focus:ring-emerald-500 outline-none bg-slate-50">
-                <option value="Cuti Tahunan">Cuti Tahunan (Min H-14)</option>
+                <option value="Cuti Tahunan">Cuti Tahunan (Min H-14 • Potong Kuota 12 Hari)</option>
                 <option value="Izin">Izin / Keperluan Mendadak</option>
                 <option value="Sakit Tanpa Surat">Sakit (Tanpa Surat)</option>
                 <option value="Sakit Dengan Surat">Sakit (Dengan Surat Dokter)</option>
@@ -196,12 +279,12 @@
             </div>
             <div>
                 <label class="text-[10px] font-bold text-slate-500">Tanggal Selesai</label>
-                <input type="date" id="cutiSampai" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
+                <input type="date" id="cutiSampai" onchange="checkCutiRules()" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
             </div>
          </div>
          
-         <div id="cutiWarningBox" class="hidden bg-rose-50 p-2 rounded-lg border border-rose-200">
-             <p class="text-[9px] text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="cutiWarningText">Peringatan aturan!</span></p>
+         <div id="cutiWarningBox" class="hidden bg-rose-50 p-2.5 rounded-lg border border-rose-200">
+             <p class="text-[10px] text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="cutiWarningText">Peringatan aturan!</span></p>
          </div>
          
          <div>
@@ -231,18 +314,40 @@
     </div>
   </div>
 
-  <!-- TIM PANE (KHUSUS SPV & LEADER) -->
-  <div id="tabContent-tim" class="space-y-4 tab-content-pane hidden">
-     <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-700">
-        <div>
-          <h3 class="text-sm font-black uppercase tracking-widest text-amber-400">Leader Dashboard</h3>
-          <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p>
+  <!-- TIM PANE (MONITORING REAL-TIME ANGGOTA TIM SPV & LEADER) -->
+  <div id="tabContent-tim" class="space-y-3.5 tab-content-pane hidden">
+     <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h3 class="text-xs font-black uppercase tracking-widest text-amber-400">Monitoring Kehadiran Tim</h3>
+            <p id="spvLocationText" class="text-[10px] text-slate-300 mt-0.5 font-medium">Lokasi Penempatan Anda</p>
+          </div>
+          <button onclick="syncStatusTimFromServer(true)" class="bg-slate-700/80 hover:bg-slate-700 text-amber-400 border border-slate-600 px-3 py-2 rounded-xl text-[10px] font-bold flex items-center gap-1.5 active:scale-95 transition">
+            <i id="timRefreshIcon" class="fa-solid fa-arrows-rotate"></i>
+            <span>Cek Live</span>
+          </button>
         </div>
-        <i class="fa-solid fa-users-gear text-xl text-amber-400"></i>
+        <div class="grid grid-cols-3 gap-2 text-center pt-1">
+          <div class="bg-slate-800/90 p-2 rounded-xl border border-slate-700">
+            <span class="text-[8px] text-slate-400 font-bold block uppercase">Total Tim</span>
+            <span id="timStatTotal" class="text-sm font-black text-white">0</span>
+          </div>
+          <div class="bg-emerald-950/80 p-2 rounded-xl border border-emerald-700/60">
+            <span class="text-[8px] text-emerald-300 font-bold block uppercase">Sudah Absen</span>
+            <span id="timStatHadir" class="text-sm font-black text-emerald-400">0</span>
+          </div>
+          <div class="bg-rose-950/80 p-2 rounded-xl border border-rose-700/60">
+            <span class="text-[8px] text-rose-300 font-bold block uppercase">Belum Absen</span>
+            <span id="timStatBelum" class="text-sm font-black text-rose-400">0</span>
+          </div>
+        </div>
      </div>
      <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
-        <div class="p-3 border-b border-slate-100 text-xs font-bold text-slate-700">Anggota Tim Area Kerja</div>
-        <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="timMemberList"></div>
+        <div class="p-3 border-b border-slate-100 flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700">Status Kehadiran Hari Ini</span>
+          <span id="timDateBadge" class="text-[9px] font-bold bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">--</span>
+        </div>
+        <div class="max-h-96 overflow-y-auto p-2.5 space-y-2" id="timMemberList"></div>
      </div>
   </div>
 
@@ -397,6 +502,7 @@
   let pendingPinUser = null;
   let currentShift = "1";
   let currentKategoriKerja = "H";
+  let isDinasLuar = false;
   let currentGpsDistance = 999999;
   let maxDistance = 1500;
   let userLiveCoords = null;
@@ -406,6 +512,8 @@
   let jenisAbsen = "masuk";
   let isSubmittingAbsen = false;
   let serverRiwayatCache = [];
+  let teamAttendanceMap = {};
+  let userSisaCuti = 12;
   
   let cutiBase64 = "";
   let cutiFileName = "";
@@ -477,11 +585,40 @@
     updateMainSublabel();
   }
 
+  // =========================================================================
+  // FUNGSI TOGGLE DINAS LUAR (BYPASS KUNCI GPS + WAJIB ISI KETERANGAN)
+  // =========================================================================
+  function toggleDinasLuar() {
+    isDinasLuar = !isDinasLuar;
+    const btn = document.getElementById('btnToggleDinasLuar');
+    const iconBox = document.getElementById('dinasLuarIconBox');
+    const inputWrap = document.getElementById('dinasLuarInputWrapper');
+    const inputEl = document.getElementById('inputKeteranganDinasLuar');
+
+    if (isDinasLuar) {
+      btn.textContent = "AKTIF ✓";
+      btn.className = "px-3 py-1.5 rounded-xl text-[10px] font-black border border-blue-600 bg-blue-600 text-white shadow-sm transition active:scale-95";
+      iconBox.className = "w-8 h-8 rounded-xl bg-blue-600 text-white flex items-center justify-center text-xs transition shadow-xs";
+      inputWrap.classList.remove('hidden');
+      setTimeout(() => inputEl.focus(), 100);
+      showToast("Mode Dinas Luar Aktif: Wajib isi keterangan tugas.");
+    } else {
+      btn.textContent = "NONAKTIF";
+      btn.className = "px-3 py-1.5 rounded-xl text-[10px] font-black border border-slate-200 bg-slate-100 text-slate-600 transition active:scale-95";
+      iconBox.className = "w-8 h-8 rounded-xl bg-slate-100 text-slate-500 flex items-center justify-center text-xs transition";
+      inputWrap.classList.add('hidden');
+      inputEl.value = "";
+    }
+    updateGpsUI(false);
+    updateMainSublabel();
+  }
+
   function updateMainSublabel() {
     const labelShift = isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`;
     const labelKat = currentKategoriKerja === 'L' ? 'LEMBUR (L)' : (currentKategoriKerja === 'LS' ? 'LONG SHIFT (LS)' : 'REGULER (H)');
+    const dlTag = isDinasLuar ? ' • DINAS LUAR' : '';
     const subEl = document.getElementById('mainAbsenSublabel');
-    subEl.textContent = `${jenisAbsen.toUpperCase()} ${labelShift} • ${labelKat}`;
+    subEl.textContent = `${jenisAbsen.toUpperCase()} ${labelShift} • ${labelKat}${dlTag}`;
     subEl.classList.remove('hidden');
   }
 
@@ -545,10 +682,12 @@
     document.getElementById('gpsTargetSiteText').textContent = `Titik Lokasi: ${user.lokasi}`;
     document.getElementById('clockInSummary').textContent = "-- : --";
     document.getElementById('clockOutSummary').textContent = "-- : --";
+    document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
     
     if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
+      syncStatusTimFromServer(false);
     } else {
       document.getElementById('nav-tim').classList.add('hidden');
     }
@@ -568,11 +707,13 @@
       }
       selectShift('1');
     }
+    if (isDinasLuar) toggleDinasLuar();
     selectKategoriKerja('H');
     updateMainSublabel();
     renderUserDropdown();
     recalculateSiteDistance();
     syncRiwayatFromServer(false);
+    syncSisaCutiFromServer();
   }
 
   function renderAdminDB() {
@@ -586,16 +727,94 @@
     });
   }
 
+  // =========================================================================
+  // MONITORING REAL-TIME TIM UNTUK SPV & LEADER
+  // =========================================================================
+  async function syncStatusTimFromServer(showNotif = false) {
+    if (!currentUser) return;
+    const icon = document.getElementById('timRefreshIcon');
+    if (icon) icon.classList.add('fa-spin');
+    document.getElementById('timDateBadge').textContent = getTodayFormatted();
+
+    try {
+      const url = `${GAS_WEB_APP_URL}?action=get_status_tim&lokasi=${encodeURIComponent(currentUser.lokasi)}&_t=${Date.now()}`;
+      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      const data = await res.json();
+      if (data && data.status === "success" && data.attendanceMap) {
+        teamAttendanceMap = data.attendanceMap;
+        if (showNotif) showToast("Status kehadiran tim berhasil diperbarui!");
+      }
+    } catch (e) {
+      if (showNotif) showToast("Gagal menarik status tim terbaru.", true);
+    } finally {
+      if (icon) icon.classList.remove('fa-spin');
+      renderTimList(currentUser.lokasi);
+    }
+  }
+
   function renderTimList(lokasiLeader) {
     const locText = document.getElementById('spvLocationText');
     const listEl = document.getElementById('timMemberList');
     if (locText) locText.textContent = lokasiLeader;
     if (!listEl) return;
     listEl.innerHTML = '';
+    document.getElementById('timDateBadge').textContent = getTodayFormatted();
+
     const anggota = employees.filter(e => e.lokasi === lokasiLeader);
+    let countHadir = 0;
+
     anggota.forEach((emp, idx) => {
-      listEl.insertAdjacentHTML('beforeend', `<div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs"><div class="flex items-center space-x-2.5"><span class="w-6 h-6 rounded-lg bg-amber-500 text-white text-[10px] font-bold flex items-center justify-center">${idx + 1}</span><div><p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p><p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan}</p></div></div></div>`);
+      const att = teamAttendanceMap[emp.nip];
+      if (att) countHadir++;
+
+      const statusBadge = att
+        ? `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-check mr-0.5"></i>SUDAH ABSEN</span>`
+        : `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-regular fa-clock mr-0.5"></i>BELUM ABSEN</span>`;
+
+      const detailJam = att
+        ? `<p class="text-[9px] text-emerald-700 font-semibold mt-0.5">${att.shift || 'Shift'} &bull; Masuk: ${att.clockIn || '-'} | Pulang: ${att.clockOut || 'Belum'}${att.ket ? ' (' + att.ket + ')' : ''}</p>`
+        : `<p class="text-[9px] text-slate-400 mt-0.5">${emp.nip} &bull; ${emp.jabatan}</p>`;
+
+      listEl.insertAdjacentHTML('beforeend', `
+        <div class="p-3 rounded-xl border ${att ? 'border-emerald-200 bg-emerald-50/40' : 'border-slate-100 bg-slate-50'} flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2.5 pr-2">
+            <span class="w-6 h-6 rounded-lg ${att ? 'bg-emerald-600' : 'bg-slate-400'} text-white text-[10px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+            <div>
+              <p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p>
+              ${detailJam}
+            </div>
+          </div>
+          <div class="shrink-0">${statusBadge}</div>
+        </div>
+      `);
     });
+
+    document.getElementById('timStatTotal').textContent = anggota.length;
+    document.getElementById('timStatHadir').textContent = countHadir;
+    document.getElementById('timStatBelum').textContent = Math.max(0, anggota.length - countHadir);
+  }
+
+  // =========================================================================
+  // SINKRONISASI SISA KUOTA CUTI TAHUNAN (12 HARI)
+  // =========================================================================
+  async function syncSisaCutiFromServer() {
+    if (!currentUser) return;
+    const icon = document.getElementById('cutiQuotaRefreshIcon');
+    if (icon) icon.classList.add('fa-spin');
+    try {
+      const url = `${GAS_WEB_APP_URL}?action=get_sisa_cuti&nip=${encodeURIComponent(currentUser.nip)}&_t=${Date.now()}`;
+      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      const data = await res.json();
+      if (data && data.status === "success") {
+        userSisaCuti = data.sisaCuti;
+        document.getElementById('quotaTotalVal').textContent = `${data.kuotaAwal} Hari`;
+        document.getElementById('quotaUsedVal').textContent = `${data.terpakai} Hari`;
+        document.getElementById('quotaRemainVal').textContent = `${data.sisaCuti} Hari`;
+      }
+    } catch (e) {
+    } finally {
+      if (icon) icon.classList.remove('fa-spin');
+    }
   }
 
   function getTodayFormatted() {
@@ -670,11 +889,16 @@
       serverRiwayatCache.forEach(rec => {
         const isLS = (rec.overtime && rec.overtime.includes("LS")) || (rec.status && rec.status.includes("LS"));
         const isL  = !isLS && ((rec.overtime && rec.overtime.includes("L")) || (rec.status && rec.status.includes("L")));
+        const isDL = (rec.remarks && rec.remarks.includes("DINAS LUAR")) || (rec.status && rec.status.includes("Dinas Luar"));
         const katBadge = isLS
           ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-purple-100 text-purple-800 border border-purple-200">LONG SHIFT (LS)</span>`
           : (isL
               ? `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-teal-100 text-teal-800 border border-teal-200">LEMBUR (L)</span>`
               : `<span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 border border-emerald-200">HADIR (H)</span>`);
+
+        const dlBadge = isDL
+          ? `<span class="text-[8px] font-black uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200 ml-1">DINAS LUAR</span>`
+          : '';
 
         const jamMasukTxt = rec.clockIn || "--:--";
         const jamPulangTxt = rec.clockOut ? rec.clockOut : "Belum Pulang";
@@ -686,6 +910,8 @@
         const linkPulang = (rec.fotoPulang && rec.fotoPulang.startsWith("http"))
           ? `<a href="${rec.fotoPulang}" target="_blank" class="text-[9px] font-bold text-rose-600 underline"><i class="fa-solid fa-image mr-0.5"></i>Foto Pulang</a>` : '';
 
+        const remarksInfo = rec.remarks ? `<p class="text-[9px] text-slate-500 bg-slate-50 px-2 py-1 rounded border border-slate-100"><i class="fa-solid fa-circle-info text-blue-500 mr-1"></i>${rec.remarks}</p>` : '';
+
         container.insertAdjacentHTML('beforeend', `
           <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
             <div class="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -693,7 +919,7 @@
                 <span class="text-xs font-black text-slate-800">${rec.tanggal}</span>
                 <span class="text-[10px] font-bold text-slate-500 ml-1.5">&bull; ${rec.shift || 'Shift'}</span>
               </div>
-              ${katBadge}
+              <div class="flex items-center">${katBadge}${dlBadge}</div>
             </div>
             <div class="grid grid-cols-3 gap-2 bg-slate-50 p-2 rounded-xl border border-slate-100 text-center">
               <div>
@@ -709,6 +935,7 @@
                 <span class="text-[10px] font-bold text-slate-700">${durasiTxt}</span>
               </div>
             </div>
+            ${remarksInfo}
             <div class="flex items-center justify-between pt-0.5">
               <span class="text-[9px] font-semibold text-slate-400"><i class="fa-solid fa-location-dot mr-1 text-emerald-500"></i>${rec.lokasi}</span>
               <div class="flex items-center gap-3">${linkMasuk}${linkPulang}</div>
@@ -733,7 +960,8 @@
     list.forEach(item => {
       const badgeColor = item.jenis === 'masuk' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
       const katText = item.kategori === 'L' ? ' • LEMBUR (L)' : (item.kategori === 'LS' ? ' • LONG SHIFT (LS)' : '');
-      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}${katText}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${item.jam} WIB (${item.shift})</p><p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
+      const dlText = item.ketDinasLuar ? `<p class="text-[9px] text-blue-600 font-semibold mt-0.5">Dinas Luar: ${item.ketDinasLuar}</p>` : '';
+      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}${katText}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${item.jam} WIB (${item.shift})</p>${dlText}<p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
     });
   }
 
@@ -838,9 +1066,22 @@
   }
 
   function updateGpsUI(isGpsError = false) {
-    if (!isGpsError) {
+    if (!isGpsError && currentGpsDistance < 999999) {
       document.getElementById('gpsDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' Meter';
       document.getElementById('alertDistanceText').textContent = currentGpsDistance.toLocaleString('id-ID') + ' meter';
+    }
+
+    // Jika Mode Dinas Luar aktif, buka kunci tombol absen
+    if (isDinasLuar) {
+      document.getElementById('gpsLockedAlert').classList.add('hidden');
+      document.getElementById('gpsStatusCard').className = "bg-blue-50 border border-blue-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all";
+      document.getElementById('gpsIconBg').className = "w-10 h-10 rounded-xl bg-blue-600 text-white flex items-center justify-center text-lg shadow-sm";
+      document.getElementById('gpsDotIndicator').className = "w-2.5 h-2.5 rounded-full bg-blue-600 animate-ping";
+      document.getElementById('gpsStatusTitle').textContent = "MODE DINAS LUAR AKTIF";
+      document.getElementById('gpsStatusTitle').className = "text-xs font-bold text-blue-900";
+      document.getElementById('gpsStatusDesc').className = "text-[11px] text-blue-700 font-medium";
+      document.getElementById('mainAbsenBtn').className = "relative z-10 w-36 h-36 rounded-full bg-gradient-to-tr from-blue-700 to-blue-500 text-white shadow-glow-blue flex flex-col items-center justify-center border-4 border-white/80 active:scale-95 transition cursor-pointer px-2 text-center";
+      return;
     }
 
     if (isGpsError || currentGpsDistance > maxDistance) {
@@ -870,10 +1111,18 @@
       toggleUserDropdown();
       return;
     }
-    if (!userLiveCoords || currentGpsDistance > maxDistance) {
-      showToast("Akses ditolak: Anda berada di luar radius lokasi kerja!", true);
+    if (isDinasLuar) {
+      const ketDL = document.getElementById('inputKeteranganDinasLuar').value.trim();
+      if (!ketDL) {
+        showToast("Wajib isi Keterangan Dinas Luar (Contoh: Backup MP PT. Celsius)!", true);
+        document.getElementById('inputKeteranganDinasLuar').focus();
+        return;
+      }
+    } else if (!userLiveCoords || currentGpsDistance > maxDistance) {
+      showToast("Akses ditolak: Anda di luar radius! Aktifkan tombol Dinas Luar jika sedang backup/perbantuan.", true);
       return;
     }
+
     document.getElementById('cameraModal').classList.remove('hidden');
     document.getElementById('cameraLoading').style.display = 'flex';
     try {
@@ -924,6 +1173,8 @@
     else document.getElementById('clockOutSummary').textContent = timeStr;
 
     const shiftLabel = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+    const ketDinasLuar = isDinasLuar ? document.getElementById('inputKeteranganDinasLuar').value.trim() : "";
+
     const payload = {
       nip: currentUser.nip,
       nama: currentUser.nama,
@@ -932,11 +1183,14 @@
       shift: shiftLabel,
       jenisAbsen: jenisAbsen,
       kategoriKerja: currentKategoriKerja,
+      dinasLuar: isDinasLuar,
+      keteranganDinasLuar: ketDinasLuar,
       selfieBase64: selfieBase64
     };
 
     const katNotif = currentKategoriKerja === 'L' ? ' (LEMBUR)' : (currentKategoriKerja === 'LS' ? ' (LONG SHIFT)' : '');
-    showToast(`Menyimpan Absen ${jenisAbsen.toUpperCase()}${katNotif}...`);
+    const dlNotif = isDinasLuar ? ' [DINAS LUAR]' : '';
+    showToast(`Menyimpan Absen ${jenisAbsen.toUpperCase()}${katNotif}${dlNotif}...`);
 
     saveToLocalRiwayat({
       nip: currentUser.nip,
@@ -945,6 +1199,7 @@
       shift: shiftLabel,
       jenis: jenisAbsen,
       kategori: currentKategoriKerja,
+      ketDinasLuar: ketDinasLuar,
       jam: timeStr,
       tanggal: dateStr,
       foto: selfieBase64
@@ -956,8 +1211,13 @@
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify(payload)
     }).then(() => {
-      showToast(`Absen ${jenisAbsen.toUpperCase()}${katNotif} Berhasil Tersimpan!`);
-      setTimeout(() => { syncRiwayatFromServer(false); }, 1800);
+      showToast(`Absen ${jenisAbsen.toUpperCase()}${katNotif}${dlNotif} Berhasil Tersimpan!`);
+      setTimeout(() => {
+        syncRiwayatFromServer(false);
+        if (['SPV', 'LEADER'].includes((currentUser.jabatan || '').toUpperCase())) {
+          syncStatusTimFromServer(false);
+        }
+      }, 1800);
     }).catch(() => {
       showToast("Tersimpan Lokal (Gangguan Jaringan)", true);
     }).finally(() => {
@@ -980,14 +1240,15 @@
     document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
     document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
 
-    if (tabId === 'riwayat') {
-      syncRiwayatFromServer(false);
-    }
+    if (tabId === 'riwayat') syncRiwayatFromServer(false);
+    if (tabId === 'tim') syncStatusTimFromServer(false);
+    if (tabId === 'cuti') syncSisaCutiFromServer();
   }
 
   function checkCutiRules() {
     const jenis = document.getElementById('cutiJenis').value;
     const tglMulai = document.getElementById('cutiMulai').value;
+    const tglSampai = document.getElementById('cutiSampai').value;
     const warnBox = document.getElementById('cutiWarningBox');
     const warnText = document.getElementById('cutiWarningText');
     const uploadBox = document.getElementById('uploadBox');
@@ -1002,8 +1263,16 @@
     if (jenis === "Cuti Tahunan" && tglMulai) {
       const selisihHari = (new Date(tglMulai) - new Date()) / (1000 * 60 * 60 * 24);
       if (selisihHari < 14) {
-        warnText.textContent = "Pengajuan Cuti Tahunan wajib minimal H-14!";
+        warnText.textContent = "Pengajuan Cuti Tahunan wajib minimal H-14 sebelum tanggal mulai!";
         warnBox.classList.remove('hidden');
+        return;
+      }
+      if (tglSampai) {
+        const durasiHari = Math.round((new Date(tglSampai) - new Date(tglMulai)) / (1000 * 60 * 60 * 24)) + 1;
+        if (durasiHari > userSisaCuti) {
+          warnText.textContent = `Durasi cuti (${durasiHari} hari) melebihi sisa kuota cuti tahunan Anda (${userSisaCuti} hari)!`;
+          warnBox.classList.remove('hidden');
+        }
       }
     }
   }
@@ -1041,10 +1310,19 @@
       showToast("Lengkapi tanggal dan alasan pengajuan!", true);
       return;
     }
+    const durasiHari = Math.round((new Date(sampai) - new Date(mulai)) / (1000 * 60 * 60 * 24)) + 1;
+    if (durasiHari < 1) {
+      showToast("Tanggal selesai tidak boleh sebelum tanggal mulai!", true);
+      return;
+    }
     if (jenis === "Cuti Tahunan") {
       const selisihHari = (new Date(mulai) - new Date()) / (1000 * 60 * 60 * 24);
       if (selisihHari < 14) {
-        showToast("Cuti Tahunan ditolak: Kurang dari H-14", true);
+        showToast("Cuti Tahunan ditolak: Wajib minimal H-14!", true);
+        return;
+      }
+      if (durasiHari > userSisaCuti) {
+        showToast(`Gagal: Pengajuan (${durasiHari} hari) melebihi sisa cuti (${userSisaCuti} hari)!`, true);
         return;
       }
     }
@@ -1079,7 +1357,7 @@
     }).then(() => {
       document.getElementById('cutiLoading').classList.add('hidden');
       document.getElementById('formCutiContainer').classList.remove('hidden');
-      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Data Anda sedang diproses oleh HRD. Lampiran tersimpan di Cloud.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
+      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Data Anda sedang diproses secara berjenjang ke HRD & Manager. Lampiran tersimpan di Cloud.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
       showToast("Form Cuti/Izin Berhasil Masuk!");
     }).catch(() => {
       showToast("Gagal mengirim form!", true);
