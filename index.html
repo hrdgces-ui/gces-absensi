@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Absensi PT. GCES V15.7</title>
+  <title>Absensi PT. GCES V15.8</title>
 
-  <!-- KONFIGURASI IKON PINTASAN HP (PWA / ADD TO HOME SCREEN LOGO PT. GCES) -->
+  <!-- KONFIGURASI IKON PINTASAN HP OTOMATIS (1 FILE TUNGGAL) -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -35,7 +35,7 @@
 
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
-    <!-- LOGO VEKTOR RESMI PT. GCES (LANGSUNG TAMPIL TANPA RISIKO BLANK PUTIH) -->
+    <!-- LOGO VEKTOR RESMI PT. GCES (ANTI BLANK PUTIH) -->
     <div class="w-20 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 px-1.5 py-1">
       <svg viewBox="0 0 240 105" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo PT. GCES">
         <rect width="240" height="105" rx="10" fill="#ffffff"/>
@@ -48,7 +48,7 @@
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.7</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.8</p>
       </div>
     </div>
   </div>
@@ -411,7 +411,7 @@
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
 
   // =========================================================================
-  // GENERATOR IKON PINTASAN HP (512x512 PNG LANGSUNG DARI KANVAS — ANTI BLANK)
+  // GENERATOR IKON PINTASAN HP SAFE-ZONE TENGAH (ANTI TERPOTONG & ANTI TERTUTUP)
   // =========================================================================
   function initPwaHomeScreenIcon() {
     try {
@@ -420,36 +420,30 @@
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      // Latar Belakang Putih Bersih dengan Sudut Halus
+      // Latar Belakang Putih Bersih
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, 512, 512);
 
-      // Bingkai Atas & Bawah Korporat PT. GCES
+      // Teks Utama "GCES" Proporsional di Safe-Zone Tengah Atas
       ctx.fillStyle = "#185fa5";
-      ctx.fillRect(0, 0, 512, 22);
-      ctx.fillStyle = "#059669";
-      ctx.fillRect(0, 490, 512, 22);
-
-      // Teks Utama "GCES" Biru Korporat
-      ctx.fillStyle = "#185fa5";
-      ctx.font = "900 156px 'Inter', Arial, sans-serif";
+      ctx.font = "900 102px 'Inter', Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("GCES", 256, 225);
+      ctx.fillText("GCES", 256, 190);
 
-      // Lengkungan Garis Hijau Khas PT. GCES
+      // Lengkungan Garis Hijau Proporsional di Tengah
       ctx.beginPath();
-      ctx.moveTo(46, 315);
-      ctx.quadraticCurveTo(256, 352, 466, 325);
-      ctx.quadraticCurveTo(256, 298, 46, 315);
+      ctx.moveTo(116, 250);
+      ctx.quadraticCurveTo(256, 276, 396, 256);
+      ctx.quadraticCurveTo(256, 238, 116, 250);
       ctx.closePath();
       ctx.fillStyle = "#059669";
       ctx.fill();
 
-      // Teks Sub-judul "PT. GEMA CITA ELOK SELARAS"
+      // Teks Sub-judul "PT. GEMA CITA ELOK SELARAS" Aman di Atas Area Sudut Bawah
       ctx.fillStyle = "#185fa5";
-      ctx.font = "800 28px 'Inter', Arial, sans-serif";
-      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 388);
+      ctx.font = "800 18px 'Inter', Arial, sans-serif";
+      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 294);
 
       const squareIconUrl = canvas.toDataURL("image/png");
       document.getElementById("favIconLink").href = squareIconUrl;
@@ -464,8 +458,8 @@
         background_color: "#ffffff",
         theme_color: "#0f172a",
         icons: [
-          { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any maskable" },
-          { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any maskable" }
+          { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
         ]
       };
       const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
