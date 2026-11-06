@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Absensi PT. GCES V15.6</title>
+  <title>Absensi PT. GCES V15.7</title>
 
   <!-- KONFIGURASI IKON PINTASAN HP (PWA / ADD TO HOME SCREEN LOGO PT. GCES) -->
   <meta name="theme-color" content="#0f172a">
@@ -35,14 +35,20 @@
 
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
-    <div class="w-16 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 p-1">
-      <img id="headerLogoImg" alt="Logo PT. GCES" class="w-full h-full object-contain">
+    <!-- LOGO VEKTOR RESMI PT. GCES (LANGSUNG TAMPIL TANPA RISIKO BLANK PUTIH) -->
+    <div class="w-20 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 px-1.5 py-1">
+      <svg viewBox="0 0 240 105" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo PT. GCES">
+        <rect width="240" height="105" rx="10" fill="#ffffff"/>
+        <text x="120" y="54" text-anchor="middle" font-family="'Inter', Arial, sans-serif" font-weight="900" font-size="60" fill="#185fa5" letter-spacing="1">GCES</text>
+        <path d="M 18 68 Q 120 82 222 72 Q 120 62 18 68 Z" fill="#059669"/>
+        <text x="120" y="94" text-anchor="middle" font-family="'Inter', Arial, sans-serif" font-weight="800" font-size="13.5" fill="#185fa5" letter-spacing="0.6">PT. GEMA CITA ELOK SELARAS</text>
+      </svg>
     </div>
     <div class="flex flex-col justify-center py-1">
       <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.6</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.7</p>
       </div>
     </div>
   </div>
@@ -405,29 +411,45 @@
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
 
   // =========================================================================
-  // LOGO RESMI PT. GCES (EMBEDDED BASE64 UTUH — ANTI BLANK)
+  // GENERATOR IKON PINTASAN HP (512x512 PNG LANGSUNG DARI KANVAS — ANTI BLANK)
   // =========================================================================
-  const OFFICIAL_GCES_LOGO_URI = "data:image/png;base64,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";
-
-  function initEmbeddedLogoAndPwaIcon() {
-    const headerImg = document.getElementById("headerLogoImg");
-    if (headerImg) headerImg.src = OFFICIAL_GCES_LOGO_URI;
-
-    const img = new Image();
-    img.onload = function() {
+  function initPwaHomeScreenIcon() {
+    try {
       const canvas = document.createElement("canvas");
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
+      // Latar Belakang Putih Bersih dengan Sudut Halus
       ctx.fillStyle = "#ffffff";
       ctx.fillRect(0, 0, 512, 512);
 
-      const targetW = 460;
-      const targetH = Math.round((img.height / img.width) * targetW);
-      const offsetX = Math.round((512 - targetW) / 2);
-      const offsetY = Math.round((512 - targetH) / 2);
-      ctx.drawImage(img, offsetX, offsetY, targetW, targetH);
+      // Bingkai Atas & Bawah Korporat PT. GCES
+      ctx.fillStyle = "#185fa5";
+      ctx.fillRect(0, 0, 512, 22);
+      ctx.fillStyle = "#059669";
+      ctx.fillRect(0, 490, 512, 22);
+
+      // Teks Utama "GCES" Biru Korporat
+      ctx.fillStyle = "#185fa5";
+      ctx.font = "900 156px 'Inter', Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("GCES", 256, 225);
+
+      // Lengkungan Garis Hijau Khas PT. GCES
+      ctx.beginPath();
+      ctx.moveTo(46, 315);
+      ctx.quadraticCurveTo(256, 352, 466, 325);
+      ctx.quadraticCurveTo(256, 298, 46, 315);
+      ctx.closePath();
+      ctx.fillStyle = "#059669";
+      ctx.fill();
+
+      // Teks Sub-judul "PT. GEMA CITA ELOK SELARAS"
+      ctx.fillStyle = "#185fa5";
+      ctx.font = "800 28px 'Inter', Arial, sans-serif";
+      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 388);
 
       const squareIconUrl = canvas.toDataURL("image/png");
       document.getElementById("favIconLink").href = squareIconUrl;
@@ -448,8 +470,24 @@
       };
       const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
       document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
-    };
-    img.src = OFFICIAL_GCES_LOGO_URI;
+    } catch (e) {}
+  }
+
+  // =========================================================================
+  // FUNGSI PEMFORMAT JAM RAPI (MENCEGAH TAMPILAN "6:04:" TANPA NOL DI DEPAN)
+  // =========================================================================
+  function formatJamRapi(jamStr) {
+    if (!jamStr || jamStr === "-" || jamStr === "-- : --") return "";
+    const clean = String(jamStr).trim();
+    const parts = clean.split(":");
+    if (parts.length >= 2) {
+      const hh = String(parseInt(parts[0], 10));
+      const mm = String(parseInt(parts[1], 10));
+      if (!isNaN(hh) && !isNaN(mm)) {
+        return hh.padStart(2, "0") + ":" + mm.padStart(2, "0");
+      }
+    }
+    return clean.substring(0, 5);
   }
 
   // =========================================================================
@@ -547,7 +585,7 @@
   let cutiFileName = "";
 
   window.onload = () => {
-    initEmbeddedLogoAndPwaIcon();
+    initPwaHomeScreenIcon();
     updateClock();
     setInterval(updateClock, 1000);
     renderUserDropdown();
@@ -794,8 +832,11 @@
         ? `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-700 border border-emerald-200"><i class="fa-solid fa-check mr-0.5"></i>SUDAH ABSEN</span>`
         : `<span class="text-[9px] font-black px-2 py-0.5 rounded-md bg-rose-100 text-rose-700 border border-rose-200"><i class="fa-regular fa-clock mr-0.5"></i>BELUM ABSEN</span>`;
 
+      const inRapi = att && att.clockIn ? formatJamRapi(att.clockIn) : '-';
+      const outRapi = att && att.clockOut ? formatJamRapi(att.clockOut) : 'Belum';
+
       const detailJam = att
-        ? `<p class="text-[9px] text-emerald-700 font-semibold mt-0.5">${att.shift || 'Shift'} &bull; Masuk: ${att.clockIn || '-'} | Pulang: ${att.clockOut || 'Belum'}${att.ket ? ' (' + att.ket + ')' : ''}</p>`
+        ? `<p class="text-[9px] text-emerald-700 font-semibold mt-0.5">${att.shift || 'Shift'} &bull; Masuk: ${inRapi} | Pulang: ${outRapi}${att.ket ? ' (' + att.ket + ')' : ''}</p>`
         : `<p class="text-[9px] text-slate-400 mt-0.5">${emp.nip} &bull; ${emp.jabatan}</p>`;
 
       listEl.insertAdjacentHTML('beforeend', `
@@ -867,11 +908,13 @@
         const todayStr = getTodayFormatted();
         const todayRec = serverRiwayatCache.find(r => r.tanggal === todayStr);
         if (todayRec) {
-          if (todayRec.clockIn && todayRec.clockIn !== "-") {
-            document.getElementById('clockInSummary').textContent = todayRec.clockIn.substring(0, 5);
+          const inFormatted = formatJamRapi(todayRec.clockIn);
+          const outFormatted = formatJamRapi(todayRec.clockOut);
+          if (inFormatted) {
+            document.getElementById('clockInSummary').textContent = inFormatted;
           }
-          if (todayRec.clockOut && todayRec.clockOut !== "-" && todayRec.clockOut !== "") {
-            document.getElementById('clockOutSummary').textContent = todayRec.clockOut.substring(0, 5);
+          if (outFormatted) {
+            document.getElementById('clockOutSummary').textContent = outFormatted;
           }
         }
         if (subTitle) subTitle.textContent = `Akun: ${currentUser.nama} (${serverRiwayatCache.length} Data Server)`;
@@ -920,8 +963,8 @@
           ? `<span class="text-[8px] font-black uppercase px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 border border-blue-200 ml-1">DINAS LUAR</span>`
           : '';
 
-        const jamMasukTxt = rec.clockIn || "--:--";
-        const jamPulangTxt = rec.clockOut ? rec.clockOut : "Belum Pulang";
+        const jamMasukTxt = formatJamRapi(rec.clockIn) || "--:--";
+        const jamPulangTxt = rec.clockOut ? formatJamRapi(rec.clockOut) : "Belum Pulang";
         const pulangColor = rec.clockOut ? "text-rose-600 font-black" : "text-amber-600 font-bold italic";
         const durasiTxt = rec.totalHours ? rec.totalHours : "-";
 
@@ -981,7 +1024,7 @@
       const badgeColor = item.jenis === 'masuk' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-rose-700';
       const katText = item.kategori === 'L' ? ' • LEMBUR (L)' : (item.kategori === 'LS' ? ' • LONG SHIFT (LS)' : '');
       const dlText = item.ketDinasLuar ? `<p class="text-[9px] text-blue-600 font-semibold mt-0.5">Dinas Luar: ${item.ketDinasLuar}</p>` : '';
-      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}${katText}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${item.jam} WIB (${item.shift})</p>${dlText}<p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
+      container.insertAdjacentHTML('beforeend', `<div class="bg-white p-3 rounded-2xl border border-slate-200 shadow-card-soft flex items-center justify-between"><div class="flex items-center space-x-3"><img src="${item.foto || ''}" class="w-11 h-11 rounded-xl object-cover bg-slate-200 border border-slate-200" onerror="this.style.display='none'" /><div><div class="flex items-center gap-1.5"><span class="text-[9px] font-black uppercase px-2 py-0.5 rounded-md ${badgeColor}">${item.jenis}${katText}</span><span class="text-xs font-bold text-slate-800">${item.nama}</span></div><p class="text-[10px] text-slate-500 mt-0.5">${item.tanggal} &bull; ${formatJamRapi(item.jam)} WIB (${item.shift})</p>${dlText}<p class="text-[9px] text-slate-400">${item.lokasi}</p></div></div><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></div>`);
     });
   }
 
@@ -1186,7 +1229,9 @@
 
     closeCamera();
     const now = new Date();
-    let timeStr = now.toLocaleTimeString('id-ID', { hour12: false }).substring(0, 5);
+    const hhNow = String(now.getHours()).padStart(2, '0');
+    const mmNow = String(now.getMinutes()).padStart(2, '0');
+    let timeStr = `${hhNow}:${mmNow}`;
     let dateStr = getTodayFormatted();
     if (jenisAbsen === "masuk") document.getElementById('clockInSummary').textContent = timeStr;
     else document.getElementById('clockOutSummary').textContent = timeStr;
