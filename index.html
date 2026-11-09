@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absensi PT. GCES V15.8</title>
 
-  <!-- KONFIGURASI IKON PINTASAN HP TRANSPARAN & GARIS LENGKUNG (V15.8) -->
+  <!-- KONFIGURASI IKON PINTASAN HP OTOMATIS (1 FILE TUNGGAL) -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" id="favIconLink">
   <link rel="shortcut icon" type="image/png" id="shortIconLink">
   <link rel="apple-touch-icon" sizes="180x180" id="appleIconLink">
-  <link rel="manifest" href="manifest.json" id="dynamicManifest">
+  <link rel="manifest" id="dynamicManifest">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,7 +35,7 @@
 
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
-    <!-- LOGO VEKTOR RESMI PT. GCES -->
+    <!-- LOGO VEKTOR RESMI PT. GCES (ANTI BLANK PUTIH) -->
     <div class="w-20 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 px-1.5 py-1">
       <svg viewBox="0 0 240 105" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo PT. GCES">
         <rect width="240" height="105" rx="10" fill="#ffffff"/>
@@ -411,95 +411,59 @@
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
 
   // =========================================================================
-  // GENERATOR IKON PINTASAN HP TRANSPARAN, GARIS LENGKUNG & LOGO PENUH (V15.8)
+  // GENERATOR IKON PINTASAN HP SAFE-ZONE TENGAH (ANTI TERPOTONG & ANTI TERTUTUP)
   // =========================================================================
-  function gambarKotakLengkung(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
-  }
-
   function initPwaHomeScreenIcon() {
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js').catch(() => {});
-    }
     try {
       const canvas = document.createElement("canvas");
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      ctx.clearRect(0, 0, 512, 512);
+      // Latar Belakang Putih Bersih
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, 512, 512);
 
-      gambarKotakLengkung(ctx, 16, 16, 480, 480, 115);
-      ctx.strokeStyle = "#185fa5";
-      ctx.lineWidth = 16;
-      ctx.stroke();
-
-      gambarKotakLengkung(ctx, 34, 34, 444, 444, 100);
-      ctx.strokeStyle = "#059669";
-      ctx.lineWidth = 6;
-      ctx.stroke();
-
-      ctx.font = "900 148px 'Inter', Arial, sans-serif";
+      // Teks Utama "GCES" Proporsional di Safe-Zone Tengah Atas
+      ctx.fillStyle = "#185fa5";
+      ctx.font = "900 102px 'Inter', Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.lineJoin = "round";
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 6;
-      ctx.strokeText("GCES", 256, 210);
-      ctx.fillStyle = "#185fa5";
-      ctx.fillText("GCES", 256, 210);
+      ctx.fillText("GCES", 256, 190);
 
+      // Lengkungan Garis Hijau Proporsional di Tengah
       ctx.beginPath();
-      ctx.moveTo(52, 298);
-      ctx.quadraticCurveTo(256, 344, 460, 310);
-      ctx.quadraticCurveTo(256, 272, 52, 298);
+      ctx.moveTo(116, 250);
+      ctx.quadraticCurveTo(256, 276, 396, 256);
+      ctx.quadraticCurveTo(256, 238, 116, 250);
       ctx.closePath();
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 4;
-      ctx.stroke();
       ctx.fillStyle = "#059669";
       ctx.fill();
 
-      ctx.font = "800 26px 'Inter', Arial, sans-serif";
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 4;
-      ctx.strokeText("PT. GEMA CITA ELOK SELARAS", 256, 360);
+      // Teks Sub-judul "PT. GEMA CITA ELOK SELARAS" Aman di Atas Area Sudut Bawah
       ctx.fillStyle = "#185fa5";
-      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 360);
+      ctx.font = "800 18px 'Inter', Arial, sans-serif";
+      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 294);
 
       const squareIconUrl = canvas.toDataURL("image/png");
       document.getElementById("favIconLink").href = squareIconUrl;
       document.getElementById("shortIconLink").href = squareIconUrl;
       document.getElementById("appleIconLink").href = squareIconUrl;
 
-      fetch("manifest.json", { method: "HEAD" }).then(res => {
-        if (!res.ok) throw new Error("No static manifest");
-      }).catch(() => {
-        const manifestData = {
-          name: "Absensi Operasional PT. GCES",
-          short_name: "Absensi GCES",
-          start_url: window.location.href.split('?')[0],
-          display: "standalone",
-          background_color: "transparent",
-          theme_color: "#0f172a",
-          icons: [
-            { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
-            { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
-          ]
-        };
-        const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
-        document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
-      });
+      const manifestData = {
+        name: "Absensi Operasional PT. GCES",
+        short_name: "Absensi GCES",
+        start_url: window.location.href.split('?')[0],
+        display: "standalone",
+        background_color: "#ffffff",
+        theme_color: "#0f172a",
+        icons: [
+          { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
+          { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
+        ]
+      };
+      const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
+      document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
     } catch (e) {}
   }
 
@@ -521,7 +485,7 @@
   }
 
   // =========================================================================
-  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (9 LOKASI)
+  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (TERKUNCI)
   // =========================================================================
   const SITE_COORDINATES = {
     "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
