@@ -66,7 +66,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
     <div>
       <span class="text-sm font-bold text-slate-800 block">Identitas Karyawan</span>
-      <span class="text-[10px] text-slate-500">Sesuai 57 Data Resmi (Dilengkapi PIN)</span>
+      <span class="text-[10px] text-slate-500">Sesuai 55 Data Resmi (Dilengkapi PIN)</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -300,7 +300,7 @@
     </div>
   </div>
 
-  <!-- TIM PANE (MONITORING REAL-TIME ANGGOTA TIM SPV, LEADER & ADMIN OPERASIONAL) -->
+  <!-- TIM PANE (MONITORING REAL-TIME ANGGOTA TIM SPV & LEADER) -->
   <div id="tabContent-tim" class="space-y-3.5 tab-content-pane hidden">
      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-3">
         <div class="flex items-center justify-between">
@@ -340,7 +340,7 @@
   <!-- ADMIN DB PANE -->
   <div id="tabContent-admin" class="space-y-4 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
-      <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan (10 Lokasi)</p></div>
+      <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
       <i class="fa-solid fa-database text-xl text-blue-400"></i>
     </div>
     <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
@@ -521,10 +521,9 @@
   }
 
   // =========================================================================
-  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (10 LOKASI)
+  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (9 LOKASI)
   // =========================================================================
   const SITE_COORDINATES = {
-    "HEAD OFFICE":                { lat: -6.2148, lng: 106.9032 }, // Ruko Ciplaz Klender, Jl. I Gusti Ngurah Rai No.6 Blok B2, Jakarta Timur
     "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
     "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 },
     "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 },
@@ -537,63 +536,61 @@
   };
 
   const OFFICIAL_EXCEL_EMPLOYEES = [
-    { nip: "NEW02", nama: "Ali Eka Wahyudi", email: "admin@gces.co.id", hp: "085894796906", jabatan: "Admin Operasional", lokasi: "HEAD OFFICE", pin: "1234" },
-    { nip: "NEW03", nama: "Adi Saputra", email: "adisaputra8770@gmail.com", hp: "081230913326", jabatan: "Kurir Operasional", lokasi: "HEAD OFFICE", pin: "1234" },
-    { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", hp: "", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", email: "dubay041103@gmail.com", hp: "", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.003.01.15", nama: "HASANIH", email: "harumselalu693@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", email: "wahyutiko8@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.014.07.19", nama: "AHMAD FIKRI", email: "af9330817@gmail.com", hp: "", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", email: "nurhayatiawal58@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", email: "abdulmalik zein02@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.069.07.22", nama: "YUSWO PETAROH", email: "gufrronganteng459@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.070.08.22", nama: "KHAERUL", email: "mikasaaja100@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.102.02.24", nama: "MAJID", email: "majidsmile8@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.119.11.24", nama: "Ahmad fadillah furgon", email: "ahmdfdlh69@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.125.04.25", nama: "Aisyah Pertiwi", email: "aisyahpertiwi177@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.131.05.25", nama: "M. Fajar Setiaji", email: "ajisetiaji685@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.135.05.25", nama: "Desta Pratama", email: "bagasdwisetiawan05@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", email: "ramadonismail61@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.148.09.25", nama: "Muhammad Rian Saputra", email: "rianpeace50@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.151.10.25", nama: "Nurkenih", email: "nurkenih@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.152.11.25", nama: "Sri Wulandari", email: "wd4839215@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.156.12.25", nama: "Fahmi Pratama Putra", email: "fahmiputra516@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.160.02.26", nama: "Asyiffa Desivanti", email: "desiyantiasyiffa@gmail.com.", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.164.04.26", nama: "Ita Pumamasari", email: "ita986723@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.167.05.26", nama: "Rizky Tri Amalia", email: "rizkytriamalia26@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.168.05.26", nama: "Dita nurkholifah", email: "ditanurkholifah08@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "02.123.01.25", nama: "Arya Tri Ratno", email: "ratnotriarya18@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.172.06.26", nama: "Nur Humaidah", email: "nurhumaida722@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.173.06.26", nama: "MUHAMMAD VIKRI HIDAYAT", email: "vikri1699@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.174.06.26", nama: "PUTRI RAMADHANI", email: "putriramadhanicntk@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.175.06.26", nama: "IMUT KURNIA", email: "imutkurnia256@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.177.07.26", nama: "Fahmy Fahrezy", email: "fahmifahrezi100@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "01.179.08.26", nama: "Salma salsabila", email: "salaabillabilla051@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
-    { nip: "02.084.09.23", nama: "TITA LELAWATI", email: "titalelawati@gmail.com", hp: "", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "01.002.01.15", nama: "DEDI MULYADI", email: "dedimulyadi@gmail.com", hp: "", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "01.009.04.17", nama: "MAULANA", email: "maul9497@gmail.com", hp: "", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.037.12.15", nama: "NURFAJRIYAH", email: "nurfajriyah385@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.044.10.19", nama: "SITI NURKHASANAH", email: "sitinurkhasanah1411@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.128.04.25", nama: "Akbar", email: "a8z006493@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.129.04.25", nama: "Teguh Guna Darmawan", email: "teguhgunadarma@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.155.11.25", nama: "Andyka Topansyah", email: "karnakuselow11@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.139.07.25", nama: "Ajeng Eka Saputri", email: "sajengeka@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.153.11.25", nama: "Nadia Puspita Sari", email: "nadia puspita2701@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.165.04.26", nama: "Risty Intan Nilamsari", email: "ristyintan1507@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.169.05.26", nama: "Arifin wirianto", email: "arifin wirianto08@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.171.05.26", nama: "TRISNAWATI", email: "ntrisna480@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.176.06.26", nama: "NOERHIKMAH", email: "nur566451@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "02.178.07.26", nama: "Fhani Ristiana Putri", email: "fhaniristiana85@gmail.com", hp: "", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
-    { nip: "03.089.09.23", nama: "HENDRA SAPUTRA", email: "karnakuselow11@gmail.com", hp: "", jabatan: "CSO", lokasi: "PT. CELSIUS CREATIVA", pin: "1234" },
-    { nip: "05.064.02.22", nama: "SUHARYADI", email: "yadianisya@gmail.com", hp: "", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
-    { nip: "05.159.01.26", nama: "TRI WINDYARTI", email: "cewekleogirls@gmail.com", hp: "", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
-    { nip: "05.121.02.25", nama: "DEDE FIRMANSYAH", email: "dede.firmnsyh78@gmail.com", hp: "", jabatan: "Picker", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
-    { nip: "01.149.10.25", nama: "Zhallysa Febria", email: "zhallysafebria@gmail.com", hp: "", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG", pin: "1234" },
-    { nip: "06.086.09.23", nama: "Yulia", email: "yulianaufal04@gmail.com", hp: "", jabatan: "CSO", lokasi: "PT. MUTIARA HEXAGON", pin: "1234" },
-    { nip: "07.100.01.24", nama: "AHMAD AGUS SUBEKHI", email: "", hp: "", jabatan: "Kurir", lokasi: "PT. SM", pin: "1234" },
-    { nip: "08.130.05.25", nama: "Wildan", email: "saputrawildan444@gmail.com", hp: "", jabatan: "CSO", lokasi: "KLINIK SEMPER", pin: "1234" },
-    { nip: "08.162.04.26", nama: "Anggi ariyandi", email: "anggiariyandi64@gmail.com", hp: "", jabatan: "CSO", lokasi: "APOTEK SEMPER", pin: "1234" }
+    { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", email: "dubay041103@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.003.01.15", nama: "HASANIH", email: "harumselalu693@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.013.06.19", nama: "WAHYU TIKO SAPUTRA", email: "wahyutiko8@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.014.07.19", nama: "AHMAD FIKRI", email: "af9330817@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.029.10.21", nama: "NURHAYATI AWALLUDIN", email: "nurhayatiawal58@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.067.07.22", nama: "ABDUL MALIK ZAIN", email: "abdulmalik zein02@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.069.07.22", nama: "YUSWO PETAROH", email: "gufrronganteng459@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.070.08.22", nama: "KHAERUL", email: "mikasaaja100@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.102.02.24", nama: "MAJID", email: "majidsmile8@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.119.11.24", nama: "Ahmad fadillah furgon", email: "ahmdfdlh69@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.125.04.25", nama: "Aisyah Pertiwi", email: "aisyahpertiwi177@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.131.05.25", nama: "M. Fajar Setiaji", email: "ajisetiaji685@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.135.05.25", nama: "Desta Pratama", email: "bagasdwisetiawan05@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.146.08.25", nama: "ISMAIL RAMADON", email: "ramadonismail61@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.148.09.25", nama: "Muhammad Rian Saputra", email: "rianpeace50@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.151.10.25", nama: "Nurkenih", email: "nurkenih@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.152.11.25", nama: "Sri Wulandari", email: "wd4839215@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.156.12.25", nama: "Fahmi Pratama Putra", email: "fahmiputra516@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.160.02.26", nama: "Asyiffa Desivanti", email: "desiyantiasyiffa@gmail.com.", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.164.04.26", nama: "Ita Pumamasari", email: "ita986723@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.167.05.26", nama: "Rizky Tri Amalia", email: "rizkytriamalia26@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.168.05.26", nama: "Dita nurkholifah", email: "ditanurkholifah08@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "02.123.01.25", nama: "Arya Tri Ratno", email: "ratnotriarya18@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.172.06.26", nama: "Nur Humaidah", email: "nurhumaida722@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.173.06.26", nama: "MUHAMMAD VIKRI HIDAYAT", email: "vikri1699@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.174.06.26", nama: "PUTRI RAMADHANI", email: "putriramadhanicntk@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.175.06.26", nama: "IMUT KURNIA", email: "imutkurnia256@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.177.07.26", nama: "Fahmy Fahrezy", email: "fahmifahrezi100@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "01.179.08.26", nama: "Salma salsabila", email: "salaabillabilla051@gmail.com", jabatan: "CSO", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
+    { nip: "02.084.09.23", nama: "TITA LELAWATI", email: "titalelawati@gmail.com", jabatan: "SPV", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "01.002.01.15", nama: "DEDI MULYADI", email: "dedimulyadi@gmail.com", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "01.009.04.17", nama: "MAULANA", email: "maul9497@gmail.com", jabatan: "LEADER", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.037.12.15", nama: "NURFAJRIYAH", email: "nurfajriyah385@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.044.10.19", nama: "SITI NURKHASANAH", email: "sitinurkhasanah1411@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.128.04.25", nama: "Akbar", email: "a8z006493@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.129.04.25", nama: "Teguh Guna Darmawan", email: "teguhgunadarma@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.155.11.25", nama: "Andyka Topansyah", email: "karnakuselow11@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.139.07.25", nama: "Ajeng Eka Saputri", email: "sajengeka@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.153.11.25", nama: "Nadia Puspita Sari", email: "nadia puspita2701@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.165.04.26", nama: "Risty Intan Nilamsari", email: "ristyintan1507@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.169.05.26", nama: "Arifin wirianto", email: "arifin wirianto08@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.171.05.26", nama: "TRISNAWATI", email: "ntrisna480@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.176.06.26", nama: "NOERHIKMAH", email: "nur566451@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "02.178.07.26", nama: "Fhani Ristiana Putri", email: "fhaniristiana85@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
+    { nip: "03.089.09.23", nama: "HENDRA SAPUTRA", email: "karnakuselow11@gmail.com", jabatan: "CSO", lokasi: "PT. CELSIUS CREATIVA", pin: "1234" },
+    { nip: "05.064.02.22", nama: "SUHARYADI", email: "yadianisya@gmail.com", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
+    { nip: "05.159.01.26", nama: "TRI WINDYARTI", email: "cewekleogirls@gmail.com", jabatan: "CSO", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
+    { nip: "05.121.02.25", nama: "DEDE FIRMANSYAH", email: "dede.firmnsyh78@gmail.com", jabatan: "Picker", lokasi: "PT. MOYA INDONESIA", pin: "1234" },
+    { nip: "01.149.10.25", nama: "Zhallysa Febria", email: "zhallysafebria@gmail.com", jabatan: "CSO", lokasi: "PT. SAPTA WARNA CEMERLANG", pin: "1234" },
+    { nip: "06.086.09.23", nama: "Yulia", email: "yulianaufal04@gmail.com", jabatan: "CSO", lokasi: "PT. MUTIARA HEXAGON", pin: "1234" },
+    { nip: "07.100.01.24", nama: "AHMAD AGUS SUBEKHI", email: "", jabatan: "Kurir", lokasi: "PT. SM", pin: "1234" },
+    { nip: "08.130.05.25", nama: "Wildan", email: "saputrawildan444@gmail.com", jabatan: "CSO", lokasi: "KLINIK SEMPER", pin: "1234" },
+    { nip: "08.162.04.26", nama: "Anggi ariyandi", email: "anggiariyandi64@gmail.com", jabatan: "CSO", lokasi: "APOTEK SEMPER", pin: "1234" }
   ];
 
   let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
@@ -711,10 +708,7 @@
   }
 
   function updateMainSublabel() {
-    let labelShift = isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`;
-    if (currentUser && currentUser.lokasi === "HEAD OFFICE") {
-      labelShift = "NON-SHIFT (09.00-17.00)";
-    }
+    const labelShift = isNonShift ? "NON-SHIFT" : `SHIFT ${currentShift.toUpperCase()}`;
     const labelKat = currentKategoriKerja === 'L' ? 'LEMBUR (L)' : (currentKategoriKerja === 'LS' ? 'LONG SHIFT (LS)' : 'REGULER (H)');
     const dlTag = isDinasLuar ? ' • DINAS LUAR' : '';
     const subEl = document.getElementById('mainAbsenSublabel');
@@ -784,7 +778,7 @@
     document.getElementById('clockOutSummary').textContent = "-- : --";
     document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
     
-    if (['SPV', 'LEADER', 'ADMIN OPERASIONAL'].includes(user.jabatan.toUpperCase())) {
+    if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
       syncStatusTimFromServer(false);
@@ -792,10 +786,10 @@
       document.getElementById('nav-tim').classList.add('hidden');
     }
     
-    isNonShift = ["HEAD OFFICE", "PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
+    isNonShift = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
     if (isNonShift) {
       document.getElementById('shiftSelectorBox').classList.add('hidden');
-      currentShift = user.lokasi === "HEAD OFFICE" ? 'Non-Shift (09.00-17.00)' : 'Non-Shift';
+      currentShift = 'Non-Shift';
     } else {
       document.getElementById('shiftSelectorBox').classList.remove('hidden');
       if (user.lokasi.toLowerCase().includes("semper")) {
@@ -823,8 +817,7 @@
     totalEl.textContent = employees.length;
     listEl.innerHTML = '';
     employees.forEach((emp, idx) => {
-      const contactInfo = emp.hp ? ` &bull; ${emp.hp}` : (emp.email ? ` &bull; ${emp.email}` : '');
-      listEl.insertAdjacentHTML('beforeend', `<div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs"><div class="flex items-center space-x-2.5"><span class="w-6 h-6 rounded-lg bg-slate-800 text-white text-[10px] font-bold flex items-center justify-center">${idx + 1}</span><div><p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p><p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}${contactInfo}</p></div></div></div>`);
+      listEl.insertAdjacentHTML('beforeend', `<div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs"><div class="flex items-center space-x-2.5"><span class="w-6 h-6 rounded-lg bg-slate-800 text-white text-[10px] font-bold flex items-center justify-center">${idx + 1}</span><div><p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p><p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}</p></div></div></div>`);
     });
   }
 
@@ -1273,7 +1266,7 @@
     if (jenisAbsen === "masuk") document.getElementById('clockInSummary').textContent = timeStr;
     else document.getElementById('clockOutSummary').textContent = timeStr;
 
-    const shiftLabel = isNonShift ? (currentUser && currentUser.lokasi === "HEAD OFFICE" ? "Non-Shift (09.00-17.00)" : "Non-Shift") : `Shift ${currentShift}`;
+    const shiftLabel = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
     const ketDinasLuar = isDinasLuar ? document.getElementById('inputKeteranganDinasLuar').value.trim() : "";
 
     const payload = {
@@ -1281,8 +1274,6 @@
       nama: currentUser.nama,
       jabatan: currentUser.jabatan,
       lokasi: currentUser.lokasi,
-      email: currentUser.email || "",
-      hp: currentUser.hp || "",
       shift: shiftLabel,
       jenisAbsen: jenisAbsen,
       kategoriKerja: currentKategoriKerja,
@@ -1317,7 +1308,7 @@
       showToast(`Absen ${jenisAbsen.toUpperCase()}${katNotif}${dlNotif} Berhasil Tersimpan!`);
       setTimeout(() => {
         syncRiwayatFromServer(false);
-        if (['SPV', 'LEADER', 'ADMIN OPERASIONAL'].includes((currentUser.jabatan || '').toUpperCase())) {
+        if (['SPV', 'LEADER'].includes((currentUser.jabatan || '').toUpperCase())) {
           syncStatusTimFromServer(false);
         }
       }, 1800);
@@ -1443,8 +1434,7 @@
       nama: currentUser.nama,
       jabatan: currentUser.jabatan,
       lokasi: currentUser.lokasi,
-      email: currentUser.email || "",
-      hp: currentUser.hp || "",
+      email: currentUser.email,
       jenisCuti: jenis,
       tglMulai: mulai,
       tglSampai: sampai,
