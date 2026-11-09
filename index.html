@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absensi PT. GCES V15.8</title>
 
-  <!-- KONFIGURASI IKON PINTASAN HP OTOMATIS (1 FILE TUNGGAL) -->
+  <!-- KONFIGURASI IKON PINTASAN HP (V15.8) -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -15,7 +15,7 @@
   <link rel="icon" type="image/png" id="favIconLink">
   <link rel="shortcut icon" type="image/png" id="shortIconLink">
   <link rel="apple-touch-icon" sizes="180x180" id="appleIconLink">
-  <link rel="manifest" id="dynamicManifest">
+  <link rel="manifest" href="manifest.json" id="dynamicManifest">
 
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,7 +35,6 @@
 
 <header class="bg-slate-900 text-white px-4 py-3 flex items-center justify-between sticky top-0 z-30 shadow-lg border-b border-slate-700 shrink-0">
   <div class="flex items-center space-x-3 w-full">
-    <!-- LOGO VEKTOR RESMI PT. GCES (ANTI BLANK PUTIH) -->
     <div class="w-20 h-14 rounded-xl bg-white flex items-center justify-center shadow-md overflow-hidden shrink-0 border border-slate-200 px-1.5 py-1">
       <svg viewBox="0 0 240 105" class="w-full h-full" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo PT. GCES">
         <rect width="240" height="105" rx="10" fill="#ffffff"/>
@@ -176,7 +175,7 @@
       </div>
     </div>
 
-    <!-- OPSI TOMBOL DINAS LUAR (BACKUP LOKASI LAIN / PERBANTUAN OWNER) -->
+    <!-- OPSI TOMBOL DINAS LUAR -->
     <div class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -215,7 +214,7 @@
     </div>
   </div>
 
-  <!-- CUTI PANE (DILENGKAPI INFORMASI SISA KUOTA CUTI 12 HARI) -->
+  <!-- CUTI PANE -->
   <div id="tabContent-cuti" class="space-y-3.5 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-2.5">
       <div class="flex items-center justify-between">
@@ -246,7 +245,6 @@
 
     <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-card-soft">
       <h3 class="text-sm font-bold text-slate-800 mb-3 border-b pb-2"><i class="fa-solid fa-file-signature text-emerald-600 mr-2"></i>Form Pengajuan Cuti & Izin</h3>
-      
       <div class="space-y-4" id="formCutiContainer">
          <div>
             <label class="text-[10px] font-bold text-slate-500">Jenis Pengajuan</label>
@@ -257,7 +255,6 @@
                 <option value="Sakit Dengan Surat">Sakit (Dengan Surat Dokter)</option>
             </select>
          </div>
-         
          <div class="grid grid-cols-2 gap-3">
             <div>
                 <label class="text-[10px] font-bold text-slate-500">Tanggal Mulai</label>
@@ -268,16 +265,13 @@
                 <input type="date" id="cutiSampai" onchange="checkCutiRules()" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none bg-slate-50">
             </div>
          </div>
-         
          <div id="cutiWarningBox" class="hidden bg-rose-50 p-2.5 rounded-lg border border-rose-200">
              <p class="text-[10px] text-rose-600 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i> <span id="cutiWarningText">Peringatan aturan!</span></p>
          </div>
-         
          <div>
             <label class="text-[10px] font-bold text-slate-500">Alasan Lengkap (Wajib)</label>
             <textarea id="cutiAlasan" class="w-full text-xs font-medium border border-slate-300 rounded-lg p-2.5 mt-1 outline-none h-20 bg-slate-50" placeholder="Jelaskan alasan secara detail..."></textarea>
          </div>
-         
          <div id="uploadBox" class="hidden">
              <label class="text-[10px] font-bold text-slate-500 mb-1 block">Upload Bukti Medis (Foto/PDF)</label>
              <div class="relative bg-slate-50 p-4 rounded-xl border-2 border-dashed border-emerald-300 flex flex-col items-center justify-center hover:bg-emerald-50 transition cursor-pointer">
@@ -287,12 +281,10 @@
                  <p id="uploadSubText" class="text-[8px] text-slate-400 mt-1">Maks. 3MB</p>
              </div>
          </div>
-         
          <button id="btnSubmitCuti" onclick="submitCuti()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs py-3.5 rounded-xl shadow-lg transition active:scale-95 flex justify-center items-center">
             <i class="fa-regular fa-paper-plane mr-2"></i> Kirim Pengajuan
          </button>
       </div>
-      
       <div id="cutiLoading" class="hidden flex flex-col items-center justify-center py-10">
           <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500 mb-3"></i>
           <p class="text-xs font-bold text-slate-600">Mengirim data & upload file ke Server...</p>
@@ -300,7 +292,7 @@
     </div>
   </div>
 
-  <!-- TIM PANE (MONITORING REAL-TIME ANGGOTA TIM SPV & LEADER) -->
+  <!-- TIM PANE -->
   <div id="tabContent-tim" class="space-y-3.5 tab-content-pane hidden">
      <div class="bg-gradient-to-r from-slate-900 to-slate-800 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-3">
         <div class="flex items-center justify-between">
@@ -353,7 +345,7 @@
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
   </div>
 
-  <!-- RIWAYAT PANE (TERSINKRONISASI SERVER GOOGLE SHEET) -->
+  <!-- RIWAYAT PANE -->
   <div id="tabContent-riwayat" class="space-y-3.5 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-emerald-500">
       <div>
@@ -410,66 +402,96 @@
 <script>
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
 
-  // =========================================================================
-  // GENERATOR IKON PINTASAN HP SAFE-ZONE TENGAH (ANTI TERPOTONG & ANTI TERTUTUP)
-  // =========================================================================
+  function gambarKotakLengkung(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+
   function initPwaHomeScreenIcon() {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(() => {});
+    }
     try {
       const canvas = document.createElement("canvas");
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
 
-      // Latar Belakang Putih Bersih
-      ctx.fillStyle = "#ffffff";
-      ctx.fillRect(0, 0, 512, 512);
+      ctx.clearRect(0, 0, 512, 512);
 
-      // Teks Utama "GCES" Proporsional di Safe-Zone Tengah Atas
-      ctx.fillStyle = "#185fa5";
-      ctx.font = "900 102px 'Inter', Arial, sans-serif";
+      gambarKotakLengkung(ctx, 16, 16, 480, 480, 115);
+      ctx.strokeStyle = "#185fa5";
+      ctx.lineWidth = 16;
+      ctx.stroke();
+
+      gambarKotakLengkung(ctx, 34, 34, 444, 444, 100);
+      ctx.strokeStyle = "#059669";
+      ctx.lineWidth = 6;
+      ctx.stroke();
+
+      ctx.font = "900 148px 'Inter', Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      ctx.fillText("GCES", 256, 190);
+      ctx.lineJoin = "round";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 6;
+      ctx.strokeText("GCES", 256, 210);
+      ctx.fillStyle = "#185fa5";
+      ctx.fillText("GCES", 256, 210);
 
-      // Lengkungan Garis Hijau Proporsional di Tengah
       ctx.beginPath();
-      ctx.moveTo(116, 250);
-      ctx.quadraticCurveTo(256, 276, 396, 256);
-      ctx.quadraticCurveTo(256, 238, 116, 250);
+      ctx.moveTo(52, 298);
+      ctx.quadraticCurveTo(256, 344, 460, 310);
+      ctx.quadraticCurveTo(256, 272, 52, 298);
       ctx.closePath();
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 4;
+      ctx.stroke();
       ctx.fillStyle = "#059669";
       ctx.fill();
 
-      // Teks Sub-judul "PT. GEMA CITA ELOK SELARAS" Aman di Atas Area Sudut Bawah
+      ctx.font = "800 26px 'Inter', Arial, sans-serif";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 4;
+      ctx.strokeText("PT. GEMA CITA ELOK SELARAS", 256, 360);
       ctx.fillStyle = "#185fa5";
-      ctx.font = "800 18px 'Inter', Arial, sans-serif";
-      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 294);
+      ctx.fillText("PT. GEMA CITA ELOK SELARAS", 256, 360);
 
       const squareIconUrl = canvas.toDataURL("image/png");
       document.getElementById("favIconLink").href = squareIconUrl;
       document.getElementById("shortIconLink").href = squareIconUrl;
       document.getElementById("appleIconLink").href = squareIconUrl;
 
-      const manifestData = {
-        name: "Absensi Operasional PT. GCES",
-        short_name: "Absensi GCES",
-        start_url: window.location.href.split('?')[0],
-        display: "standalone",
-        background_color: "#ffffff",
-        theme_color: "#0f172a",
-        icons: [
-          { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
-          { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
-        ]
-      };
-      const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
-      document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
+      fetch("manifest.json", { method: "HEAD" }).then(res => {
+        if (!res.ok) throw new Error("No static manifest");
+      }).catch(() => {
+        const manifestData = {
+          name: "Absensi Operasional PT. GCES",
+          short_name: "Absensi GCES",
+          start_url: window.location.href.split('?')[0],
+          display: "standalone",
+          background_color: "transparent",
+          theme_color: "#0f172a",
+          icons: [
+            { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
+            { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
+          ]
+        };
+        const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
+        document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
+      });
     } catch (e) {}
   }
 
-  // =========================================================================
-  // FUNGSI PEMFORMAT JAM RAPI (MENCEGAH TAMPILAN "6:04:" TANPA NOL DI DEPAN)
-  // =========================================================================
   function formatJamRapi(jamStr) {
     if (!jamStr || jamStr === "-" || jamStr === "-- : --") return "";
     const clean = String(jamStr).trim();
@@ -484,9 +506,6 @@
     return clean.substring(0, 5);
   }
 
-  // =========================================================================
-  // DAFTAR TITIK KOORDINAT GPS PRESISI SESUAI ALAMAT RESMI PROYEK PT. GCES (TERKUNCI)
-  // =========================================================================
   const SITE_COORDINATES = {
     "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
     "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 },
@@ -574,7 +593,6 @@
   let serverRiwayatCache = [];
   let teamAttendanceMap = {};
   let userSisaCuti = 12;
-  
   let cutiBase64 = "";
   let cutiFileName = "";
 
@@ -904,12 +922,8 @@
         if (todayRec) {
           const inFormatted = formatJamRapi(todayRec.clockIn);
           const outFormatted = formatJamRapi(todayRec.clockOut);
-          if (inFormatted) {
-            document.getElementById('clockInSummary').textContent = inFormatted;
-          }
-          if (outFormatted) {
-            document.getElementById('clockOutSummary').textContent = outFormatted;
-          }
+          if (inFormatted) document.getElementById('clockInSummary').textContent = inFormatted;
+          if (outFormatted) document.getElementById('clockOutSummary').textContent = outFormatted;
         }
         if (subTitle) subTitle.textContent = `Akun: ${currentUser.nama} (${serverRiwayatCache.length} Data Server)`;
         if (showNotif) showToast("Riwayat berhasil disinkronkan dari Google Sheet!");
@@ -1097,7 +1111,6 @@
 
   function recalculateSiteDistance() {
     if (!userLiveCoords) return;
-
     const indoorCompensation = Math.min(userLiveCoords.acc || 0, 1000);
 
     if (currentUser && SITE_COORDINATES[currentUser.lokasi]) {
