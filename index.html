@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Absensi PT. GCES V15.8</title>
-
-  <!-- KONFIGURASI IKON PINTASAN HP (V15.8) -->
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +14,6 @@
   <link rel="shortcut icon" type="image/png" id="shortIconLink">
   <link rel="apple-touch-icon" sizes="180x180" id="appleIconLink">
   <link rel="manifest" href="manifest.json" id="dynamicManifest">
-
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
@@ -65,7 +62,7 @@
   <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-3 shrink-0">
     <div>
       <span class="text-sm font-bold text-slate-800 block">Identitas Karyawan</span>
-      <span class="text-[10px] text-slate-500">Sesuai 55 Data Resmi (Dilengkapi PIN)</span>
+      <span class="text-[10px] text-slate-500" id="dropdownSubtitleCount">Database Resmi PT. GCES (Dilengkapi PIN)</span>
     </div>
     <button onclick="toggleUserDropdown()" class="text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 w-8 h-8 rounded-full flex items-center justify-center transition-colors"><i class="fa-solid fa-xmark"></i></button>
   </div>
@@ -76,7 +73,7 @@
   <div class="overflow-y-auto space-y-2 text-xs pb-1 pr-1" id="userListContainer"></div>
 </div>
 
-<!-- MODAL VERIFIKASI PIN -->
+<!-- MODAL VERIFIKASI PIN LOGIN -->
 <div id="pinModal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-sm flex items-center justify-center p-4">
   <div class="bg-white w-full max-w-xs rounded-3xl p-5 shadow-2xl border border-slate-100 text-center space-y-4">
     <div class="w-12 h-12 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto text-xl shadow-inner">
@@ -85,9 +82,9 @@
     <div>
       <h3 class="text-sm font-black text-slate-800">Verifikasi PIN Keamanan</h3>
       <p id="pinModalUserName" class="text-[11px] font-bold text-emerald-600 mt-0.5">Nama Karyawan</p>
-      <p class="text-[10px] text-slate-400 mt-1">Masukkan 4 digit PIN Anda</p>
+      <p class="text-[10px] text-slate-400 mt-1">Masukkan PIN Akun Anda</p>
     </div>
-    <input type="password" id="pinInputField" maxlength="6" inputmode="numeric" placeholder="••••" class="w-full text-center text-2xl font-black tracking-[0.5em] border-2 border-slate-200 focus:border-emerald-500 rounded-xl py-2.5 outline-none bg-slate-50" onkeydown="if(event.key==='Enter') confirmPinLogin()" />
+    <input type="password" id="pinInputField" maxlength="10" placeholder="••••" class="w-full text-center text-xl font-black tracking-[0.3em] border-2 border-slate-200 focus:border-emerald-500 rounded-xl py-2.5 outline-none bg-slate-50" onkeydown="if(event.key==='Enter') confirmPinLogin()" />
     <div class="flex gap-2 pt-1">
       <button onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">Batal</button>
       <button onclick="confirmPinLogin()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition">Masuk</button>
@@ -153,7 +150,7 @@
       </div>
     </div>
 
-    <!-- Pilihan Kategori Kehadiran: Reguler (H) / Lembur (L) / Long Shift (LS) -->
+    <!-- Pilihan Kategori Kehadiran -->
     <div id="kategoriKerjaBox" class="bg-white border border-slate-200 rounded-2xl p-3 shadow-card-soft space-y-2">
       <div class="flex items-center justify-between">
         <span class="text-xs font-bold text-slate-800 flex items-center"><i class="fa-solid fa-bolt text-amber-500 mr-1.5"></i> Kategori Kehadiran:</span>
@@ -329,20 +326,112 @@
      </div>
   </div>
 
-  <!-- ADMIN DB PANE -->
-  <div id="tabContent-admin" class="space-y-4 tab-content-pane hidden">
-    <div class="bg-slate-900 text-white p-3 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
-      <div><h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Database Master Karyawan</h3><p class="text-[10px] text-slate-400">Total: <span id="adminTotalKaryawan">0</span> Karyawan</p></div>
-      <i class="fa-solid fa-database text-xl text-blue-400"></i>
+  <!-- ADMIN DB PANE (KHUSUS ALI EKA WAHYUDI - PIN: admin) -->
+  <div id="tabContent-admin" class="space-y-3.5 tab-content-pane hidden">
+    <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Panel Admin Man Power</h3>
+        <p class="text-[10px] text-slate-300">Total Aktif: <span id="adminTotalKaryawan" class="font-bold text-white">0</span> Personel &bull; Akses: Ali Eka Wahyudi</p>
+      </div>
+      <button onclick="syncManPowerFromServer(true)" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition">
+        <i id="adminSyncIcon" class="fa-solid fa-arrows-rotate"></i>
+        <span>Sync DB</span>
+      </button>
     </div>
+
     <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
       <div>
-        <span class="font-bold text-blue-900 block text-[11px]">Titik GPS Perangkat Anda Saat Ini:</span>
+        <span class="font-bold text-blue-900 block text-[11px]">Titik GPS Perangkat Saat Ini:</span>
         <span id="adminCurrentCoords" class="text-[10px] font-mono text-blue-700">Mendeteksi...</span>
       </div>
-      <button onclick="initRealGps()" class="bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Cek Ulang</button>
+      <button onclick="initRealGps()" class="bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Cek GPS</button>
     </div>
-    <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden"><div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div></div>
+
+    <!-- TAHAP 2: FORM INPUT MAN POWER & LOKASI BARU -->
+    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+        <h4 class="text-xs font-black text-slate-800"><i class="fa-solid fa-user-plus text-emerald-600 mr-1.5"></i>Tambah Man Power Baru</h4>
+        <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">PIN Admin: admin</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="text-[10px] font-bold text-slate-500">1. NIP Karyawan *</label>
+          <input type="text" id="mpNip" placeholder="Cth: 01.180.11.26 / NEW03" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500">6. PIN Karyawan *</label>
+          <input type="text" id="mpPin" value="1234" placeholder="Default: 1234" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] font-bold text-slate-500">2. Nama Lengkap *</label>
+        <input type="text" id="mpNama" placeholder="Masukkan nama lengkap karyawan..." class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5">
+        <div>
+          <label class="text-[10px] font-bold text-slate-500">3. Jabatan *</label>
+          <select id="mpJabatan" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
+            <option value="CSO">CSO</option>
+            <option value="LEADER">LEADER</option>
+            <option value="SPV">SPV</option>
+            <option value="Picker">Picker</option>
+            <option value="Kurir">Kurir</option>
+            <option value="Kurir Operasional">Kurir Operasional</option>
+            <option value="Admin Operasional">Admin Operasional</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500">Email (Opsional)</label>
+          <input type="email" id="mpEmail" placeholder="email@gmail.com" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
+        </div>
+      </div>
+
+      <div>
+        <label class="text-[10px] font-bold text-slate-500">4. Lokasi Penempatan *</label>
+        <select id="mpLokasiSelect" onchange="toggleNewLocationBox()" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 mt-1 bg-slate-50 outline-none focus:border-emerald-500"></select>
+      </div>
+
+      <!-- OPSI TAMBAH LOKASI / PROYEK BARU & KOORDINAT GPS -->
+      <div id="newLocationBox" class="hidden bg-blue-50/70 p-3 rounded-xl border border-blue-200 space-y-2.5">
+        <div>
+          <label class="text-[10px] font-bold text-blue-800">Nama Lokasi / Proyek Baru *</label>
+          <input type="text" id="mpLokasiBaru" placeholder="Contoh: PT. PROYEK BARU SEJAHTERA" class="w-full text-xs font-bold uppercase border border-blue-300 rounded-xl p-2 mt-1 bg-white outline-none">
+        </div>
+        <div>
+          <div class="flex items-center justify-between">
+            <label class="text-[10px] font-bold text-blue-800">5. Titik Koordinat GPS (Lat, Lng) / Alamat *</label>
+            <button type="button" onclick="fillCurrentGpsToForm()" class="text-[9px] font-bold bg-blue-600 text-white px-2 py-0.5 rounded-md"><i class="fa-solid fa-location-crosshairs mr-1"></i>Pakai GPS Saat Ini</button>
+          </div>
+          <div class="grid grid-cols-2 gap-2 mt-1">
+            <input type="text" id="mpLatBaru" placeholder="Lat: -6.2148" class="w-full text-xs font-mono border border-blue-300 rounded-xl p-2 bg-white outline-none">
+            <input type="text" id="mpLngBaru" placeholder="Lng: 106.9032" class="w-full text-xs font-mono border border-blue-300 rounded-xl p-2 bg-white outline-none">
+          </div>
+          <input type="text" id="mpAlamatBaru" placeholder="Alamat lengkap lokasi / proyek..." class="w-full text-xs border border-blue-300 rounded-xl p-2 mt-1.5 bg-white outline-none">
+        </div>
+      </div>
+
+      <div class="pt-1 border-t border-slate-100">
+        <label class="text-[10px] font-bold text-rose-600"><i class="fa-solid fa-key mr-1"></i>Masukkan PIN Admin untuk Menyimpan *</label>
+        <div class="flex gap-2 mt-1">
+          <input type="password" id="mpAdminPin" placeholder="Ketik PIN Admin..." class="flex-1 text-xs font-bold border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 outline-none focus:border-emerald-500">
+          <button id="btnSaveManPower" onclick="submitNewManPower()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center shrink-0">
+            <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAFTAR MAN POWER AKTIF & TOMBOL DELETE -->
+    <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
+      <div class="p-3 border-b border-slate-100 flex items-center justify-between gap-2">
+        <span class="text-xs font-bold text-slate-800 shrink-0">Daftar Man Power</span>
+        <input type="text" id="adminSearchEmp" oninput="renderAdminDB(this.value)" placeholder="Cari nama / NIP / lokasi..." class="w-full max-w-[180px] text-[11px] border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 outline-none">
+      </div>
+      <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div>
+    </div>
   </div>
 
   <!-- RIWAYAT PANE -->
@@ -364,12 +453,13 @@
   </div>
 </main>
 
-<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-between items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-around items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
   <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn"><i class="fa-solid fa-fingerprint text-xl"></i><span class="text-[9px] font-bold">Absen</span></button>
   <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[9px] font-bold">Riwayat</span></button>
   <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-calendar-days text-xl"></i><span class="text-[9px] font-bold">Cuti</span></button>
   <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-users-gear text-xl"></i><span class="text-[9px] font-bold">Tim</span></button>
-  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-bold">Admin DB</span></button>
+  <!-- TAHAP 1: TOMBOL ADMIN DB DISEMBUNYIKAN JIKA BUKAN ADMIN YANG LOGIN -->
+  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-bold">Admin DB</span></button>
 </nav>
 
 <div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
@@ -401,6 +491,7 @@
 
 <script>
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
+  const ADMIN_MASTER_PIN = "admin";
 
   function gambarKotakLengkung(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -425,19 +516,15 @@
       canvas.width = 512;
       canvas.height = 512;
       const ctx = canvas.getContext("2d");
-
       ctx.clearRect(0, 0, 512, 512);
-
       gambarKotakLengkung(ctx, 16, 16, 480, 480, 115);
       ctx.strokeStyle = "#185fa5";
       ctx.lineWidth = 16;
       ctx.stroke();
-
       gambarKotakLengkung(ctx, 34, 34, 444, 444, 100);
       ctx.strokeStyle = "#059669";
       ctx.lineWidth = 6;
       ctx.stroke();
-
       ctx.font = "900 148px 'Inter', Arial, sans-serif";
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -447,7 +534,6 @@
       ctx.strokeText("GCES", 256, 210);
       ctx.fillStyle = "#185fa5";
       ctx.fillText("GCES", 256, 210);
-
       ctx.beginPath();
       ctx.moveTo(52, 298);
       ctx.quadraticCurveTo(256, 344, 460, 310);
@@ -458,7 +544,6 @@
       ctx.stroke();
       ctx.fillStyle = "#059669";
       ctx.fill();
-
       ctx.font = "800 26px 'Inter', Arial, sans-serif";
       ctx.strokeStyle = "#ffffff";
       ctx.lineWidth = 4;
@@ -470,25 +555,6 @@
       document.getElementById("favIconLink").href = squareIconUrl;
       document.getElementById("shortIconLink").href = squareIconUrl;
       document.getElementById("appleIconLink").href = squareIconUrl;
-
-      fetch("manifest.json", { method: "HEAD" }).then(res => {
-        if (!res.ok) throw new Error("No static manifest");
-      }).catch(() => {
-        const manifestData = {
-          name: "Absensi Operasional PT. GCES",
-          short_name: "Absensi GCES",
-          start_url: window.location.href.split('?')[0],
-          display: "standalone",
-          background_color: "transparent",
-          theme_color: "#0f172a",
-          icons: [
-            { src: squareIconUrl, sizes: "192x192", type: "image/png", purpose: "any" },
-            { src: squareIconUrl, sizes: "512x512", type: "image/png", purpose: "any" }
-          ]
-        };
-        const blob = new Blob([JSON.stringify(manifestData)], { type: "application/json" });
-        document.getElementById("dynamicManifest").setAttribute("href", URL.createObjectURL(blob));
-      });
     } catch (e) {}
   }
 
@@ -506,7 +572,8 @@
     return clean.substring(0, 5);
   }
 
-  const SITE_COORDINATES = {
+  const DEFAULT_SITE_COORDINATES = {
+    "HEAD OFFICE":                { lat: -6.2148, lng: 106.9032 },
     "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
     "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 },
     "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 },
@@ -518,7 +585,10 @@
     "APOTEK SEMPER":              { lat: -6.1255, lng: 106.9261 }
   };
 
+  let SITE_COORDINATES = { ...DEFAULT_SITE_COORDINATES };
+
   const OFFICIAL_EXCEL_EMPLOYEES = [
+    { nip: "NEW02", nama: "Ali Eka Wahyudi", email: "admin@gces.co.id", jabatan: "Admin Operasional", lokasi: "HEAD OFFICE", pin: "admin" },
     { nip: "NEW 01", nama: "Makhdum Dzati", email: "makhdumdzati03@gmail.com", jabatan: "CSO", lokasi: "RS. SUKMUL SISMA MEDIKA", pin: "1234" },
     { nip: "01.012.01.19", nama: "SYAULIA MEDY DAIYAH", email: "syauliadaiyah@gmail.com", jabatan: "SPV", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
     { nip: "01.047.04.21", nama: "MUCHAMAD UBAY DILLAH", email: "dubay041103@gmail.com", jabatan: "LEADER", lokasi: "RS. HARUM SISMA MEDIKA", pin: "1234" },
@@ -596,21 +666,24 @@
   let cutiBase64 = "";
   let cutiFileName = "";
 
+  // CEK APAKAH USER YANG LOGIN ADALAH ADMIN RESMI (ALI EKA WAHYUDI - HEAD OFFICE)
+  function isAuthorizedAdmin(user) {
+    if (!user) return false;
+    const n = (user.nama || "").trim().toUpperCase();
+    const j = (user.jabatan || "").trim().toUpperCase();
+    const l = (user.lokasi || "").trim().toUpperCase();
+    return (n === "ALI EKA WAHYUDI" && j === "ADMIN OPERASIONAL" && l === "HEAD OFFICE");
+  }
+
   window.onload = () => {
     initPwaHomeScreenIcon();
+    loadCachedManPower();
     updateClock();
     setInterval(updateClock, 1000);
+    renderLocationSelectOptions();
     renderUserDropdown();
     renderAdminDB();
     renderRiwayat();
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const qrLokasi = urlParams.get('lokasi');
-    if (qrLokasi) {
-      document.getElementById('userSearchInput').value = qrLokasi;
-      filterUserDropdown(qrLokasi);
-      showToast(`Lokasi QR Terdeteksi: ${qrLokasi}`);
-    }
 
     const savedUser = localStorage.getItem('gces_currentUser');
     if (savedUser) {
@@ -623,8 +696,207 @@
       } catch (e) {}
     }
 
+    syncManPowerFromServer(false);
     initRealGps();
   };
+
+  function loadCachedManPower() {
+    try {
+      const savedCustomSites = JSON.parse(localStorage.getItem('gces_custom_sites') || '{}');
+      SITE_COORDINATES = { ...DEFAULT_SITE_COORDINATES, ...savedCustomSites };
+
+      const addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]');
+      const deletedNips = new Set(JSON.parse(localStorage.getItem('gces_deleted_nips') || '[]'));
+
+      const mergedMap = new Map();
+      OFFICIAL_EXCEL_EMPLOYEES.forEach(e => {
+        if (!deletedNips.has(e.nip)) mergedMap.set(e.nip, e);
+      });
+      addedEmps.forEach(e => {
+        if (e && e.nip && !deletedNips.has(e.nip)) mergedMap.set(e.nip, e);
+      });
+      employees = Array.from(mergedMap.values());
+    } catch (e) {
+      employees = [...OFFICIAL_EXCEL_EMPLOYEES];
+    }
+  }
+
+  async function syncManPowerFromServer(showNotif = false) {
+    const icon = document.getElementById('adminSyncIcon');
+    if (icon) icon.classList.add('fa-spin');
+    try {
+      const url = `${GAS_WEB_APP_URL}?action=get_manpower&_t=${Date.now()}`;
+      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      const data = await res.json();
+      if (data && data.status === "success") {
+        if (data.customSites) localStorage.setItem('gces_custom_sites', JSON.stringify(data.customSites));
+        if (Array.isArray(data.addedEmployees)) localStorage.setItem('gces_added_emps', JSON.stringify(data.addedEmployees));
+        if (Array.isArray(data.deletedNips)) localStorage.setItem('gces_deleted_nips', JSON.stringify(data.deletedNips));
+        loadCachedManPower();
+        renderLocationSelectOptions();
+        renderUserDropdown();
+        renderAdminDB();
+        if (showNotif) showToast("Database Man Power berhasil disinkronkan!");
+      }
+    } catch (e) {
+      if (showNotif) showToast("Menggunakan cache Man Power perangkat.", true);
+    } finally {
+      if (icon) icon.classList.remove('fa-spin');
+    }
+  }
+
+  function renderLocationSelectOptions() {
+    const sel = document.getElementById('mpLokasiSelect');
+    if (!sel) return;
+    sel.innerHTML = '';
+    Object.keys(SITE_COORDINATES).forEach(lok => {
+      sel.insertAdjacentHTML('beforeend', `<option value="${lok}">${lok}</option>`);
+    });
+    sel.insertAdjacentHTML('beforeend', `<option value="__NEW__">+ TAMBAH LOKASI / PROYEK BARU...</option>`);
+  }
+
+  function toggleNewLocationBox() {
+    const val = document.getElementById('mpLokasiSelect').value;
+    const box = document.getElementById('newLocationBox');
+    if (val === '__NEW__') {
+      box.classList.remove('hidden');
+    } else {
+      box.classList.add('hidden');
+    }
+  }
+
+  function fillCurrentGpsToForm() {
+    if (!userLiveCoords) {
+      showToast("Sinyal GPS belum terdeteksi, klik Cek GPS dulu!", true);
+      initRealGps();
+      return;
+    }
+    document.getElementById('mpLatBaru').value = userLiveCoords.lat.toFixed(5);
+    document.getElementById('mpLngBaru').value = userLiveCoords.lng.toFixed(5);
+    showToast("Koordinat GPS saat ini berhasil dimasukkan!");
+  }
+
+  function submitNewManPower() {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Akses Ditolak: Hanya Ali Eka Wahyudi (Admin) yang diizinkan!", true);
+      return;
+    }
+    const nip = document.getElementById('mpNip').value.trim();
+    const nama = document.getElementById('mpNama').value.trim();
+    const jabatan = document.getElementById('mpJabatan').value.trim();
+    const email = document.getElementById('mpEmail').value.trim();
+    const pinKaryawan = document.getElementById('mpPin').value.trim() || "1234";
+    const pinAdminInput = document.getElementById('mpAdminPin').value.trim();
+    let lokasi = document.getElementById('mpLokasiSelect').value;
+
+    if (!nip || !nama) {
+      showToast("NIP dan Nama Lengkap wajib diisi!", true);
+      return;
+    }
+    if (pinAdminInput !== ADMIN_MASTER_PIN) {
+      showToast("PIN Admin Salah! Gunakan PIN Admin yang benar.", true);
+      return;
+    }
+
+    let latBaru = null;
+    let lngBaru = null;
+    let alamatBaru = "";
+
+    if (lokasi === '__NEW__') {
+      lokasi = document.getElementById('mpLokasiBaru').value.trim().toUpperCase();
+      latBaru = parseFloat(document.getElementById('mpLatBaru').value.trim());
+      lngBaru = parseFloat(document.getElementById('mpLngBaru').value.trim());
+      alamatBaru = document.getElementById('mpAlamatBaru').value.trim();
+
+      if (!lokasi) {
+        showToast("Nama Lokasi / Proyek Baru wajib diisi!", true);
+        return;
+      }
+      if (isNaN(latBaru) || isNaN(lngBaru)) {
+        showToast("Koordinat Latitude & Longitude lokasi baru wajib berupa angka!", true);
+        return;
+      }
+      const customSites = JSON.parse(localStorage.getItem('gces_custom_sites') || '{}');
+      customSites[lokasi] = { lat: latBaru, lng: lngBaru, alamat: alamatBaru };
+      localStorage.setItem('gces_custom_sites', JSON.stringify(customSites));
+    }
+
+    const newEmp = { nip, nama, email, jabatan, lokasi, pin: pinKaryawan };
+
+    const addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]').filter(e => e.nip !== nip);
+    addedEmps.unshift(newEmp);
+    localStorage.setItem('gces_added_emps', JSON.stringify(addedEmps));
+
+    const deletedNips = JSON.parse(localStorage.getItem('gces_deleted_nips') || '[]').filter(n => n !== nip);
+    localStorage.setItem('gces_deleted_nips', JSON.stringify(deletedNips));
+
+    loadCachedManPower();
+    renderLocationSelectOptions();
+    renderUserDropdown();
+    renderAdminDB();
+
+    document.getElementById('mpNip').value = '';
+    document.getElementById('mpNama').value = '';
+    document.getElementById('mpEmail').value = '';
+    document.getElementById('mpPin').value = '1234';
+    document.getElementById('mpAdminPin').value = '';
+    document.getElementById('newLocationBox').classList.add('hidden');
+
+    showToast(`Man Power ${nama} (${lokasi}) berhasil ditambahkan!`);
+
+    fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "tambah_karyawan",
+        adminPin: pinAdminInput,
+        employee: newEmp,
+        newSite: (latBaru !== null && lngBaru !== null) ? { lokasi, lat: latBaru, lng: lngBaru, alamat: alamatBaru } : null
+      })
+    }).catch(() => {});
+  }
+
+  function deleteManPower(nip, nama) {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Akses Ditolak: Hanya Admin yang dapat menghapus data!", true);
+      return;
+    }
+    if (nip === "NEW02") {
+      showToast("Akun Admin Utama tidak dapat dihapus!", true);
+      return;
+    }
+    const inputPin = prompt(`Masukkan PIN Admin untuk menghapus:\n${nama} (NIP: ${nip})`);
+    if (inputPin === null) return;
+    if (inputPin.trim() !== ADMIN_MASTER_PIN) {
+      showToast("Gagal menghapus: PIN Admin Salah!", true);
+      return;
+    }
+
+    const deletedNips = JSON.parse(localStorage.getItem('gces_deleted_nips') || '[]');
+    if (!deletedNips.includes(nip)) deletedNips.push(nip);
+    localStorage.setItem('gces_deleted_nips', JSON.stringify(deletedNips));
+
+    const addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]').filter(e => e.nip !== nip);
+    localStorage.setItem('gces_added_emps', JSON.stringify(addedEmps));
+
+    loadCachedManPower();
+    renderUserDropdown();
+    renderAdminDB();
+    showToast(`Data ${nama} berhasil dihapus!`);
+
+    fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "hapus_karyawan",
+        adminPin: inputPin.trim(),
+        nip: nip,
+        nama: nama
+      })
+    }).catch(() => {});
+  }
 
   function showToast(msg, isErr = false) {
     const toast = document.getElementById('toastNotification');
@@ -651,12 +923,10 @@
       'LS': { active: "border border-purple-500 bg-purple-50 text-purple-800 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition shadow-xs", badgeText: "Kode Rekap: LS (Long Shift)", badgeCls: "text-[9px] font-bold px-2 py-0.5 rounded-md bg-purple-100 text-purple-800" }
     };
     const inactiveCls = "border border-slate-200 bg-slate-50 text-slate-500 py-2 rounded-xl text-[10px] font-bold flex flex-col items-center justify-center transition";
-
     ['H', 'L', 'LS'].forEach(k => {
       const btn = document.getElementById('btnKat' + k);
       if (btn) btn.className = (k === kode) ? styles[k].active : inactiveCls;
     });
-
     if (badge && styles[kode]) {
       badge.textContent = styles[kode].badgeText;
       badge.className = styles[kode].badgeCls;
@@ -708,6 +978,8 @@
 
   function renderUserDropdown(filter = '') {
     const container = document.getElementById('userListContainer');
+    const subCount = document.getElementById('dropdownSubtitleCount');
+    if (subCount) subCount.textContent = `Sesuai ${employees.length} Data Resmi (Dilengkapi PIN)`;
     container.innerHTML = '';
     let q = filter.toLowerCase();
     let filtered = filter ? employees.filter(e => e.nama.toLowerCase().includes(q) || e.nip.toLowerCase().includes(q) || e.lokasi.toLowerCase().includes(q)) : employees;
@@ -740,7 +1012,9 @@
     if (!pendingPinUser) return;
     const inputPin = document.getElementById('pinInputField').value.trim();
     const validPin = pendingPinUser.pin || "1234";
-    if (inputPin === validPin) {
+    const isAdminUser = isAuthorizedAdmin(pendingPinUser);
+
+    if (inputPin === validPin || (isAdminUser && (inputPin === ADMIN_MASTER_PIN || inputPin === "1234"))) {
       setUser(pendingPinUser);
       closePinModal();
       document.getElementById('userDropdownCard').classList.add('hidden');
@@ -759,16 +1033,27 @@
     document.getElementById('clockInSummary').textContent = "-- : --";
     document.getElementById('clockOutSummary').textContent = "-- : --";
     document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
-    
-    if (['SPV', 'LEADER'].includes(user.jabatan.toUpperCase())) {
+
+    // TAHAP 1: TAMPILKAN TOMBOL ADMIN DB HANYA JIKA ALI EKA WAHYUDI (ADMIN OPERASIONAL - HEAD OFFICE)
+    const navAdminBtn = document.getElementById('nav-admin');
+    if (isAuthorizedAdmin(user)) {
+      navAdminBtn.classList.remove('hidden');
+    } else {
+      navAdminBtn.classList.add('hidden');
+      if (!document.getElementById('tabContent-admin').classList.contains('hidden')) {
+        switchTab('beranda');
+      }
+    }
+
+    if (['SPV', 'LEADER', 'ADMIN OPERASIONAL'].includes(user.jabatan.toUpperCase())) {
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
       syncStatusTimFromServer(false);
     } else {
       document.getElementById('nav-tim').classList.add('hidden');
     }
-    
-    isNonShift = ["PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
+
+    isNonShift = ["HEAD OFFICE", "PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
     if (isNonShift) {
       document.getElementById('shiftSelectorBox').classList.add('hidden');
       currentShift = 'Non-Shift';
@@ -792,14 +1077,35 @@
     syncSisaCutiFromServer();
   }
 
-  function renderAdminDB() {
+  function renderAdminDB(searchQuery = '') {
     const totalEl = document.getElementById('adminTotalKaryawan');
     const listEl = document.getElementById('adminDatabaseList');
     if (!totalEl || !listEl) return;
     totalEl.textContent = employees.length;
     listEl.innerHTML = '';
-    employees.forEach((emp, idx) => {
-      listEl.insertAdjacentHTML('beforeend', `<div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs"><div class="flex items-center space-x-2.5"><span class="w-6 h-6 rounded-lg bg-slate-800 text-white text-[10px] font-bold flex items-center justify-center">${idx + 1}</span><div><p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p><p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}</p></div></div></div>`);
+
+    const q = searchQuery.toLowerCase().trim();
+    const filtered = q ? employees.filter(e => e.nama.toLowerCase().includes(q) || e.nip.toLowerCase().includes(q) || e.lokasi.toLowerCase().includes(q)) : employees;
+
+    filtered.forEach((emp, idx) => {
+      const safeNama = emp.nama.replace(/'/g, "\\'");
+      const safeNip = emp.nip.replace(/'/g, "\\'");
+      const delBtn = emp.nip === "NEW02"
+        ? `<span class="text-[9px] font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded-lg">ADMIN</span>`
+        : `<button onclick="deleteManPower('${safeNip}', '${safeNama}')" title="Hapus Karyawan" class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 flex items-center justify-center transition active:scale-90 shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>`;
+
+      listEl.insertAdjacentHTML('beforeend', `
+        <div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs">
+          <div class="flex items-center space-x-2.5 pr-2">
+            <span class="w-6 h-6 rounded-lg bg-slate-800 text-white text-[10px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
+            <div>
+              <p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p>
+              <p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}</p>
+            </div>
+          </div>
+          ${delBtn}
+        </div>
+      `);
     });
   }
 
@@ -1285,7 +1591,7 @@
       showToast(`Absen ${jenisAbsen.toUpperCase()}${katNotif}${dlNotif} Berhasil Tersimpan!`);
       setTimeout(() => {
         syncRiwayatFromServer(false);
-        if (['SPV', 'LEADER'].includes((currentUser.jabatan || '').toUpperCase())) {
+        if (['SPV', 'LEADER', 'ADMIN OPERASIONAL'].includes((currentUser.jabatan || '').toUpperCase())) {
           syncStatusTimFromServer(false);
         }
       }, 1800);
@@ -1302,6 +1608,10 @@
   }
 
   function switchTab(tabId) {
+    if (tabId === 'admin' && !isAuthorizedAdmin(currentUser)) {
+      showToast("Akses Terkunci: Hanya Ali Eka Wahyudi (Admin) yang dapat membuka Admin DB!", true);
+      return;
+    }
     document.querySelectorAll('.tab-content-pane').forEach(el => el.classList.add('hidden'));
     document.getElementById('tabContent-' + tabId).classList.remove('hidden');
     document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1314,6 +1624,7 @@
     if (tabId === 'riwayat') syncRiwayatFromServer(false);
     if (tabId === 'tim') syncStatusTimFromServer(false);
     if (tabId === 'cuti') syncSisaCutiFromServer();
+    if (tabId === 'admin') syncManPowerFromServer(false);
   }
 
   function checkCutiRules() {
@@ -1323,13 +1634,10 @@
     const warnBox = document.getElementById('cutiWarningBox');
     const warnText = document.getElementById('cutiWarningText');
     const uploadBox = document.getElementById('uploadBox');
-    
+
     warnBox.classList.add('hidden');
-    if (jenis === "Sakit Dengan Surat") {
-      uploadBox.classList.remove('hidden');
-    } else {
-      uploadBox.classList.add('hidden');
-    }
+    if (jenis === "Sakit Dengan Surat") uploadBox.classList.remove('hidden');
+    else uploadBox.classList.add('hidden');
 
     if (jenis === "Cuti Tahunan" && tglMulai) {
       const selisihHari = (new Date(tglMulai) - new Date()) / (1000 * 60 * 60 * 24);
@@ -1357,7 +1665,7 @@
     }
     document.getElementById('uploadText').textContent = file.name;
     document.getElementById('uploadIcon').className = "fa-solid fa-file-circle-check text-emerald-500 text-2xl mb-1";
-    
+
     const reader = new FileReader();
     reader.onload = function(e) {
       cutiBase64 = e.target.result;
@@ -1376,7 +1684,7 @@
     const mulai = document.getElementById('cutiMulai').value;
     const sampai = document.getElementById('cutiSampai').value;
     const alasan = document.getElementById('cutiAlasan').value;
-    
+
     if (!mulai || !sampai || !alasan) {
       showToast("Lengkapi tanggal dan alasan pengajuan!", true);
       return;
