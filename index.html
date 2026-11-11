@@ -84,7 +84,7 @@
       <p id="pinModalUserName" class="text-[11px] font-bold text-emerald-600 mt-0.5">Nama Karyawan</p>
       <p class="text-[10px] text-slate-400 mt-1">Masukkan PIN Akun Anda</p>
     </div>
-    <input type="password" id="pinInputField" maxlength="10" placeholder="••••" class="w-full text-center text-xl font-black tracking-[0.3em] border-2 border-slate-200 focus:border-emerald-500 rounded-xl py-2.5 outline-none bg-slate-50" onkeydown="if(event.key==='Enter') confirmPinLogin()" />
+    <input type="password" id="pinInputField" maxlength="12" placeholder="••••" class="w-full text-center text-xl font-black tracking-[0.2em] border-2 border-slate-200 focus:border-emerald-500 rounded-xl py-2.5 outline-none bg-slate-50" onkeydown="if(event.key==='Enter') confirmPinLogin()" />
     <div class="flex gap-2 pt-1">
       <button onclick="closePinModal()" class="flex-1 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition">Batal</button>
       <button onclick="confirmPinLogin()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md transition">Masuk</button>
@@ -317,6 +317,26 @@
           </div>
         </div>
      </div>
+
+     <!-- PANEL APPROVAL CUTI KHUSUS SPV DI TAB TIM (SKEMA 2) -->
+     <div id="spvApprovalCard" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-card-soft space-y-2.5">
+       <div class="flex items-center justify-between">
+         <div class="flex items-center space-x-2">
+           <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs shadow-sm shrink-0">
+             <i class="fa-solid fa-file-circle-check"></i>
+           </div>
+           <div>
+             <h4 class="text-xs font-black text-amber-900 leading-tight">Approval Cuti & Izin Tim (SPV)</h4>
+             <p class="text-[10px] text-amber-700 font-medium">Menunggu Persetujuan Anda: <span id="spvPendingCountBadge" class="font-black underline">0 Pengajuan</span></p>
+           </div>
+         </div>
+         <button onclick="syncPendingCutiFromServer(true)" class="bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 px-2.5 py-1.5 rounded-xl text-[10px] font-bold transition active:scale-95">
+           <i class="fa-solid fa-arrows-rotate mr-1"></i>Cek
+         </button>
+       </div>
+       <div id="spvPendingListContainer" class="space-y-2 pt-1 max-h-60 overflow-y-auto"></div>
+     </div>
+
      <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
         <div class="p-3 border-b border-slate-100 flex items-center justify-between">
           <span class="text-xs font-bold text-slate-700">Status Kehadiran Hari Ini</span>
@@ -326,12 +346,12 @@
      </div>
   </div>
 
-  <!-- ADMIN DB PANE (KHUSUS ALI EKA WAHYUDI - PIN: admin) -->
+  <!-- ADMIN DB PANE (KHUSUS ALI EKA WAHYUDI - PIN HRD: admin | PIN MGR: manager) -->
   <div id="tabContent-admin" class="space-y-3.5 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
       <div>
-        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Panel Admin Man Power</h3>
-        <p class="text-[10px] text-slate-300">Total Aktif: <span id="adminTotalKaryawan" class="font-bold text-white">0</span> Personel &bull; Akses: Ali Eka Wahyudi</p>
+        <h3 class="text-xs font-bold uppercase tracking-wider text-blue-400">Panel Admin & Manager DB</h3>
+        <p class="text-[10px] text-slate-300">Total Aktif: <span id="adminTotalKaryawan" class="font-bold text-white">0</span> Personel &bull; PIN HRD / Manager</p>
       </div>
       <button onclick="syncManPowerFromServer(true)" class="bg-slate-800 hover:bg-slate-700 text-blue-400 border border-slate-700 px-2.5 py-1.5 rounded-xl text-[10px] font-bold flex items-center gap-1 active:scale-95 transition">
         <i id="adminSyncIcon" class="fa-solid fa-arrows-rotate"></i>
@@ -339,7 +359,7 @@
       </button>
     </div>
 
-    <!-- PANEL PUSH NOTIFICATION & REMINDER CUTI PENDING -->
+    <!-- PANEL PUSH NOTIFICATION & APPROVAL BERJENJANG HRD / MANAGER / BYPASS > 48 JAM -->
     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-card-soft space-y-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -347,7 +367,7 @@
             <i class="fa-solid fa-bell"></i>
           </div>
           <div>
-            <h4 class="text-xs font-black text-amber-900 leading-tight">Push Reminder Pengajuan Cuti/Izin</h4>
+            <h4 class="text-xs font-black text-amber-900 leading-tight">Approval & Push Reminder Cuti</h4>
             <p class="text-[10px] text-amber-700 font-medium">Pending Saat Ini: <span id="pendingCutiCountBadge" class="font-black underline">0 Pengajuan</span></p>
           </div>
         </div>
@@ -361,7 +381,12 @@
           </button>
         </div>
       </div>
-      <div id="pendingCutiListContainer" class="hidden max-h-36 overflow-y-auto space-y-1.5 pt-2 border-t border-amber-200/70 text-[10px]"></div>
+      <div class="bg-white/80 rounded-xl p-2 border border-amber-200/80 text-[9px] text-slate-600 flex flex-wrap items-center justify-between gap-1">
+        <span><b class="text-emerald-700">HRD:</b> PIN <code>admin</code></span>
+        <span><b class="text-blue-700">Manager:</b> PIN <code>manager</code></span>
+        <span><b class="text-purple-700">⚡ Bypass (&gt;48 Jam):</b> PIN <code>manager</code></span>
+      </div>
+      <div id="pendingCutiListContainer" class="hidden max-h-72 overflow-y-auto space-y-2 pt-1 border-t border-amber-200/70 text-[10px]"></div>
     </div>
 
     <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
@@ -491,7 +516,6 @@
   <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[9px] font-bold">Riwayat</span></button>
   <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-calendar-days text-xl"></i><span class="text-[9px] font-bold">Cuti</span></button>
   <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-users-gear text-xl"></i><span class="text-[9px] font-bold">Tim</span></button>
-  <!-- TAHAP 1: TOMBOL ADMIN DB DISEMBUNYIKAN JIKA BUKAN ADMIN YANG LOGIN -->
   <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-bold">Admin DB</span></button>
 </nav>
 
@@ -525,6 +549,7 @@
 <script>
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
   const ADMIN_MASTER_PIN = "admin";
+  const MANAGER_MASTER_PIN = "manager";
 
   function gambarKotakLengkung(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -682,7 +707,7 @@
   let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
   let currentUser = null;
   let pendingPinUser = null;
-  let editingEmployeeState = null; // Menyimpan data lama saat mode Edit Man Power aktif
+  let editingEmployeeState = null;
   let pendingCutiList = [];
   let currentShift = "1";
   let currentKategoriKerja = "H";
@@ -779,7 +804,7 @@
     }
   }
 
-  // SINKRONISASI DAFTAR CUTI PENDING UNTUK PANEL ADMIN
+  // SINKRONISASI DAFTAR CUTI PENDING UNTUK PANEL ADMIN & TAB TIM SPV
   async function syncPendingCutiFromServer(showNotif = false) {
     const icon = document.getElementById('pendingCutiRefreshIcon');
     if (icon) icon.classList.add('fa-spin');
@@ -790,6 +815,7 @@
       if (data && data.status === "success" && Array.isArray(data.pendingList)) {
         pendingCutiList = data.pendingList;
         renderPendingCutiBox();
+        renderSpvPendingBox();
         if (showNotif) showToast(`Ditemukan ${pendingCutiList.length} pengajuan cuti/izin berstatus PENDING.`);
       }
     } catch (e) {
@@ -799,6 +825,64 @@
     }
   }
 
+  // RENDER KOTAK APPROVAL CUTI KHUSUS SPV DI TAB TIM (SKEMA 2)
+  function renderSpvPendingBox() {
+    const card = document.getElementById('spvApprovalCard');
+    const badge = document.getElementById('spvPendingCountBadge');
+    const container = document.getElementById('spvPendingListContainer');
+    if (!card || !badge || !container || !currentUser) return;
+
+    const isSpvOrAdmin = (currentUser.jabatan || '').toUpperCase() === 'SPV' || isAuthorizedAdmin(currentUser);
+    if (!isSpvOrAdmin) {
+      card.classList.add('hidden');
+      return;
+    }
+
+    const spvItems = pendingCutiList.filter(item => {
+      if (isAuthorizedAdmin(currentUser)) return item.roleTarget === 'spv';
+      return item.roleTarget === 'spv' && (item.lokasi || '').toUpperCase() === (currentUser.lokasi || '').toUpperCase();
+    });
+
+    card.classList.remove('hidden');
+    badge.textContent = `${spvItems.length} Pengajuan`;
+    container.innerHTML = '';
+
+    if (spvItems.length === 0) {
+      container.innerHTML = `<p class="text-[10px] text-amber-800/70 italic py-1">Tidak ada pengajuan anggota tim yang menunggu persetujuan SPV saat ini.</p>`;
+      return;
+    }
+
+    spvItems.forEach(item => {
+      const safeNama = (item.nama || '').replace(/'/g, "\\'");
+      const linkBukti = (item.bukti && item.bukti.startsWith('http'))
+        ? `<a href="${item.bukti}" target="_blank" class="text-[9px] text-blue-600 underline font-bold block mt-0.5"><i class="fa-solid fa-paperclip mr-0.5"></i>Lihat Lampiran Surat</a>`
+        : '';
+
+      container.insertAdjacentHTML('beforeend', `
+        <div class="bg-white p-2.5 rounded-xl border border-amber-200 shadow-xs space-y-2">
+          <div class="flex items-start justify-between gap-2">
+            <div>
+              <p class="font-black text-slate-800 text-[11px]">${item.nama} <span class="text-[9px] font-semibold text-slate-500">(${item.nip})</span></p>
+              <p class="text-[10px] font-bold text-emerald-700">${item.jenis} &bull; ${item.mulai} s/d ${item.selesai}</p>
+              <p class="text-[9px] text-slate-600 mt-0.5">Alasan: ${item.alasan || '-'}</p>
+              ${linkBukti}
+            </div>
+            <span class="text-[8px] font-black bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300 shrink-0">${item.jamTertahan || 0} Jam</span>
+          </div>
+          <div class="flex gap-1.5 pt-1 border-t border-slate-100">
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'spv', 'approve', '${safeNama}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              <i class="fa-solid fa-check mr-1"></i>Approve SPV
+            </button>
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'spv', 'reject', '${safeNama}')" class="flex-1 bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              <i class="fa-solid fa-xmark mr-1"></i>Reject
+            </button>
+          </div>
+        </div>
+      `);
+    });
+  }
+
+  // RENDER KOTAK APPROVAL BERJENJANG HRD (PIN: admin) & MANAGER / BYPASS > 48 JAM (PIN: manager)
   function renderPendingCutiBox() {
     const badge = document.getElementById('pendingCutiCountBadge');
     const container = document.getElementById('pendingCutiListContainer');
@@ -814,27 +898,169 @@
     container.classList.remove('hidden');
     container.innerHTML = '';
     pendingCutiList.forEach(item => {
-      container.insertAdjacentHTML('beforeend', `
-        <div class="bg-white/90 p-2 rounded-lg border border-amber-200 flex items-center justify-between">
-          <div>
-            <p class="font-bold text-slate-800 text-[10px]">${item.nama} <span class="text-slate-400">(${item.lokasi})</span></p>
-            <p class="text-[9px] text-slate-600">${item.jenis} &bull; ${item.mulai} s/d ${item.selesai}</p>
+      const safeNama = (item.nama || '').replace(/'/g, "\\'");
+      const jamWait = Number(item.jamTertahan || 0);
+      const isOver48h = Boolean(item.isLebih48Jam) || jamWait >= 48;
+
+      const durasiBadge = isOver48h
+        ? `<span class="text-[8px] font-black bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded border border-purple-300">&gt; 48 Jam (${jamWait}j)</span>`
+        : `<span class="text-[8px] font-bold bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded border border-slate-200">${jamWait} Jam lalu</span>`;
+
+      const linkBukti = (item.bukti && item.bukti.startsWith('http'))
+        ? `<a href="${item.bukti}" target="_blank" class="text-[9px] text-blue-600 underline font-bold inline-block mt-0.5"><i class="fa-solid fa-paperclip mr-0.5"></i>Lihat Bukti Surat</a>`
+        : '';
+
+      let actionButtonsHtml = '';
+
+      // 1. TOMBOL TAHAP HRD (PIN: admin)
+      if (item.roleTarget === 'hrd') {
+        actionButtonsHtml += `
+          <div class="flex gap-1.5 pt-1.5 border-t border-slate-100">
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'hrd', 'approve', '${safeNama}')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-[10px] py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              <i class="fa-solid fa-check mr-1"></i>Approve HRD (admin)
+            </button>
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'hrd', 'reject', '${safeNama}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              Reject
+            </button>
           </div>
-          <span class="text-[8px] font-black bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300 shrink-0">${item.tahapPending}</span>
+        `;
+      }
+
+      // 2. TOMBOL TAHAP MANAGER NORMAL (PIN: manager)
+      if (item.roleTarget === 'mgr') {
+        actionButtonsHtml += `
+          <div class="flex gap-1.5 pt-1.5 border-t border-slate-100">
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'mgr', 'approve', '${safeNama}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold text-[10px] py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              <i class="fa-solid fa-user-check mr-1"></i>Approve Mgr (manager)
+            </button>
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'mgr', 'reject', '${safeNama}')" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-[10px] px-3 py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              Reject
+            </button>
+          </div>
+        `;
+      }
+
+      // 3. TOMBOL BYPASS MANAGER JIKA TERTAHAN DI SPV / HRD > 48 JAM (SKEMA 1 - PIN: manager)
+      if ((item.roleTarget === 'spv' || item.roleTarget === 'hrd') && isOver48h) {
+        actionButtonsHtml += `
+          <div class="flex gap-1.5 pt-1.5 border-t border-purple-100">
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'bypass_mgr', 'approve', '${safeNama}')" class="flex-1 bg-purple-600 hover:bg-purple-700 text-white font-bold text-[10px] py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              <i class="fa-solid fa-bolt mr-1"></i>Bypass Approve Mgr (&gt;48J)
+            </button>
+            <button onclick="prosesApprovalCutiAplikasi('${item.reqId}', 'bypass_mgr', 'reject', '${safeNama}')" class="bg-rose-700 hover:bg-rose-800 text-white font-bold text-[10px] px-2.5 py-1.5 rounded-lg shadow-xs transition active:scale-95">
+              Bypass Reject
+            </button>
+          </div>
+        `;
+      } else if (item.roleTarget === 'spv' && !isOver48h) {
+        actionButtonsHtml += `
+          <div class="pt-1 border-t border-slate-100 flex items-center justify-between text-[9px] text-slate-500">
+            <span><i class="fa-regular fa-hourglass-half mr-1 text-amber-600"></i>Menunggu SPV di Tab Tim</span>
+            <span class="italic">Bypass Mgr terbuka &gt; 48 Jam</span>
+          </div>
+        `;
+      }
+
+      container.insertAdjacentHTML('beforeend', `
+        <div class="bg-white p-2.5 rounded-xl border border-amber-200 shadow-xs space-y-1.5">
+          <div class="flex items-start justify-between gap-1.5">
+            <div>
+              <p class="font-black text-slate-800 text-[11px]">${item.nama} <span class="text-slate-400 font-semibold">(${item.lokasi})</span></p>
+              <p class="text-[10px] font-bold text-emerald-700">${item.jenis} &bull; ${item.mulai} s/d ${item.selesai}</p>
+              <p class="text-[9px] text-slate-600">Alasan: ${item.alasan || '-'}</p>
+              ${linkBukti}
+            </div>
+            <div class="flex flex-col items-end gap-1 shrink-0">
+              <span class="text-[8px] font-black bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300">${item.tahapPending}</span>
+              ${durasiBadge}
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-1 bg-slate-50 p-1.5 rounded-lg border border-slate-100 text-[8px] text-center font-bold">
+            <div>SPV: <span class="text-slate-700">${item.appSpv || '-'}</span></div>
+            <div>HRD: <span class="text-slate-700">${item.appHrd || '-'}</span></div>
+            <div>MGR: <span class="text-slate-700">${item.appMgr || '-'}</span></div>
+          </div>
+          ${actionButtonsHtml}
         </div>
       `);
     });
   }
 
-  function triggerPushReminderCuti() {
-    if (!isAuthorizedAdmin(currentUser)) {
-      showToast("Hanya Admin yang dapat mengirim Push Reminder!", true);
+  // FUNGSI EKSEKUSI APPROVAL / REJECT / BYPASS LANGSUNG DARI APLIKASI
+  function prosesApprovalCutiAplikasi(reqId, role, keputusan, namaKaryawan) {
+    if (!currentUser) {
+      showToast("Pilih akun terlebih dahulu!", true);
       return;
     }
-    const inputPin = prompt("Masukkan PIN Admin (admin) untuk mengirim Push Notification Email ke seluruh SPV / HRD / Manager atas pengajuan yang masih PENDING:");
+
+    const labelAksi = keputusan === 'approve' ? 'MENYETUJUI (APPROVE)' : 'MENOLAK (REJECT)';
+    let promptMsg = "";
+    let pinWajib = "";
+
+    if (role === 'hrd') {
+      promptMsg = `[TAHAP ADMIN HRD]\nMasukkan PIN Admin HRD (admin) untuk ${labelAksi} pengajuan:\n${namaKaryawan}`;
+      pinWajib = ADMIN_MASTER_PIN;
+    } else if (role === 'mgr') {
+      promptMsg = `[TAHAP MANAGER]\nMasukkan PIN Manager (manager) untuk ${labelAksi} pengajuan:\n${namaKaryawan}`;
+      pinWajib = MANAGER_MASTER_PIN;
+    } else if (role === 'bypass_mgr') {
+      promptMsg = `[BYPASS MANAGER > 48 JAM]\nMasukkan PIN Manager (manager) untuk ${labelAksi} LANGSUNG pengajuan:\n${namaKaryawan}`;
+      pinWajib = MANAGER_MASTER_PIN;
+    } else if (role === 'spv') {
+      promptMsg = `[TAHAP SPV - ${currentUser.lokasi}]\nMasukkan PIN Akun SPV Anda untuk ${labelAksi} pengajuan:\n${namaKaryawan}`;
+      pinWajib = currentUser.pin || "1234";
+    }
+
+    const inputPin = prompt(promptMsg);
     if (inputPin === null) return;
-    if (inputPin.trim() !== ADMIN_MASTER_PIN) {
-      showToast("PIN Admin salah!", true);
+    const cleanPin = inputPin.trim();
+
+    if (role === 'spv') {
+      if (cleanPin !== pinWajib && cleanPin !== ADMIN_MASTER_PIN && cleanPin !== MANAGER_MASTER_PIN) {
+        showToast("PIN SPV salah! Proses dibatalkan.", true);
+        return;
+      }
+    } else if (cleanPin !== pinWajib) {
+      showToast(`PIN Salah! Gunakan PIN ${role === 'hrd' ? 'Admin HRD' : 'Manager'} yang benar.`, true);
+      return;
+    }
+
+    showToast(`Memproses ${keputusan.toUpperCase()} untuk ${namaKaryawan}...`);
+
+    fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "proses_cuti_app",
+        reqId: reqId,
+        role: role,
+        keputusan: keputusan,
+        pinInput: cleanPin,
+        actorNama: currentUser.nama,
+        actorLokasi: currentUser.lokasi
+      })
+    }).then(() => {
+      showToast(`Status pengajuan ${namaKaryawan} berhasil diperbarui & notifikasi email dikirim!`);
+      setTimeout(() => {
+        syncPendingCutiFromServer(false);
+        syncSisaCutiFromServer();
+      }, 1600);
+    }).catch(() => {
+      showToast("Gagal menghubungi server.", true);
+    });
+  }
+
+  function triggerPushReminderCuti() {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Hanya Admin / Manager yang dapat mengirim Push Reminder!", true);
+      return;
+    }
+    const inputPin = prompt("Masukkan PIN Admin HRD (admin) atau PIN Manager (manager) untuk mengirim Push Notification Email Reminder:");
+    if (inputPin === null) return;
+    const p = inputPin.trim();
+    if (p !== ADMIN_MASTER_PIN && p !== MANAGER_MASTER_PIN) {
+      showToast("PIN salah!", true);
       return;
     }
 
@@ -848,7 +1074,7 @@
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({
         action: "kirim_reminder_cuti",
-        adminPin: inputPin.trim()
+        adminPin: p
       })
     }).then(() => {
       showToast("Push Notification Email Reminder berhasil dikirim ke SPV/HRD/Mgr!");
@@ -891,7 +1117,6 @@
     showToast("Koordinat GPS saat ini berhasil dimasukkan!");
   }
 
-  // FUNGSI MULAI EDIT DATA KARYAWAN
   function startEditManPower(nip) {
     if (!isAuthorizedAdmin(currentUser)) {
       showToast("Hanya Admin yang dapat mengedit data!", true);
@@ -969,8 +1194,8 @@
       showToast("NIP dan Nama Lengkap wajib diisi!", true);
       return;
     }
-    if (pinAdminInput !== ADMIN_MASTER_PIN) {
-      showToast("PIN Admin Salah! Gunakan PIN Admin yang benar.", true);
+    if (pinAdminInput !== ADMIN_MASTER_PIN && pinAdminInput !== MANAGER_MASTER_PIN) {
+      showToast("PIN Salah! Gunakan PIN Admin atau Manager.", true);
       return;
     }
 
@@ -1051,7 +1276,7 @@
     }
     const inputPin = prompt(`Masukkan PIN Admin untuk menghapus:\n${nama} (NIP: ${nip})`);
     if (inputPin === null) return;
-    if (inputPin.trim() !== ADMIN_MASTER_PIN) {
+    if (inputPin.trim() !== ADMIN_MASTER_PIN && inputPin.trim() !== MANAGER_MASTER_PIN) {
       showToast("Gagal menghapus: PIN Admin Salah!", true);
       return;
     }
@@ -1201,7 +1426,7 @@
     const validPin = pendingPinUser.pin || "1234";
     const isAdminUser = isAuthorizedAdmin(pendingPinUser);
 
-    if (inputPin === validPin || (isAdminUser && (inputPin === ADMIN_MASTER_PIN || inputPin === "1234"))) {
+    if (inputPin === validPin || (isAdminUser && (inputPin === ADMIN_MASTER_PIN || inputPin === MANAGER_MASTER_PIN || inputPin === "1234"))) {
       setUser(pendingPinUser);
       closePinModal();
       document.getElementById('userDropdownCard').classList.add('hidden');
@@ -1235,6 +1460,7 @@
       document.getElementById('nav-tim').classList.remove('hidden');
       renderTimList(user.lokasi);
       syncStatusTimFromServer(false);
+      syncPendingCutiFromServer(false);
     } else {
       document.getElementById('nav-tim').classList.add('hidden');
     }
@@ -1815,7 +2041,10 @@
     document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
 
     if (tabId === 'riwayat') syncRiwayatFromServer(false);
-    if (tabId === 'tim') syncStatusTimFromServer(false);
+    if (tabId === 'tim') {
+      syncStatusTimFromServer(false);
+      syncPendingCutiFromServer(false);
+    }
     if (tabId === 'cuti') syncSisaCutiFromServer();
     if (tabId === 'admin') {
       syncManPowerFromServer(false);
@@ -1932,7 +2161,7 @@
     }).then(() => {
       document.getElementById('cutiLoading').classList.add('hidden');
       document.getElementById('formCutiContainer').classList.remove('hidden');
-      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan & Push Notif Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Notifikasi pengajuan telah dikirimkan ke SPV dan ditembuskan langsung ke Admin HRD PT. GCES.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
+      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan & Push Notif Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Pengajuan dapat langsung di-approve melalui aplikasi (Tab Tim SPV / Admin DB) maupun via Email.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
       showToast("Form Cuti & Push Notifikasi Terkirim!");
     }).catch(() => {
       showToast("Gagal mengirim form!", true);
