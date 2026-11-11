@@ -92,7 +92,7 @@
   </div>
 </div>
 
-<main class="flex-1 overflow-y-auto p-4 space-y-3.5">
+<main id="mainScrollArea" class="flex-1 overflow-y-auto p-4 space-y-3.5">
   <!-- BERANDA -->
   <div id="tabContent-beranda" class="space-y-3.5 tab-content-pane">
     <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
@@ -284,7 +284,7 @@
       </div>
       <div id="cutiLoading" class="hidden flex flex-col items-center justify-center py-10">
           <i class="fa-solid fa-circle-notch fa-spin text-4xl text-emerald-500 mb-3"></i>
-          <p class="text-xs font-bold text-slate-600">Mengirim data & upload file ke Server...</p>
+          <p class="text-xs font-bold text-slate-600">Mengirim data & notifikasi email ke Server...</p>
       </div>
     </div>
   </div>
@@ -339,6 +339,31 @@
       </button>
     </div>
 
+    <!-- PANEL PUSH NOTIFICATION & REMINDER CUTI PENDING -->
+    <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-card-soft space-y-2.5">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xs shadow-sm shrink-0">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <div>
+            <h4 class="text-xs font-black text-amber-900 leading-tight">Push Reminder Pengajuan Cuti/Izin</h4>
+            <p class="text-[10px] text-amber-700 font-medium">Pending Saat Ini: <span id="pendingCutiCountBadge" class="font-black underline">0 Pengajuan</span></p>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="syncPendingCutiFromServer(true)" title="Cek Pengajuan Pending" class="bg-white hover:bg-amber-100 text-amber-800 border border-amber-300 px-2 py-1.5 rounded-xl text-[10px] font-bold transition active:scale-95">
+            <i id="pendingCutiRefreshIcon" class="fa-solid fa-arrows-rotate"></i>
+          </button>
+          <button onclick="triggerPushReminderCuti()" id="btnPushReminderCuti" class="bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1.5 rounded-xl text-[10px] font-bold shadow-sm transition active:scale-95 flex items-center gap-1">
+            <i class="fa-solid fa-paper-plane"></i>
+            <span>Push Email</span>
+          </button>
+        </div>
+      </div>
+      <div id="pendingCutiListContainer" class="hidden max-h-36 overflow-y-auto space-y-1.5 pt-2 border-t border-amber-200/70 text-[10px]"></div>
+    </div>
+
     <div class="bg-blue-50 border border-blue-200 rounded-2xl p-3 text-xs flex items-center justify-between">
       <div>
         <span class="font-bold text-blue-900 block text-[11px]">Titik GPS Perangkat Saat Ini:</span>
@@ -347,11 +372,18 @@
       <button onclick="initRealGps()" class="bg-blue-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Cek GPS</button>
     </div>
 
-    <!-- TAHAP 2: FORM INPUT MAN POWER & LOKASI BARU -->
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+    <!-- FORM INPUT / EDIT MAN POWER & LOKASI BARU -->
+    <div id="adminFormCard" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3 transition-all">
       <div class="flex items-center justify-between border-b border-slate-100 pb-2">
-        <h4 class="text-xs font-black text-slate-800"><i class="fa-solid fa-user-plus text-emerald-600 mr-1.5"></i>Tambah Man Power Baru</h4>
-        <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">PIN Admin: admin</span>
+        <h4 id="adminFormTitle" class="text-xs font-black text-slate-800"><i class="fa-solid fa-user-plus text-emerald-600 mr-1.5"></i>Tambah Man Power Baru</h4>
+        <div class="flex items-center gap-1.5">
+          <button id="btnCancelEditMp" onclick="cancelEditManPower()" class="hidden text-[9px] font-bold bg-rose-100 text-rose-700 px-2 py-0.5 rounded hover:bg-rose-200 transition">Batal Edit ✕</button>
+          <span class="text-[9px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded">PIN: admin</span>
+        </div>
+      </div>
+
+      <div id="editModeNotice" class="hidden bg-blue-50 border border-blue-200 rounded-xl p-2 text-[10px] text-blue-800 font-semibold">
+        <i class="fa-solid fa-circle-info mr-1 text-blue-600"></i>Mode Edit Aktif: Riwayat absensi & cuti karyawan ini tetap aman meskipun NIP atau data dilengkapi.
       </div>
 
       <div class="grid grid-cols-2 gap-2.5">
@@ -384,7 +416,7 @@
           </select>
         </div>
         <div>
-          <label class="text-[10px] font-bold text-slate-500">Email (Opsional)</label>
+          <label class="text-[10px] font-bold text-slate-500">Email Karyawan</label>
           <input type="email" id="mpEmail" placeholder="email@gmail.com" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2 mt-1 bg-slate-50 outline-none focus:border-emerald-500">
         </div>
       </div>
@@ -418,17 +450,18 @@
         <div class="flex gap-2 mt-1">
           <input type="password" id="mpAdminPin" placeholder="Ketik PIN Admin..." class="flex-1 text-xs font-bold border border-slate-300 rounded-xl px-3 py-2.5 bg-slate-50 outline-none focus:border-emerald-500">
           <button id="btnSaveManPower" onclick="submitNewManPower()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center shrink-0">
-            <i class="fa-solid fa-floppy-disk mr-1.5"></i> Simpan
+            <i id="btnSaveMpIcon" class="fa-solid fa-floppy-disk mr-1.5"></i>
+            <span id="btnSaveMpText">Simpan</span>
           </button>
         </div>
       </div>
     </div>
 
-    <!-- DAFTAR MAN POWER AKTIF & TOMBOL DELETE -->
+    <!-- DAFTAR MAN POWER AKTIF & TOMBOL EDIT / DELETE -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
       <div class="p-3 border-b border-slate-100 flex items-center justify-between gap-2">
-        <span class="text-xs font-bold text-slate-800 shrink-0">Daftar Man Power</span>
-        <input type="text" id="adminSearchEmp" oninput="renderAdminDB(this.value)" placeholder="Cari nama / NIP / lokasi..." class="w-full max-w-[180px] text-[11px] border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 outline-none">
+        <span class="text-xs font-bold text-slate-800 shrink-0">Daftar Man Power (Edit / Hapus)</span>
+        <input type="text" id="adminSearchEmp" oninput="renderAdminDB(this.value)" placeholder="Cari nama / NIP / lokasi..." class="w-full max-w-[175px] text-[11px] border border-slate-200 rounded-lg px-2.5 py-1 bg-slate-50 outline-none">
       </div>
       <div class="max-h-96 overflow-y-auto p-2 space-y-2" id="adminDatabaseList"></div>
     </div>
@@ -649,6 +682,8 @@
   let employees = [...OFFICIAL_EXCEL_EMPLOYEES];
   let currentUser = null;
   let pendingPinUser = null;
+  let editingEmployeeState = null; // Menyimpan data lama saat mode Edit Man Power aktif
+  let pendingCutiList = [];
   let currentShift = "1";
   let currentKategoriKerja = "H";
   let isDinasLuar = false;
@@ -666,7 +701,6 @@
   let cutiBase64 = "";
   let cutiFileName = "";
 
-  // CEK APAKAH USER YANG LOGIN ADALAH ADMIN RESMI (ALI EKA WAHYUDI - HEAD OFFICE)
   function isAuthorizedAdmin(user) {
     if (!user) return false;
     const n = (user.nama || "").trim().toUpperCase();
@@ -710,10 +744,10 @@
 
       const mergedMap = new Map();
       OFFICIAL_EXCEL_EMPLOYEES.forEach(e => {
-        if (!deletedNips.has(e.nip)) mergedMap.set(e.nip, e);
+        if (!deletedNips.has(e.nip)) mergedMap.set(e.nip, { ...e });
       });
       addedEmps.forEach(e => {
-        if (e && e.nip && !deletedNips.has(e.nip)) mergedMap.set(e.nip, e);
+        if (e && e.nip && !deletedNips.has(e.nip)) mergedMap.set(e.nip, { ...e });
       });
       employees = Array.from(mergedMap.values());
     } catch (e) {
@@ -745,6 +779,87 @@
     }
   }
 
+  // SINKRONISASI DAFTAR CUTI PENDING UNTUK PANEL ADMIN
+  async function syncPendingCutiFromServer(showNotif = false) {
+    const icon = document.getElementById('pendingCutiRefreshIcon');
+    if (icon) icon.classList.add('fa-spin');
+    try {
+      const url = `${GAS_WEB_APP_URL}?action=get_cuti_pending&_t=${Date.now()}`;
+      const res = await fetch(url, { method: "GET", redirect: "follow" });
+      const data = await res.json();
+      if (data && data.status === "success" && Array.isArray(data.pendingList)) {
+        pendingCutiList = data.pendingList;
+        renderPendingCutiBox();
+        if (showNotif) showToast(`Ditemukan ${pendingCutiList.length} pengajuan cuti/izin berstatus PENDING.`);
+      }
+    } catch (e) {
+      if (showNotif) showToast("Gagal memuat daftar pengajuan pending.", true);
+    } finally {
+      if (icon) icon.classList.remove('fa-spin');
+    }
+  }
+
+  function renderPendingCutiBox() {
+    const badge = document.getElementById('pendingCutiCountBadge');
+    const container = document.getElementById('pendingCutiListContainer');
+    if (!badge || !container) return;
+
+    badge.textContent = `${pendingCutiList.length} Pengajuan`;
+    if (pendingCutiList.length === 0) {
+      container.classList.add('hidden');
+      container.innerHTML = '';
+      return;
+    }
+
+    container.classList.remove('hidden');
+    container.innerHTML = '';
+    pendingCutiList.forEach(item => {
+      container.insertAdjacentHTML('beforeend', `
+        <div class="bg-white/90 p-2 rounded-lg border border-amber-200 flex items-center justify-between">
+          <div>
+            <p class="font-bold text-slate-800 text-[10px]">${item.nama} <span class="text-slate-400">(${item.lokasi})</span></p>
+            <p class="text-[9px] text-slate-600">${item.jenis} &bull; ${item.mulai} s/d ${item.selesai}</p>
+          </div>
+          <span class="text-[8px] font-black bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded border border-amber-300 shrink-0">${item.tahapPending}</span>
+        </div>
+      `);
+    });
+  }
+
+  function triggerPushReminderCuti() {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Hanya Admin yang dapat mengirim Push Reminder!", true);
+      return;
+    }
+    const inputPin = prompt("Masukkan PIN Admin (admin) untuk mengirim Push Notification Email ke seluruh SPV / HRD / Manager atas pengajuan yang masih PENDING:");
+    if (inputPin === null) return;
+    if (inputPin.trim() !== ADMIN_MASTER_PIN) {
+      showToast("PIN Admin salah!", true);
+      return;
+    }
+
+    const btn = document.getElementById('btnPushReminderCuti');
+    if (btn) btn.disabled = true;
+    showToast("Mengirim Push Notification Email Reminder...");
+
+    fetch(GAS_WEB_APP_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify({
+        action: "kirim_reminder_cuti",
+        adminPin: inputPin.trim()
+      })
+    }).then(() => {
+      showToast("Push Notification Email Reminder berhasil dikirim ke SPV/HRD/Mgr!");
+      setTimeout(() => syncPendingCutiFromServer(false), 1500);
+    }).catch(() => {
+      showToast("Gagal mengirim sinyal reminder.", true);
+    }).finally(() => {
+      if (btn) btn.disabled = false;
+    });
+  }
+
   function renderLocationSelectOptions() {
     const sel = document.getElementById('mpLokasiSelect');
     if (!sel) return;
@@ -774,6 +889,67 @@
     document.getElementById('mpLatBaru').value = userLiveCoords.lat.toFixed(5);
     document.getElementById('mpLngBaru').value = userLiveCoords.lng.toFixed(5);
     showToast("Koordinat GPS saat ini berhasil dimasukkan!");
+  }
+
+  // FUNGSI MULAI EDIT DATA KARYAWAN
+  function startEditManPower(nip) {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Hanya Admin yang dapat mengedit data!", true);
+      return;
+    }
+    const emp = employees.find(e => e.nip === nip);
+    if (!emp) return;
+
+    editingEmployeeState = { ...emp };
+
+    document.getElementById('mpNip').value = emp.nip || '';
+    document.getElementById('mpNama').value = emp.nama || '';
+    document.getElementById('mpEmail').value = emp.email || '';
+    document.getElementById('mpPin').value = emp.pin || '1234';
+
+    const jabSelect = document.getElementById('mpJabatan');
+    if (!Array.from(jabSelect.options).some(o => o.value === emp.jabatan)) {
+      jabSelect.insertAdjacentHTML('beforeend', `<option value="${emp.jabatan}">${emp.jabatan}</option>`);
+    }
+    jabSelect.value = emp.jabatan;
+
+    const lokSelect = document.getElementById('mpLokasiSelect');
+    if (!Array.from(lokSelect.options).some(o => o.value === emp.lokasi)) {
+      lokSelect.insertAdjacentHTML('afterbegin', `<option value="${emp.lokasi}">${emp.lokasi}</option>`);
+    }
+    lokSelect.value = emp.lokasi;
+    document.getElementById('newLocationBox').classList.add('hidden');
+
+    document.getElementById('adminFormTitle').innerHTML = `<i class="fa-solid fa-user-pen text-blue-600 mr-1.5"></i>Edit Man Power: ${emp.nama}`;
+    document.getElementById('btnSaveMpText').textContent = "Update Data";
+    document.getElementById('btnSaveManPower').className = "bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center shrink-0";
+    document.getElementById('adminFormCard').className = "bg-white p-4 rounded-2xl border-2 border-blue-400 shadow-card-soft space-y-3 transition-all";
+    document.getElementById('btnCancelEditMp').classList.remove('hidden');
+    document.getElementById('editModeNotice').classList.remove('hidden');
+
+    const mainArea = document.getElementById('mainScrollArea');
+    const formCard = document.getElementById('adminFormCard');
+    if (mainArea && formCard) {
+      mainArea.scrollTo({ top: formCard.offsetTop - 16, behavior: 'smooth' });
+    }
+    showToast(`Mode Edit: Silakan perbarui data ${emp.nama}`);
+  }
+
+  function cancelEditManPower() {
+    editingEmployeeState = null;
+    document.getElementById('mpNip').value = '';
+    document.getElementById('mpNama').value = '';
+    document.getElementById('mpEmail').value = '';
+    document.getElementById('mpPin').value = '1234';
+    document.getElementById('mpAdminPin').value = '';
+    document.getElementById('newLocationBox').classList.add('hidden');
+
+    document.getElementById('adminFormTitle').innerHTML = `<i class="fa-solid fa-user-plus text-emerald-600 mr-1.5"></i>Tambah Man Power Baru`;
+    document.getElementById('btnSaveMpText').textContent = "Simpan";
+    document.getElementById('btnSaveManPower').className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition active:scale-95 flex items-center shrink-0";
+    document.getElementById('adminFormCard').className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3 transition-all";
+    document.getElementById('btnCancelEditMp').classList.add('hidden');
+    document.getElementById('editModeNotice').classList.add('hidden');
   }
 
   function submitNewManPower() {
@@ -822,35 +998,42 @@
     }
 
     const newEmp = { nip, nama, email, jabatan, lokasi, pin: pinKaryawan };
+    const isEditMode = Boolean(editingEmployeeState);
+    const oldNip = isEditMode ? editingEmployeeState.nip : null;
+    const oldNama = isEditMode ? editingEmployeeState.nama : null;
+    const oldLokasi = isEditMode ? editingEmployeeState.lokasi : null;
 
-    const addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]').filter(e => e.nip !== nip);
+    let addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]').filter(e => e.nip !== nip && (!oldNip || e.nip !== oldNip));
     addedEmps.unshift(newEmp);
     localStorage.setItem('gces_added_emps', JSON.stringify(addedEmps));
 
-    const deletedNips = JSON.parse(localStorage.getItem('gces_deleted_nips') || '[]').filter(n => n !== nip);
+    let deletedNips = JSON.parse(localStorage.getItem('gces_deleted_nips') || '[]').filter(n => n !== nip);
+    if (isEditMode && oldNip && oldNip !== nip) {
+      if (!deletedNips.includes(oldNip)) deletedNips.push(oldNip);
+    }
     localStorage.setItem('gces_deleted_nips', JSON.stringify(deletedNips));
 
     loadCachedManPower();
     renderLocationSelectOptions();
     renderUserDropdown();
-    renderAdminDB();
+    renderAdminDB(document.getElementById('adminSearchEmp').value || '');
 
-    document.getElementById('mpNip').value = '';
-    document.getElementById('mpNama').value = '';
-    document.getElementById('mpEmail').value = '';
-    document.getElementById('mpPin').value = '1234';
-    document.getElementById('mpAdminPin').value = '';
-    document.getElementById('newLocationBox').classList.add('hidden');
+    cancelEditManPower();
 
-    showToast(`Man Power ${nama} (${lokasi}) berhasil ditambahkan!`);
+    showToast(isEditMode
+      ? `Data ${nama} berhasil diperbarui! Riwayat absen tetap tersambung.`
+      : `Man Power ${nama} (${lokasi}) berhasil ditambahkan!`);
 
     fetch(GAS_WEB_APP_URL, {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "text/plain;charset=utf-8" },
       body: JSON.stringify({
-        action: "tambah_karyawan",
+        action: isEditMode ? "edit_karyawan" : "tambah_karyawan",
         adminPin: pinAdminInput,
+        oldNip: oldNip,
+        oldNama: oldNama,
+        oldLokasi: oldLokasi,
         employee: newEmp,
         newSite: (latBaru !== null && lngBaru !== null) ? { lokasi, lat: latBaru, lng: lngBaru, alamat: alamatBaru } : null
       })
@@ -880,9 +1063,13 @@
     const addedEmps = JSON.parse(localStorage.getItem('gces_added_emps') || '[]').filter(e => e.nip !== nip);
     localStorage.setItem('gces_added_emps', JSON.stringify(addedEmps));
 
+    if (editingEmployeeState && editingEmployeeState.nip === nip) {
+      cancelEditManPower();
+    }
+
     loadCachedManPower();
     renderUserDropdown();
-    renderAdminDB();
+    renderAdminDB(document.getElementById('adminSearchEmp').value || '');
     showToast(`Data ${nama} berhasil dihapus!`);
 
     fetch(GAS_WEB_APP_URL, {
@@ -985,7 +1172,7 @@
     let filtered = filter ? employees.filter(e => e.nama.toLowerCase().includes(q) || e.nip.toLowerCase().includes(q) || e.lokasi.toLowerCase().includes(q)) : employees;
     filtered.forEach(emp => {
       let isSel = currentUser && currentUser.nip === emp.nip;
-      container.insertAdjacentHTML('beforeend', `<div onclick="loginUser('${emp.nip}')" class="p-3 rounded-2xl border ${isSel ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-100'} hover:bg-slate-50 transition cursor-pointer flex items-center justify-between mb-2"><div class="flex items-center space-x-3"><div class="w-10 h-10 rounded-full ${isSel ? 'bg-emerald-500' : 'bg-slate-200'} text-white flex items-center justify-center font-bold text-[12px]">${formatInitials(emp.nama)}</div><div><h4 class="font-bold text-[12px]">${emp.nama}</h4><p class="text-[10px]"><span class="font-bold">${emp.jabatan}</span> &bull; ${emp.lokasi}</p></div></div><i class="fa-solid fa-lock text-slate-300 text-xs"></i></div>`);
+      container.insertAdjacentHTML('beforeend', `<div onclick="loginUser('${emp.nip.replace(/'/g, "\\'")}')" class="p-3 rounded-2xl border ${isSel ? 'bg-emerald-50 border-emerald-300' : 'bg-white border-slate-100'} hover:bg-slate-50 transition cursor-pointer flex items-center justify-between mb-2"><div class="flex items-center space-x-3"><div class="w-10 h-10 rounded-full ${isSel ? 'bg-emerald-500' : 'bg-slate-200'} text-white flex items-center justify-center font-bold text-[12px]">${formatInitials(emp.nama)}</div><div><h4 class="font-bold text-[12px]">${emp.nama}</h4><p class="text-[10px]"><span class="font-bold">${emp.jabatan}</span> &bull; ${emp.lokasi}</p></div></div><i class="fa-solid fa-lock text-slate-300 text-xs"></i></div>`);
     });
   }
 
@@ -1034,7 +1221,6 @@
     document.getElementById('clockOutSummary').textContent = "-- : --";
     document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
 
-    // TAHAP 1: TAMPILKAN TOMBOL ADMIN DB HANYA JIKA ALI EKA WAHYUDI (ADMIN OPERASIONAL - HEAD OFFICE)
     const navAdminBtn = document.getElementById('nav-admin');
     if (isAuthorizedAdmin(user)) {
       navAdminBtn.classList.remove('hidden');
@@ -1088,22 +1274,29 @@
     const filtered = q ? employees.filter(e => e.nama.toLowerCase().includes(q) || e.nip.toLowerCase().includes(q) || e.lokasi.toLowerCase().includes(q)) : employees;
 
     filtered.forEach((emp, idx) => {
-      const safeNama = emp.nama.replace(/'/g, "\\'");
-      const safeNip = emp.nip.replace(/'/g, "\\'");
+      const safeNama = (emp.nama || "").replace(/'/g, "\\'");
+      const safeNip = (emp.nip || "").replace(/'/g, "\\'");
+      const emailTag = emp.email ? `<span class="text-emerald-600">${emp.email}</span>` : `<span class="text-rose-500 italic">Email belum diisi</span>`;
+
+      const editBtn = `<button onclick="startEditManPower('${safeNip}')" title="Edit Data Karyawan" class="w-7 h-7 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 border border-blue-200 flex items-center justify-center transition active:scale-90 shrink-0"><i class="fa-solid fa-pen-to-square text-xs"></i></button>`;
       const delBtn = emp.nip === "NEW02"
-        ? `<span class="text-[9px] font-bold bg-blue-100 text-blue-700 px-2 py-1 rounded-lg">ADMIN</span>`
+        ? `<span class="text-[8px] font-bold bg-blue-100 text-blue-700 px-1.5 py-1 rounded-lg">ADMIN</span>`
         : `<button onclick="deleteManPower('${safeNip}', '${safeNama}')" title="Hapus Karyawan" class="w-7 h-7 rounded-lg bg-rose-50 hover:bg-rose-100 text-rose-600 border border-rose-200 flex items-center justify-center transition active:scale-90 shrink-0"><i class="fa-solid fa-trash-can text-xs"></i></button>`;
 
       listEl.insertAdjacentHTML('beforeend', `
         <div class="p-2.5 rounded-xl border border-slate-100 bg-slate-50 flex items-center justify-between text-xs">
-          <div class="flex items-center space-x-2.5 pr-2">
+          <div class="flex items-center space-x-2.5 pr-2 min-w-0">
             <span class="w-6 h-6 rounded-lg bg-slate-800 text-white text-[10px] font-bold flex items-center justify-center shrink-0">${idx + 1}</span>
-            <div>
-              <p class="font-bold text-slate-800 text-[11px]">${emp.nama}</p>
-              <p class="text-[9px] text-slate-500">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}</p>
+            <div class="truncate">
+              <p class="font-bold text-slate-800 text-[11px] truncate">${emp.nama}</p>
+              <p class="text-[9px] text-slate-500 truncate">${emp.nip} &bull; ${emp.jabatan} &bull; ${emp.lokasi}</p>
+              <p class="text-[8px] truncate">${emailTag}</p>
             </div>
           </div>
-          ${delBtn}
+          <div class="flex items-center gap-1.5 shrink-0">
+            ${editBtn}
+            ${delBtn}
+          </div>
         </div>
       `);
     });
@@ -1624,7 +1817,10 @@
     if (tabId === 'riwayat') syncRiwayatFromServer(false);
     if (tabId === 'tim') syncStatusTimFromServer(false);
     if (tabId === 'cuti') syncSisaCutiFromServer();
-    if (tabId === 'admin') syncManPowerFromServer(false);
+    if (tabId === 'admin') {
+      syncManPowerFromServer(false);
+      syncPendingCutiFromServer(false);
+    }
   }
 
   function checkCutiRules() {
@@ -1736,8 +1932,8 @@
     }).then(() => {
       document.getElementById('cutiLoading').classList.add('hidden');
       document.getElementById('formCutiContainer').classList.remove('hidden');
-      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Data Anda sedang diproses secara berjenjang ke HRD & Manager. Lampiran tersimpan di Cloud.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
-      showToast("Form Cuti/Izin Berhasil Masuk!");
+      document.getElementById('formCutiContainer').innerHTML = `<div class="bg-emerald-50 border border-emerald-200 p-5 rounded-xl text-center"><i class="fa-solid fa-circle-check text-4xl text-emerald-500 mb-2"></i><h4 class="font-bold text-emerald-900 text-sm">Pengajuan & Push Notif Terkirim!</h4><p class="text-[10px] text-emerald-700 mt-1">Notifikasi pengajuan telah dikirimkan ke SPV dan ditembuskan langsung ke Admin HRD PT. GCES.</p><button onclick="location.reload()" class="mt-4 text-[10px] font-bold text-emerald-600 underline">Kirim pengajuan lain</button></div>`;
+      showToast("Form Cuti & Push Notifikasi Terkirim!");
     }).catch(() => {
       showToast("Gagal mengirim form!", true);
     });
