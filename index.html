@@ -93,7 +93,7 @@
 </div>
 
 <main id="mainScrollArea" class="flex-1 overflow-y-auto p-4 space-y-3.5">
-  <!-- BERANDA (ABSENSI V15.8) -->
+  <!-- BERANDA (ABSENSI) -->
   <div id="tabContent-beranda" class="space-y-3.5 tab-content-pane">
     <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
@@ -212,14 +212,14 @@
   </div>
 
   <!-- ==================================================================== -->
-  <!-- TAB BARU V16.0: TASK REPORTING, INSPEKSI & CETAK PDF (SERVER 2)      -->
+  <!-- TAB LAPORAN V16.0: HAK AKSES BERJENJANG (CSO / SHIFT 3 / SPV / ADMIN) -->
   <!-- ==================================================================== -->
   <div id="tabContent-laporan" class="space-y-3.5 tab-content-pane hidden">
     <!-- Banner Info Lokasi & Server 2 -->
     <div class="bg-gradient-to-r from-slate-900 to-blue-950 text-white p-3.5 rounded-2xl shadow-lg border border-blue-800/60">
       <div class="flex items-center justify-between">
         <div>
-          <span class="text-[9px] font-black uppercase tracking-widest text-sky-400 block">Database Server 2 Terpisah</span>
+          <span id="lapRoleAccessBadge" class="text-[9px] font-black uppercase tracking-widest text-sky-400 block">Mode Input Tugas</span>
           <h3 class="text-xs font-black text-white mt-0.5">Task Reporting & Laporan Bulanan</h3>
         </div>
         <span class="text-[9px] font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30 px-2 py-1 rounded-lg">
@@ -227,13 +227,13 @@
         </span>
       </div>
 
-      <!-- Pilihan Sub-Menu Laporan -->
-      <div class="grid grid-cols-5 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700">
+      <!-- Pilihan Sub-Menu Laporan (Disesuaikan Otomatis Berdasarkan Jabatan & Shift 3) -->
+      <div id="lapSubMenuContainer" class="grid grid-cols-1 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700">
         <button onclick="switchSubTabLaporan('task')" id="subBtnLap-task" class="py-1.5 rounded-lg text-[9px] font-black bg-sky-600 text-white transition">📸 Task</button>
-        <button onclick="switchSubTabLaporan('toilet')" id="subBtnLap-toilet" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🚽 Toilet</button>
-        <button onclick="switchSubTabLaporan('room')" id="subBtnLap-room" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🛏️ Room</button>
-        <button onclick="switchSubTabLaporan('malam')" id="subBtnLap-malam" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🌙 Malam</button>
-        <button onclick="switchSubTabLaporan('pdf')" id="subBtnLap-pdf" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🖨️ PDF</button>
+        <button onclick="switchSubTabLaporan('toilet')" id="subBtnLap-toilet" class="hidden py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🚽 Toilet</button>
+        <button onclick="switchSubTabLaporan('room')" id="subBtnLap-room" class="hidden py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🛏️ Room</button>
+        <button onclick="switchSubTabLaporan('malam')" id="subBtnLap-malam" class="hidden py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🌙 Malam</button>
+        <button onclick="switchSubTabLaporan('pdf')" id="subBtnLap-pdf" class="hidden py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🖨️ PDF</button>
       </div>
     </div>
 
@@ -345,7 +345,7 @@
       </div>
     </div>
 
-    <!-- SUB-PANE 2: CEKLIS TOILET INSPECTION (9 ITEM DEFAULT B) -->
+    <!-- SUB-PANE 2: CEKLIS TOILET INSPECTION (KHUSUS SPV, LEADER & ADMIN) -->
     <div id="subPaneLap-toilet" class="hidden space-y-3">
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
         <div class="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -382,7 +382,7 @@
       </div>
     </div>
 
-    <!-- SUB-PANE 3: CEKLIS SERVICE ROOM (25 OBJEK DEFAULT B) -->
+    <!-- SUB-PANE 3: CEKLIS SERVICE ROOM (KHUSUS SPV, LEADER & ADMIN) -->
     <div id="subPaneLap-room" class="hidden space-y-3">
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
         <div class="flex items-center justify-between border-b border-slate-100 pb-2">
@@ -418,13 +418,13 @@
       </div>
     </div>
 
-    <!-- SUB-PANE 4: SHIFT MALAM & CATATAN EVALUASI AREA -->
+    <!-- SUB-PANE 4: SHIFT MALAM (CSO SHIFT 3, SPV, LEADER & ADMIN) -->
     <div id="subPaneLap-malam" class="hidden space-y-3">
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
         <h4 class="text-xs font-black text-slate-800 border-b pb-2"><i class="fa-solid fa-moon text-indigo-600 mr-1.5"></i>Input Job Description Shift Malam</h4>
         <div>
           <label class="text-[10px] font-bold text-slate-500 block mb-1">Area Shift Malam</label>
-          <input type="text" id="lapMalamArea" placeholder="Contoh: Harum / Lantai Dasar / Lobby" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+          <input type="text" id="lapMalamArea" list="lapAreaSuggestions" placeholder="Contoh: Harum / Lantai Dasar / Lobby" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
         </div>
         <div class="grid grid-cols-3 gap-2">
           <div class="col-span-2">
@@ -441,7 +441,8 @@
         </button>
       </div>
 
-      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+      <!-- Catatan & Evaluasi Area Bulanan (Khusus SPV, Leader & Admin) -->
+      <div id="cardCatatanAreaBulanan" class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
         <h4 class="text-xs font-black text-slate-800 border-b pb-2"><i class="fa-solid fa-clipboard-check text-amber-600 mr-1.5"></i>Catatan & Evaluasi Area Bulanan</h4>
         <div>
           <label class="text-[10px] font-bold text-slate-500 block mb-1">Periode Bulan (MM-yyyy)</label>
@@ -465,11 +466,11 @@
       </div>
     </div>
 
-    <!-- SUB-PANE 5: GENERATOR PDF LAPORAN BULANAN UTUH -->
+    <!-- SUB-PANE 5: GENERATOR PDF LAPORAN BULANAN (KHUSUS ADMIN OPERASIONAL) -->
     <div id="subPaneLap-pdf" class="hidden space-y-3">
       <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] text-amber-900 leading-relaxed">
-          <b>🖨️ Generator PDF Laporan Bulanan PT. GCES:</b> Menyusun otomatis Cover Resmi, Daftar Isi, Kata Pengantar, Tabel Manpower Aktif, Dokumentasi Pekerjaan (<i>Before-During-After</i>), Matriks Inspeksi Toilet & Service Room, hingga Lembar Pengesahan menjadi 1 file PDF utuh.
+          <b>🖨️ Generator PDF Client-Side (Anti-Timeout):</b> Menyusun Cover, Daftar Isi, Kata Pengantar, Manpower Aktif, Dokumentasi Foto (<b>Dibatasi Maksimal 10 Halaman Foto / 60 Task Terbaru</b> agar ringan & cepat), Inspeksi Toilet, Service Room, hingga Lembar Pengesahan.
         </div>
 
         <div class="grid grid-cols-2 gap-2">
@@ -504,7 +505,7 @@
 
         <button type="button" id="btnGenerateMonthlyPdf" onclick="generateMonthlyPdfReport()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
           <i class="fa-solid fa-file-pdf text-rose-400 text-base"></i>
-          <span>SUSUN & CETAK PDF LAPORAN BULANAN</span>
+          <span>SUSUN & CETAK PDF (MAKS. 10 HALAMAN FOTO)</span>
         </button>
       </div>
     </div>
@@ -874,14 +875,18 @@
 </div>
 
 <script>
-  // SERVER 1: GOOGLE SHEET ABSENSI V15.8 (TIDAK DIUBAH SAMA SEKALI)
+  // SERVER 1: GOOGLE SHEET ABSENSI V15.8
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
 
-  // SERVER 2: GOOGLE SHEET DATABASE LAPORAN BULANAN PT. GCES (TERPISAH 100%)
+  // SERVER 2: GOOGLE SHEET DATABASE LAPORAN BULANAN PT. GCES
   const GAS_TASK_REPORT_URL = "https://script.google.com/macros/s/AKfycbwIFs6huTFzFQkC6wJqLEGkJnWmoNPwf8UYJl5pbFgUXzF1D_J_Gpo22jGogF2jEbTr/exec";
 
   const ADMIN_MASTER_PIN = "admin";
   const MANAGER_MASTER_PIN = "manager";
+
+  // BATAS MAKSIMAL HALAMAN FOTO PADA CETAK PDF (MAKS 10 HALAMAN)
+  const MAX_PDF_PHOTO_PAGES = 10;
+  const ROWS_PER_PDF_PHOTO_PAGE = 6;
 
   // 6 LOKASI WAJIB TASK REPORTING / LAPORAN BULANAN
   const ENAM_LOKASI_LAPORAN = [
@@ -1085,6 +1090,7 @@
     urlAfter: ""
   };
 
+  // KONFIGURASI 6 PROYEK LAPORAN BULANAN (TERMASUK TOILET UMUM ARUM DALU RS. SUKMUL)
   const KONFIG_LAPORAN_6_PROYEK = {
     "RS. HARUM SISMA MEDIKA": {
       dibuatOleh: "Syaulia Medy Daiyah", jabatanPembuat: "Supervisor",
@@ -1109,8 +1115,13 @@
         "Sukmul / Paviliun Arumdalu", "Sukmul / Paviliun Mawar", "Sukmul / Paviliun Melati", "Sukmul / Halaman"
       ],
       toilets: [
-        "Toilet Umum Teknisi", "Toilet Umum Official Lt 3", "Toilet Umum Depan Gudang",
-        "Toilet Umum Samping Ruang MR", "Toilet Umum Depan Fisio", "Toilet Umum Lobby"
+        "Toilet Umum Arum Dalu",
+        "Toilet Umum Teknisi",
+        "Toilet Umum Official Lt 3",
+        "Toilet Umum Depan Gudang",
+        "Toilet Umum Samping Ruang MR",
+        "Toilet Umum Depan Fisio",
+        "Toilet Umum Lobby"
       ],
       rooms: ["Paviliun Anggrek", "Paviliun Arumdalu", "Paviliun Mawar", "Paviliun Melati", "Ruang IGD"]
     },
@@ -1170,6 +1181,88 @@
     const j = (user.jabatan || "").trim().toUpperCase();
     const l = (user.lokasi || "").trim().toUpperCase();
     return (n === "ALI EKA WAHYUDI" && j === "ADMIN OPERASIONAL" && l === "HEAD OFFICE");
+  }
+
+  function isSpvOrLeaderRole(user) {
+    if (!user) return false;
+    const j = (user.jabatan || "").trim().toUpperCase();
+    return (j === "SPV" || j === "LEADER");
+  }
+
+  // FUNGSI PENGATUR HAK AKSES MENU LAPORAN (TERMASUK CSO SHIFT 3 / MALAM)
+  function applyLaporanRolePermissions(user) {
+    const btnTask = document.getElementById('subBtnLap-task');
+    const btnToilet = document.getElementById('subBtnLap-toilet');
+    const btnRoom = document.getElementById('subBtnLap-room');
+    const btnMalam = document.getElementById('subBtnLap-malam');
+    const btnPdf = document.getElementById('subBtnLap-pdf');
+    const menuContainer = document.getElementById('lapSubMenuContainer');
+    const roleBadge = document.getElementById('lapRoleAccessBadge');
+    const lokSelect = document.getElementById('lapLokasiSelect');
+    const katSelect = document.getElementById('lapKategoriSelect');
+    const cardCatArea = document.getElementById('cardCatatanAreaBulanan');
+
+    if (!user) return;
+
+    if (isAuthorizedAdmin(user)) {
+      // Admin Operasional: Semua 5 Menu Terbuka
+      btnTask.classList.remove('hidden');
+      btnToilet.classList.remove('hidden');
+      btnRoom.classList.remove('hidden');
+      btnMalam.classList.remove('hidden');
+      btnPdf.classList.remove('hidden');
+      if (cardCatArea) cardCatArea.classList.remove('hidden');
+      menuContainer.className = "grid grid-cols-5 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700";
+      roleBadge.textContent = "Akses Penuh Admin Operasional (5 Menu)";
+      lokSelect.disabled = false;
+      katSelect.disabled = false;
+    } else if (isSpvOrLeaderRole(user)) {
+      // SPV & Leader: 4 Menu Terbuka (Task, Toilet, Room, Malam) - Tanpa PDF
+      btnTask.classList.remove('hidden');
+      btnToilet.classList.remove('hidden');
+      btnRoom.classList.remove('hidden');
+      btnMalam.classList.remove('hidden');
+      btnPdf.classList.add('hidden');
+      if (cardCatArea) cardCatArea.classList.remove('hidden');
+      menuContainer.className = "grid grid-cols-4 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700";
+      roleBadge.textContent = `Akses ${user.jabatan.toUpperCase()} — Task & Inspeksi Area`;
+      lokSelect.disabled = true;
+      katSelect.disabled = false;
+      if (!document.getElementById('subPaneLap-pdf').classList.contains('hidden')) {
+        switchSubTabLaporan('task');
+      }
+    } else {
+      // CSO / Picker / Gardener / Gondola
+      const jabUp = (user.jabatan || '').toUpperCase();
+      const isCsoShiftMalam = (!isNonShift && currentShift === '3' && !jabUp.includes('PICKER'));
+
+      btnTask.classList.remove('hidden');
+      btnToilet.classList.add('hidden');
+      btnRoom.classList.add('hidden');
+      btnPdf.classList.add('hidden');
+      if (cardCatArea) cardCatArea.classList.add('hidden');
+
+      if (isCsoShiftMalam) {
+        // Khusus CSO Shift 3 (Malam): Buka tombol Task & Malam
+        btnMalam.classList.remove('hidden');
+        menuContainer.className = "grid grid-cols-2 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700";
+        roleBadge.textContent = `Akses ${user.jabatan.toUpperCase()} (Shift 3) — Task & Shift Malam`;
+      } else {
+        // CSO Shift 1/2 & Picker: Hanya tombol Task saja
+        btnMalam.classList.add('hidden');
+        menuContainer.className = "grid grid-cols-1 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700";
+        roleBadge.textContent = `Akses ${user.jabatan.toUpperCase()} — Khusus Input Task Report`;
+        switchSubTabLaporan('task');
+      }
+
+      lokSelect.disabled = true;
+      if (jabUp.includes('PICKER')) {
+        katSelect.value = 'Picker';
+        katSelect.disabled = true;
+      } else {
+        katSelect.disabled = false;
+      }
+    }
   }
 
   window.onload = () => {
@@ -1883,7 +1976,23 @@
     document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
     document.getElementById('lapActiveUserName').textContent = `${user.nama} (${user.jabatan})`;
 
-    // Atur visibilitas tab Laporan (Hanya 6 Lokasi Proyek + Admin Head Office)
+    isNonShift = ["HEAD OFFICE", "PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
+    if (isNonShift) {
+      document.getElementById('shiftSelectorBox').classList.add('hidden');
+      currentShift = 'Non-Shift';
+    } else {
+      document.getElementById('shiftSelectorBox').classList.remove('hidden');
+      if (user.lokasi.toLowerCase().includes("semper")) {
+        document.getElementById('btnShiftMiddle').classList.remove('hidden');
+        document.getElementById('btnShift3').classList.add('hidden');
+      } else {
+        document.getElementById('btnShiftMiddle').classList.add('hidden');
+        document.getElementById('btnShift3').classList.remove('hidden');
+      }
+      selectShift('1');
+    }
+
+    // Atur visibilitas tab Laporan & Hak Akses Sub-Menu
     const navLapBtn = document.getElementById('nav-laporan');
     const isEnamLokasi = ENAM_LOKASI_LAPORAN.includes((user.lokasi || '').toUpperCase()) || isAuthorizedAdmin(user);
     if (isEnamLokasi) {
@@ -1899,6 +2008,7 @@
       else if (jabUp.includes('GONDOLA')) document.getElementById('lapKategoriSelect').value = 'Gondola';
       else document.getElementById('lapKategoriSelect').value = 'Cleaner';
       updateLapPhotoSlots();
+      applyLaporanRolePermissions(user);
     } else {
       navLapBtn.classList.add('hidden');
       if (!document.getElementById('tabContent-laporan').classList.contains('hidden')) {
@@ -1925,21 +2035,6 @@
       document.getElementById('nav-tim').classList.add('hidden');
     }
 
-    isNonShift = ["HEAD OFFICE", "PT. CELSIUS CREATIVA", "PT. MOYA INDONESIA", "PT. SAPTA WARNA CEMERLANG", "PT. MUTIARA HEXAGON", "PT. SM"].includes(user.lokasi) || user.lokasi.startsWith("PT.");
-    if (isNonShift) {
-      document.getElementById('shiftSelectorBox').classList.add('hidden');
-      currentShift = 'Non-Shift';
-    } else {
-      document.getElementById('shiftSelectorBox').classList.remove('hidden');
-      if (user.lokasi.toLowerCase().includes("semper")) {
-        document.getElementById('btnShiftMiddle').classList.remove('hidden');
-        document.getElementById('btnShift3').classList.add('hidden');
-      } else {
-        document.getElementById('btnShiftMiddle').classList.add('hidden');
-        document.getElementById('btnShift3').classList.remove('hidden');
-      }
-      selectShift('1');
-    }
     if (isDinasLuar) toggleDinasLuar();
     selectKategoriKerja('H');
     updateMainSublabel();
@@ -1953,10 +2048,30 @@
   // LOGIKA MODUL LAPORAN BULANAN V16.0 (SERVER 2 TERPISAH)
   // ==========================================================================
   function switchSubTabLaporan(subId) {
+    if (subId !== 'task') {
+      if (!currentUser) {
+        showToast("Pilih akun terlebih dahulu!", true);
+        return;
+      }
+      if (subId === 'pdf' && !isAuthorizedAdmin(currentUser)) {
+        showToast("Akses Ditolak: Menu Cetak PDF khusus Admin Operasional!", true);
+        return;
+      }
+      if (['toilet', 'room'].includes(subId) && !isSpvOrLeaderRole(currentUser) && !isAuthorizedAdmin(currentUser)) {
+        showToast("Akses Ditolak: Menu Inspeksi khusus Leader, SPV, atau Admin!", true);
+        return;
+      }
+      const isCsoShift3 = (!isNonShift && currentShift === '3');
+      if (subId === 'malam' && !isSpvOrLeaderRole(currentUser) && !isAuthorizedAdmin(currentUser) && !isCsoShift3) {
+        showToast("Akses Ditolak: Menu Shift Malam khusus Petugas Shift 3, Leader, SPV, atau Admin!", true);
+        return;
+      }
+    }
+
     ['task', 'toilet', 'room', 'malam', 'pdf'].forEach(k => {
       document.getElementById('subPaneLap-' + k).classList.toggle('hidden', k !== subId);
       const btn = document.getElementById('subBtnLap-' + k);
-      if (btn) {
+      if (btn && !btn.classList.contains('hidden')) {
         btn.className = (k === subId)
           ? "py-1.5 rounded-lg text-[9px] font-black bg-sky-600 text-white transition"
           : "py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition";
@@ -2403,11 +2518,16 @@
   function formatDriveThumbnailUrl(url) {
     if (!url) return "";
     const m = String(url).match(/[-\w]{25,}/);
-    if (m && m[0]) return `https://drive.google.com/thumbnail?id=${m[0]}&sz=w500`;
+    if (m && m[0]) return `https://drive.google.com/thumbnail?id=${m[0]}&sz=w400`;
     return url;
   }
 
+  // GENERATOR PDF CLIENT-SIDE (MAKSIMAL 10 HALAMAN FOTO BEFORE-DURING-AFTER)
   async function generateMonthlyPdfReport() {
+    if (!isAuthorizedAdmin(currentUser)) {
+      showToast("Hanya Admin Operasional yang berhak mencetak PDF Laporan Bulanan!", true);
+      return;
+    }
     const pin = document.getElementById('lapPdfPin').value.trim();
     if (pin !== ADMIN_MASTER_PIN && pin !== MANAGER_MASTER_PIN) {
       showToast("PIN Otorisasi salah! Gunakan PIN admin atau manager.", true);
@@ -2429,10 +2549,14 @@
       const res = await fetch(`${GAS_TASK_REPORT_URL}?action=get_full_monthly_report&lokasi=${encodeURIComponent(lokasi)}&bulan=${encodeURIComponent(bulan)}&_t=${Date.now()}`);
       const data = await res.json();
 
-      let tasks = (data.tasks || []).reverse();
+      let allTasks = (data.tasks || []);
       if (modeMoya !== "ALL") {
-        tasks = tasks.filter(t => String(t.kategori).toLowerCase() === modeMoya.toLowerCase());
+        allTasks = allTasks.filter(t => String(t.kategori).toLowerCase() === modeMoya.toLowerCase());
       }
+
+      const maxAllowedTasks = MAX_PDF_PHOTO_PAGES * ROWS_PER_PDF_PHOTO_PAGE;
+      const limitedTasks = allTasks.slice(0, maxAllowedTasks).reverse();
+      const totalPhotoPages = Math.max(1, Math.min(MAX_PDF_PHOTO_PAGES, Math.ceil(limitedTasks.length / ROWS_PER_PDF_PHOTO_PAGE)));
 
       const isRS = lokasi.includes("HARUM") || lokasi.includes("SUKMUL");
       const isPicker = modeMoya === "Picker";
@@ -2449,15 +2573,51 @@
         </tr>
       `).join('');
 
-      const taskRowsHtml = tasks.map(t => {
-        const imgB = t.fotoBefore ? `<img src="${formatDriveThumbnailUrl(t.fotoBefore)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
-        const imgD = t.fotoDuring ? `<img src="${formatDriveThumbnailUrl(t.fotoDuring)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
-        const imgA = t.fotoAfter  ? `<img src="${formatDriveThumbnailUrl(t.fotoAfter)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
-        if (isPicker) {
-          return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td></tr>`;
+      let paginatedTaskPagesHtml = "";
+      if (limitedTasks.length === 0) {
+        paginatedTaskPagesHtml = `
+          <div class="page-break"></div>
+          <h3>3. DOKUMENTASI TASK REPORTING BULANAN — ${lokasi}</h3>
+          <p>Periode: <b>${labelPeriode}</b></p>
+          <table>
+            <thead>
+              ${isPicker
+                ? '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>FOTO DOKUMENTASI</th></tr>'
+                : '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>BEFORE</th><th>DURING</th><th>AFTER</th></tr>'}
+            </thead>
+            <tbody>
+              <tr><td colspan="${isPicker ? 6 : 8}" style="text-align:center">Belum ada dokumentasi pekerjaan pada periode ini</td></tr>
+            </tbody>
+          </table>
+        `;
+      } else {
+        for (let p = 0; p < totalPhotoPages; p++) {
+          const chunk = limitedTasks.slice(p * ROWS_PER_PDF_PHOTO_PAGE, (p + 1) * ROWS_PER_PDF_PHOTO_PAGE);
+          const rowsHtml = chunk.map(t => {
+            const imgB = t.fotoBefore ? `<img src="${formatDriveThumbnailUrl(t.fotoBefore)}" loading="lazy" style="width:105px;height:78px;object-fit:cover;border-radius:4px;">` : '-';
+            const imgD = t.fotoDuring ? `<img src="${formatDriveThumbnailUrl(t.fotoDuring)}" loading="lazy" style="width:105px;height:78px;object-fit:cover;border-radius:4px;">` : '-';
+            const imgA = t.fotoAfter  ? `<img src="${formatDriveThumbnailUrl(t.fotoAfter)}" loading="lazy" style="width:105px;height:78px;object-fit:cover;border-radius:4px;">` : '-';
+            if (isPicker) {
+              return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td></tr>`;
+            }
+            return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td><td style="text-align:center">${imgD}</td><td style="text-align:center">${imgA}</td></tr>`;
+          }).join('');
+
+          paginatedTaskPagesHtml += `
+            <div class="page-break"></div>
+            <h3>3. DOKUMENTASI TASK REPORTING — ${lokasi} (Hal. ${p + 1} dari ${totalPhotoPages})</h3>
+            <p style="margin:2px 0 6px 0;font-size:10px;">Periode: <b>${labelPeriode}</b> &bull; Menampilkan dokumentasi foto (Maksimal 10 Halaman)</p>
+            <table>
+              <thead>
+                ${isPicker
+                  ? '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>FOTO DOKUMENTASI</th></tr>'
+                  : '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>BEFORE</th><th>DURING</th><th>AFTER</th></tr>'}
+              </thead>
+              <tbody>${rowsHtml}</tbody>
+            </table>
+          `;
         }
-        return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td><td style="text-align:center">${imgD}</td><td style="text-align:center">${imgA}</td></tr>`;
-      }).join('');
+      }
 
       let htmlInspeksiRS = "";
       if (isRS) {
@@ -2535,13 +2695,13 @@
         <head>
           <title>LAPORAN BULANAN - ${lokasi} (${labelPeriode})</title>
           <style>
-            @page { size: A4 portrait; margin: 14mm; }
-            body { font-family: Arial, sans-serif; color: #0f172a; font-size: 11px; line-height: 1.45; }
+            @page { size: A4 portrait; margin: 12mm; }
+            body { font-family: Arial, sans-serif; color: #0f172a; font-size: 11px; line-height: 1.4; }
             .cover { text-align: center; padding: 75px 25px; border: 3px double #0f172a; min-height: 820px; box-sizing: border-box; }
             .page-break { page-break-before: always; }
-            h2, h3 { color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 4px; margin-top: 14px; }
-            table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 14px; }
-            th, td { border: 1px solid #64748b; padding: 5px 6px; vertical-align: middle; font-size: 10px; }
+            h2, h3 { color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 4px; margin-top: 10px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 6px; margin-bottom: 12px; }
+            th, td { border: 1px solid #64748b; padding: 4px 5px; vertical-align: middle; font-size: 9.5px; }
             th { background: #e2e8f0; font-weight: bold; text-align: center; }
             tr { page-break-inside: avoid; }
             .toolbar-cetak { background: #0f172a; color: #fff; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 999; }
@@ -2550,7 +2710,7 @@
         </head>
         <body>
           <div class="toolbar-cetak">
-            <b>PRATINJAU PDF LAPORAN BULANAN PT. GCES</b> — Klik tombol hijau untuk menyimpan menjadi 1 file PDF utuh:
+            <b>PRATINJAU PDF LAPORAN BULANAN PT. GCES (MAKS. 10 HALAMAN FOTO)</b>
             <button onclick="window.print()" style="background:#10b981;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-weight:bold;margin-left:10px;cursor:pointer;">🖨️ SIMPAN PDF / CETAK</button>
           </div>
 
@@ -2580,19 +2740,7 @@
             <tbody>${mpRowsHtml}</tbody>
           </table>
 
-          <div class="page-break"></div>
-          <h3>3. DOKUMENTASI TASK REPORTING BULANAN — ${lokasi}</h3>
-          <p>Periode: <b>${labelPeriode}</b></p>
-          <table>
-            <thead>
-              ${isPicker
-                ? '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>FOTO DOKUMENTASI</th></tr>'
-                : '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>BEFORE</th><th>DURING</th><th>AFTER</th></tr>'}
-            </thead>
-            <tbody>
-              ${taskRowsHtml || '<tr><td colspan="8" style="text-align:center">Belum ada dokumentasi pekerjaan pada periode ini</td></tr>'}
-            </tbody>
-          </table>
+          ${paginatedTaskPagesHtml}
 
           ${htmlInspeksiRS}
 
@@ -2626,12 +2774,12 @@
       showToast("Gagal menarik laporan bulanan dari Server 2.", true);
     } finally {
       btn.disabled = false;
-      btn.innerHTML = `<i class="fa-solid fa-file-pdf text-rose-400 text-base"></i><span>SUSUN & CETAK PDF LAPORAN BULANAN</span>`;
+      btn.innerHTML = `<i class="fa-solid fa-file-pdf text-rose-400 text-base"></i><span>SUSUN & CETAK PDF (MAKS. 10 HALAMAN FOTO)</span>`;
     }
   }
 
   // ==========================================================================
-  // FUNGSI ASLI V15.8 (ADMIN DB, TIM, RIWAYAT, GPS, ABSENSI & CUTI)
+  // FUNGSI UTAMA ABSENSI, TIM, RIWAYAT, GPS & CUTI
   // ==========================================================================
   function renderAdminDB(searchQuery = '') {
     const totalEl = document.getElementById('adminTotalKaryawan');
@@ -2919,6 +3067,7 @@
       if (btn) btn.className = `flex-1 border py-1.5 rounded-lg text-[10px] font-bold transition ${val === numStr ? 'border-emerald-500 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-slate-50 text-slate-500'} ${btn.classList.contains('hidden') ? 'hidden' : ''}`;
     });
     updateMainSublabel();
+    if (currentUser) applyLaporanRolePermissions(currentUser);
   }
 
   function hitungJarakMeter(lat1, lon1, lat2, lon2) {
@@ -3188,7 +3337,10 @@
     }
 
     if (tabId === 'riwayat') syncRiwayatFromServer(false);
-    if (tabId === 'laporan') fetchRecentTaskReports();
+    if (tabId === 'laporan') {
+      if (currentUser) applyLaporanRolePermissions(currentUser);
+      fetchRecentTaskReports();
+    }
     if (tabId === 'tim') {
       syncStatusTimFromServer(false);
       syncPendingCutiFromServer(false);
