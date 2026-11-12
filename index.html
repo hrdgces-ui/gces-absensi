@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Absensi PT. GCES V15.8</title>
+  <title>Absensi & Laporan PT. GCES V16.0</title>
   <meta name="theme-color" content="#0f172a">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="apple-mobile-web-app-title" content="Absensi GCES">
-  <meta name="application-name" content="Absensi GCES">
+  <meta name="apple-mobile-web-app-title" content="One-Stop GCES">
+  <meta name="application-name" content="One-Stop GCES">
   <link rel="icon" type="image/png" id="favIconLink">
   <link rel="shortcut icon" type="image/png" id="shortIconLink">
   <link rel="apple-touch-icon" sizes="180x180" id="appleIconLink">
@@ -41,10 +41,10 @@
       </svg>
     </div>
     <div class="flex flex-col justify-center py-1">
-      <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">Absensi Operasional</h1>
+      <h1 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-0.5">One-Stop Application</h1>
       <div class="flex items-center gap-2">
         <h2 class="text-[22px] font-black tracking-widest uppercase text-white leading-none">PT. GCES</h2>
-        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V15.8</p>
+        <p class="text-[9px] text-emerald-400 font-bold bg-emerald-900/60 px-1.5 py-0.5 rounded-md border border-emerald-700/50 leading-none">V16.0</p>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@
 </div>
 
 <main id="mainScrollArea" class="flex-1 overflow-y-auto p-4 space-y-3.5">
-  <!-- BERANDA -->
+  <!-- BERANDA (ABSENSI V15.8) -->
   <div id="tabContent-beranda" class="space-y-3.5 tab-content-pane">
     <div id="gpsStatusCard" class="bg-amber-50 border border-amber-200 rounded-2xl p-3 flex items-center justify-between shadow-card-soft transition-all">
       <div class="flex items-center space-x-3">
@@ -211,6 +211,305 @@
     </div>
   </div>
 
+  <!-- ==================================================================== -->
+  <!-- TAB BARU V16.0: TASK REPORTING, INSPEKSI & CETAK PDF (SERVER 2)      -->
+  <!-- ==================================================================== -->
+  <div id="tabContent-laporan" class="space-y-3.5 tab-content-pane hidden">
+    <!-- Banner Info Lokasi & Server 2 -->
+    <div class="bg-gradient-to-r from-slate-900 to-blue-950 text-white p-3.5 rounded-2xl shadow-lg border border-blue-800/60">
+      <div class="flex items-center justify-between">
+        <div>
+          <span class="text-[9px] font-black uppercase tracking-widest text-sky-400 block">Database Server 2 Terpisah</span>
+          <h3 class="text-xs font-black text-white mt-0.5">Task Reporting & Laporan Bulanan</h3>
+        </div>
+        <span class="text-[9px] font-bold bg-sky-500/20 text-sky-300 border border-sky-400/30 px-2 py-1 rounded-lg">
+          <i class="fa-solid fa-camera mr-1"></i>Anti-Galeri
+        </span>
+      </div>
+
+      <!-- Pilihan Sub-Menu Laporan -->
+      <div class="grid grid-cols-5 gap-1 mt-3 bg-slate-800/90 p-1 rounded-xl border border-slate-700">
+        <button onclick="switchSubTabLaporan('task')" id="subBtnLap-task" class="py-1.5 rounded-lg text-[9px] font-black bg-sky-600 text-white transition">📸 Task</button>
+        <button onclick="switchSubTabLaporan('toilet')" id="subBtnLap-toilet" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🚽 Toilet</button>
+        <button onclick="switchSubTabLaporan('room')" id="subBtnLap-room" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🛏️ Room</button>
+        <button onclick="switchSubTabLaporan('malam')" id="subBtnLap-malam" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🌙 Malam</button>
+        <button onclick="switchSubTabLaporan('pdf')" id="subBtnLap-pdf" class="py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition">🖨️ PDF</button>
+      </div>
+    </div>
+
+    <!-- Pengaturan Lokasi & Kategori Aktif -->
+    <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-card-soft space-y-2.5">
+      <div class="grid grid-cols-2 gap-2">
+        <div>
+          <label class="text-[9px] font-black text-slate-500 uppercase block mb-1">Lokasi Laporan (6 Proyek)</label>
+          <select id="lapLokasiSelect" onchange="onLapLokasiChange()" class="w-full text-[11px] font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none focus:border-sky-500">
+            <option value="RS. HARUM SISMA MEDIKA">RS. HARUM SISMA MEDIKA</option>
+            <option value="RS. SUKMUL SISMA MEDIKA">RS. SUKMUL SISMA MEDIKA</option>
+            <option value="PT. MOYA INDONESIA">PT. MOYA INDONESIA</option>
+            <option value="PT. SAPTA WARNA CEMERLANG">PT. SAPTA WARNA CEMERLANG</option>
+            <option value="PT. MUTIARA HEXAGON">PT. MUTIARA HEXAGON</option>
+            <option value="PT. CELSIUS CREATIVA">PT. CELSIUS CREATIVA</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-[9px] font-black text-slate-500 uppercase block mb-1">Kategori Tugas</label>
+          <select id="lapKategoriSelect" onchange="updateLapPhotoSlots()" class="w-full text-[11px] font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none focus:border-sky-500">
+            <option value="Cleaner">Cleaner / CSO (3 Foto)</option>
+            <option value="Gardener">Gardener (3 Foto)</option>
+            <option value="Gondola">Gondola (3 Foto)</option>
+            <option value="Picker">Picker PT. Moya (1 Foto)</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex items-center justify-between text-[10px] bg-slate-50 px-2.5 py-1.5 rounded-xl border border-slate-100">
+        <span class="text-slate-500 font-semibold">Petugas Aktif: <b id="lapActiveUserName" class="text-slate-800">-</b></span>
+        <span id="lapActiveShiftBadge" class="font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded">Shift 1</span>
+      </div>
+    </div>
+
+    <!-- SUB-PANE 1: INPUT TASK REPORT (BEFORE - DURING - AFTER) -->
+    <div id="subPaneLap-task" class="space-y-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <div class="bg-sky-50 border border-sky-200 rounded-xl p-2.5 text-[10px] text-sky-900 font-medium leading-relaxed">
+          <i class="fa-solid fa-shield-halved text-sky-600 mr-1"></i><b>Kamera Live Terkunci:</b> Galeri album HP dimatikan untuk mencegah unggah foto lama. Anda dapat memotret <b>Before</b> dulu, simpan draft, lalu lanjutkan <b>During</b> & <b>After</b>.
+        </div>
+
+        <div>
+          <label class="text-[10px] font-bold text-slate-600 block mb-1">Area / Ruangan Kerja *</label>
+          <input type="text" id="lapTaskArea" list="lapAreaSuggestions" oninput="saveLapDraftLocal()" placeholder="Contoh: Harum / Kamar Perawatan Arumdalu" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none focus:border-sky-500">
+          <datalist id="lapAreaSuggestions"></datalist>
+        </div>
+
+        <div>
+          <label class="text-[10px] font-bold text-slate-600 block mb-1">Deskripsi Pekerjaan *</label>
+          <input type="text" id="lapTaskJob" oninput="saveLapDraftLocal()" placeholder="Contoh: Polishing keran shower & spotting dinding kmr 231" class="w-full text-xs font-medium border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none focus:border-sky-500">
+        </div>
+
+        <!-- 3 Slot Foto Kamera Belakang -->
+        <div id="lapPhotoGrid" class="grid grid-cols-3 gap-2 pt-1">
+          <!-- Slot Before -->
+          <div id="slotBoxBefore" class="border-2 border-dashed border-slate-300 rounded-xl p-2 text-center bg-slate-50 flex flex-col justify-between">
+            <span class="text-[9px] font-black text-slate-700 uppercase block mb-1">1. BEFORE</span>
+            <img id="imgPrevBefore" class="hidden w-full h-24 object-cover rounded-lg mb-1.5 border border-slate-200" />
+            <div id="emptyIconBefore" class="py-4 text-slate-300"><i class="fa-solid fa-camera text-2xl"></i></div>
+            <button type="button" onclick="openTaskLiveCamera('BEFORE')" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-[10px] py-1.5 rounded-lg transition active:scale-95">
+              Kamera Live
+            </button>
+          </div>
+
+          <!-- Slot During -->
+          <div id="slotBoxDuring" class="border-2 border-dashed border-slate-300 rounded-xl p-2 text-center bg-slate-50 flex flex-col justify-between">
+            <span class="text-[9px] font-black text-slate-700 uppercase block mb-1">2. DURING</span>
+            <img id="imgPrevDuring" class="hidden w-full h-24 object-cover rounded-lg mb-1.5 border border-slate-200" />
+            <div id="emptyIconDuring" class="py-4 text-slate-300"><i class="fa-solid fa-camera text-2xl"></i></div>
+            <button type="button" onclick="openTaskLiveCamera('DURING')" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-[10px] py-1.5 rounded-lg transition active:scale-95">
+              Kamera Live
+            </button>
+          </div>
+
+          <!-- Slot After -->
+          <div id="slotBoxAfter" class="border-2 border-dashed border-slate-300 rounded-xl p-2 text-center bg-slate-50 flex flex-col justify-between">
+            <span class="text-[9px] font-black text-slate-700 uppercase block mb-1">3. AFTER</span>
+            <img id="imgPrevAfter" class="hidden w-full h-24 object-cover rounded-lg mb-1.5 border border-slate-200" />
+            <div id="emptyIconAfter" class="py-4 text-slate-300"><i class="fa-solid fa-camera text-2xl"></i></div>
+            <button type="button" onclick="openTaskLiveCamera('AFTER')" class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold text-[10px] py-1.5 rounded-lg transition active:scale-95">
+              Kamera Live
+            </button>
+          </div>
+        </div>
+
+        <p id="lapDraftBadge" class="text-[10px] text-emerald-600 font-bold text-center hidden"></p>
+
+        <div class="flex gap-2 pt-1">
+          <button type="button" id="btnSubmitTaskReport" onclick="submitTaskReportServer2()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl shadow-md transition active:scale-95 flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>SIMPAN / UPDATE TASK REPORT</span>
+          </button>
+          <button type="button" onclick="resetLapTaskDraft()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold text-xs px-3 py-3 rounded-xl transition">
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Riwayat Task Report Lokasi Ini -->
+      <div class="bg-white p-3.5 rounded-2xl border border-slate-200 shadow-card-soft space-y-2">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <span class="text-xs font-bold text-slate-800">Daftar Task Report Masuk (Lokasi Ini)</span>
+          <button onclick="fetchRecentTaskReports()" class="text-[10px] font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded-lg">
+            <i class="fa-solid fa-arrows-rotate mr-1"></i>Segarkan
+          </button>
+        </div>
+        <div id="recentTaskReportList" class="space-y-1.5 max-h-60 overflow-y-auto text-[10px] text-slate-500">
+          Klik Segarkan untuk memuat data terbaru dari Server 2.
+        </div>
+      </div>
+    </div>
+
+    <!-- SUB-PANE 2: CEKLIS TOILET INSPECTION (9 ITEM DEFAULT B) -->
+    <div id="subPaneLap-toilet" class="hidden space-y-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <div>
+            <h4 class="text-xs font-black text-slate-800">🚽 Form Toilet Inspection (9 Item)</h4>
+            <p class="text-[10px] text-slate-500">Default <b>B (Bersih)</b>. Ketuk kotak jika <b>K (Kotor)</b>.</p>
+          </div>
+          <span class="text-[9px] font-bold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded">5 Detik Input</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Pilih Lokasi Toilet</label>
+            <select id="lapToiletName" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none"></select>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Jam Cek</label>
+            <select id="lapToiletHour" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+              <option value="06">06:00</option><option value="07">07:00</option><option value="08" selected>08:00</option>
+              <option value="09">09:00</option><option value="10">10:00</option><option value="11">11:00</option>
+              <option value="12">12:00</option><option value="13">13:00</option><option value="14">14:00</option>
+              <option value="15">15:00</option><option value="16">16:00</option><option value="17">17:00</option>
+              <option value="18">18:00</option><option value="19">19:00</option><option value="20">20:00</option>
+              <option value="21">21:00</option><option value="22">22:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="lapToiletGrid9" class="grid grid-cols-2 gap-2 pt-1"></div>
+
+        <button type="button" onclick="submitToiletInspectionServer2()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl shadow-md transition active:scale-95">
+          <i class="fa-solid fa-check-double mr-1.5"></i>SIMPAN INSPEKSI TOILET
+        </button>
+      </div>
+    </div>
+
+    <!-- SUB-PANE 3: CEKLIS SERVICE ROOM (25 OBJEK DEFAULT B) -->
+    <div id="subPaneLap-room" class="hidden space-y-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <div class="flex items-center justify-between border-b border-slate-100 pb-2">
+          <div>
+            <h4 class="text-xs font-black text-slate-800">🛏️ Service Room Inspection (25 Objek)</h4>
+            <p class="text-[10px] text-slate-500">Ketuk objek untuk ubah <b>B (Bersih) &rarr; K (Kotor) &rarr; - (Kosong)</b></p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Ruangan / Paviliun</label>
+            <select id="lapRoomName" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none"></select>
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Jam Cek</label>
+            <select id="lapRoomHour" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+              <option value="06.00">06.00</option><option value="07.00">07.00</option><option value="08.00" selected>08.00</option>
+              <option value="09.00">09.00</option><option value="10.00">10.00</option><option value="11.00">11.00</option>
+              <option value="12.00">12.00</option><option value="13.00">13.00</option><option value="14.00">14.00</option>
+              <option value="15.00">15.00</option><option value="16.00">16.00</option><option value="17.00">17.00</option>
+              <option value="18.00">18.00</option><option value="19.00">19.00</option><option value="20.00">20.00</option>
+              <option value="21.00">21.00</option><option value="22.00">22.00</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="lapRoomGrid25" class="grid grid-cols-2 gap-1.5 max-h-72 overflow-y-auto pr-1 pt-1"></div>
+
+        <button type="button" onclick="submitRoomInspectionServer2()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs py-3 rounded-xl shadow-md transition active:scale-95">
+          <i class="fa-solid fa-check-double mr-1.5"></i>SIMPAN INSPEKSI 25 OBJEK
+        </button>
+      </div>
+    </div>
+
+    <!-- SUB-PANE 4: SHIFT MALAM & CATATAN EVALUASI AREA -->
+    <div id="subPaneLap-malam" class="hidden space-y-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <h4 class="text-xs font-black text-slate-800 border-b pb-2"><i class="fa-solid fa-moon text-indigo-600 mr-1.5"></i>Input Job Description Shift Malam</h4>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Area Shift Malam</label>
+          <input type="text" id="lapMalamArea" placeholder="Contoh: Harum / Lantai Dasar / Lobby" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div class="col-span-2">
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Job Description</label>
+            <input type="text" id="lapMalamJob" placeholder="Contoh: Dry buffing area lobby" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Jam</label>
+            <input type="text" id="lapMalamJam" value="23.00" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+          </div>
+        </div>
+        <button type="button" onclick="submitShiftMalamServer2()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition">
+          Simpan Laporan Shift Malam
+        </button>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <h4 class="text-xs font-black text-slate-800 border-b pb-2"><i class="fa-solid fa-clipboard-check text-amber-600 mr-1.5"></i>Catatan & Evaluasi Area Bulanan</h4>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Periode Bulan (MM-yyyy)</label>
+          <input type="text" id="lapCatBulan" value="11-2026" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Penemuan & Kerusakan / Tinjauan</label>
+          <input type="text" id="lapCatKerusakan" value="NIHIL" class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Analisa / Extra Job</label>
+          <input type="text" id="lapCatAnalisa" value="NIHIL" class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+        </div>
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Kendala / Saran & Masukan</label>
+          <input type="text" id="lapCatKendala" value="NIHIL" class="w-full text-xs border border-slate-300 rounded-xl p-2 bg-slate-50 outline-none">
+        </div>
+        <button type="button" onclick="submitCatatanAreaServer2()" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs py-2.5 rounded-xl shadow-md transition">
+          Simpan Evaluasi Area Bulanan
+        </button>
+      </div>
+    </div>
+
+    <!-- SUB-PANE 5: GENERATOR PDF LAPORAN BULANAN UTUH -->
+    <div id="subPaneLap-pdf" class="hidden space-y-3">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-card-soft space-y-3">
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-3 text-[10px] text-amber-900 leading-relaxed">
+          <b>🖨️ Generator PDF Laporan Bulanan PT. GCES:</b> Menyusun otomatis Cover Resmi, Daftar Isi, Kata Pengantar, Tabel Manpower Aktif, Dokumentasi Pekerjaan (<i>Before-During-After</i>), Matriks Inspeksi Toilet & Service Room, hingga Lembar Pengesahan menjadi 1 file PDF utuh.
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Bulan (MM-yyyy)</label>
+            <input type="text" id="lapPdfBulan" value="11-2026" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+          </div>
+          <div>
+            <label class="text-[10px] font-bold text-slate-500 block mb-1">Teks Periode Cover</label>
+            <input type="text" id="lapPdfPeriodeLabel" value="01 s/d 30 November 2026" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+          </div>
+        </div>
+
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Filter Kategori Laporan (Khusus PT. Moya)</label>
+          <select id="lapPdfModeMoya" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+            <option value="ALL">Semua Kategori (Cleaner / Gardener / Gondola)</option>
+            <option value="Cleaner">Khusus Laporan Bulanan CLEANER</option>
+            <option value="Picker">Khusus Laporan Bulanan PICKER (PT. Moya)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="text-[10px] font-bold text-slate-500 block mb-1">Tanggal Pengesahan</label>
+          <input type="text" id="lapPdfTglSah" value="Jakarta, 02 Desember 2026" class="w-full text-xs border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+        </div>
+
+        <div>
+          <label class="text-[10px] font-bold text-rose-600 block mb-1"><i class="fa-solid fa-key mr-1"></i>PIN Otorisasi (admin / manager)</label>
+          <input type="password" id="lapPdfPin" placeholder="Ketik PIN admin atau manager..." class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 bg-slate-50 outline-none">
+        </div>
+
+        <button type="button" id="btnGenerateMonthlyPdf" onclick="generateMonthlyPdfReport()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-black text-xs py-3.5 rounded-xl shadow-lg transition active:scale-95 flex items-center justify-center gap-2">
+          <i class="fa-solid fa-file-pdf text-rose-400 text-base"></i>
+          <span>SUSUN & CETAK PDF LAPORAN BULANAN</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- CUTI PANE -->
   <div id="tabContent-cuti" class="space-y-3.5 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-4 rounded-2xl shadow-lg border border-slate-700 space-y-2.5">
@@ -318,7 +617,7 @@
         </div>
      </div>
 
-     <!-- PANEL APPROVAL CUTI KHUSUS SPV DI TAB TIM (SKEMA 2) -->
+     <!-- PANEL APPROVAL CUTI KHUSUS SPV DI TAB TIM -->
      <div id="spvApprovalCard" class="hidden bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-card-soft space-y-2.5">
        <div class="flex items-center justify-between">
          <div class="flex items-center space-x-2">
@@ -346,7 +645,7 @@
      </div>
   </div>
 
-  <!-- ADMIN DB PANE (KHUSUS ALI EKA WAHYUDI - PIN HRD: admin | PIN MGR: manager) -->
+  <!-- ADMIN DB PANE -->
   <div id="tabContent-admin" class="space-y-3.5 tab-content-pane hidden">
     <div class="bg-slate-900 text-white p-3.5 rounded-2xl shadow-md flex items-center justify-between border-l-4 border-blue-500">
       <div>
@@ -359,7 +658,7 @@
       </button>
     </div>
 
-    <!-- PANEL PUSH NOTIFICATION & APPROVAL BERJENJANG HRD / MANAGER / BYPASS > 48 JAM -->
+    <!-- PANEL PUSH NOTIFICATION & APPROVAL BERJENJANG -->
     <div class="bg-amber-50 border border-amber-200 rounded-2xl p-3.5 shadow-card-soft space-y-2.5">
       <div class="flex items-center justify-between">
         <div class="flex items-center space-x-2">
@@ -434,6 +733,8 @@
             <option value="CSO">CSO</option>
             <option value="LEADER">LEADER</option>
             <option value="SPV">SPV</option>
+            <option value="Gardener">Gardener</option>
+            <option value="Gondola">Gondola</option>
             <option value="Picker">Picker</option>
             <option value="Kurir">Kurir</option>
             <option value="Kurir Operasional">Kurir Operasional</option>
@@ -451,7 +752,6 @@
         <select id="mpLokasiSelect" onchange="toggleNewLocationBox()" class="w-full text-xs font-bold border border-slate-300 rounded-xl p-2.5 mt-1 bg-slate-50 outline-none focus:border-emerald-500"></select>
       </div>
 
-      <!-- OPSI TAMBAH LOKASI / PROYEK BARU & KOORDINAT GPS -->
       <div id="newLocationBox" class="hidden bg-blue-50/70 p-3 rounded-xl border border-blue-200 space-y-2.5">
         <div>
           <label class="text-[10px] font-bold text-blue-800">Nama Lokasi / Proyek Baru *</label>
@@ -482,7 +782,7 @@
       </div>
     </div>
 
-    <!-- DAFTAR MAN POWER AKTIF & TOMBOL EDIT / DELETE -->
+    <!-- DAFTAR MAN POWER AKTIF -->
     <div class="bg-white rounded-2xl border border-slate-200 shadow-card-soft overflow-hidden">
       <div class="p-3 border-b border-slate-100 flex items-center justify-between gap-2">
         <span class="text-xs font-bold text-slate-800 shrink-0">Daftar Man Power (Edit / Hapus)</span>
@@ -511,19 +811,21 @@
   </div>
 </main>
 
-<nav class="bg-white border-t border-slate-200 px-6 py-2 pb-safe flex justify-around items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
-  <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-2 text-emerald-600 transition nav-btn"><i class="fa-solid fa-fingerprint text-xl"></i><span class="text-[9px] font-bold">Absen</span></button>
-  <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-clock-rotate-left text-xl"></i><span class="text-[9px] font-bold">Riwayat</span></button>
-  <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn"><i class="fa-solid fa-calendar-days text-xl"></i><span class="text-[9px] font-bold">Cuti</span></button>
-  <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-users-gear text-xl"></i><span class="text-[9px] font-bold">Tim</span></button>
-  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-2 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-server text-xl"></i><span class="text-[9px] font-bold">Admin DB</span></button>
+<!-- NAVIGASI BAWAH ONE-STOP APPLICATION V16.0 -->
+<nav class="bg-white border-t border-slate-200 px-3 py-2 pb-safe flex justify-around items-center shrink-0 w-full z-30 shadow-[0_-5px_15px_rgba(0,0,0,0.05)]">
+  <button onclick="switchTab('beranda')" id="nav-beranda" class="flex flex-col items-center space-y-1 p-1.5 text-emerald-600 transition nav-btn"><i class="fa-solid fa-fingerprint text-lg"></i><span class="text-[9px] font-bold">Absen</span></button>
+  <button onclick="switchTab('laporan')" id="nav-laporan" class="flex flex-col items-center space-y-1 p-1.5 text-slate-400 transition nav-btn"><i class="fa-solid fa-camera-retro text-lg"></i><span class="text-[9px] font-bold">Laporan</span></button>
+  <button onclick="switchTab('riwayat')" id="nav-riwayat" class="flex flex-col items-center space-y-1 p-1.5 text-slate-400 transition nav-btn"><i class="fa-solid fa-clock-rotate-left text-lg"></i><span class="text-[9px] font-bold">Riwayat</span></button>
+  <button onclick="switchTab('cuti')" id="nav-cuti" class="flex flex-col items-center space-y-1 p-1.5 text-slate-400 transition nav-btn"><i class="fa-solid fa-calendar-days text-lg"></i><span class="text-[9px] font-bold">Cuti</span></button>
+  <button onclick="switchTab('tim')" id="nav-tim" class="flex flex-col items-center space-y-1 p-1.5 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-users-gear text-lg"></i><span class="text-[9px] font-bold">Tim</span></button>
+  <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center space-y-1 p-1.5 text-slate-400 transition nav-btn hidden"><i class="fa-solid fa-server text-lg"></i><span class="text-[9px] font-bold">Admin DB</span></button>
 </nav>
 
 <div id="toastNotification" class="fixed top-20 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white px-4 py-2.5 rounded-xl shadow-xl flex items-center space-x-3 transition-all duration-300 opacity-0 pointer-events-none z-50 text-xs font-medium border border-slate-700 w-11/12 max-w-[350px]">
   <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i><span id="toastMessage">Pesan Notifikasi</span>
 </div>
 
-<!-- MODAL KAMERA SELFIE -->
+<!-- MODAL KAMERA SELFIE ABSENSI (KAMERA DEPAN) -->
 <div id="cameraModal" class="hidden fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
   <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col transform transition-all">
     <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
@@ -546,10 +848,50 @@
   </div>
 </div>
 
+<!-- MODAL KAMERA LIVE TASK REPORT (KAMERA BELAKANG ANTI-GALERI + WATERMARK JAM) -->
+<div id="taskCameraModal" class="hidden fixed inset-0 z-50 bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-4">
+  <div class="bg-white w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl flex flex-col">
+    <div class="p-4 bg-slate-900 text-white flex justify-between items-center">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-camera text-sky-400"></i>
+        <h3 id="taskCameraModalTitle" class="text-xs font-black tracking-wide uppercase">Kamera Live: BEFORE</h3>
+      </div>
+      <button onclick="closeTaskLiveCamera()" class="text-slate-400 bg-slate-800 w-8 h-8 rounded-full flex items-center justify-center"><i class="fa-solid fa-xmark text-sm"></i></button>
+    </div>
+    <div class="relative bg-black aspect-[4/3] w-full flex items-center justify-center overflow-hidden">
+      <video id="taskCameraVideo" class="w-full h-full object-cover" playsinline autoplay muted></video>
+      <div class="absolute bottom-2 right-2 bg-slate-900/80 text-amber-300 text-[10px] font-mono font-bold px-2 py-1 rounded border border-amber-400/40">
+        Watermark Waktu Aktif
+      </div>
+    </div>
+    <div class="p-4 bg-white flex flex-col items-center">
+      <button type="button" onclick="captureTaskPhotoLive()" class="w-16 h-16 rounded-full bg-sky-600 hover:bg-sky-700 border-4 border-sky-100 shadow-lg flex items-center justify-center text-white transition-transform active:scale-90">
+        <i class="fa-solid fa-camera text-2xl"></i>
+      </button>
+      <span class="text-[10px] font-bold text-slate-500 mt-2">Jepret Foto Dokumentasi Pekerjaan</span>
+    </div>
+  </div>
+</div>
+
 <script>
+  // SERVER 1: GOOGLE SHEET ABSENSI V15.8 (TIDAK DIUBAH SAMA SEKALI)
   const GAS_WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyI0ZEi7rlUaJ_xpq4iqs1aaFfL5KGzSTJyJPanuwCUNnGAchmkVWxzjGzKFCd95ssQ7w/exec";
+
+  // SERVER 2: GOOGLE SHEET DATABASE LAPORAN BULANAN PT. GCES (TERPISAH 100%)
+  const GAS_TASK_REPORT_URL = "https://script.google.com/macros/s/AKfycbwIFs6huTFzFQkC6wJqLEGkJnWmoNPwf8UYJl5pbFgUXzF1D_J_Gpo22jGogF2jEbTr/exec";
+
   const ADMIN_MASTER_PIN = "admin";
   const MANAGER_MASTER_PIN = "manager";
+
+  // 6 LOKASI WAJIB TASK REPORTING / LAPORAN BULANAN
+  const ENAM_LOKASI_LAPORAN = [
+    "RS. HARUM SISMA MEDIKA",
+    "RS. SUKMUL SISMA MEDIKA",
+    "PT. MOYA INDONESIA",
+    "PT. SAPTA WARNA CEMERLANG",
+    "PT. MUTIARA HEXAGON",
+    "PT. CELSIUS CREATIVA"
+  ];
 
   function gambarKotakLengkung(ctx, x, y, w, h, r) {
     ctx.beginPath();
@@ -631,16 +973,16 @@
   }
 
   const DEFAULT_SITE_COORDINATES = {
-    "HEAD OFFICE":                { lat: -6.2148, lng: 106.9032 },
-    "RS. HARUM SISMA MEDIKA":     { lat: -6.2484, lng: 106.9082 },
-    "RS. SUKMUL SISMA MEDIKA":    { lat: -6.1213, lng: 106.8807 },
-    "PT. MOYA INDONESIA":         { lat: -6.2995, lng: 107.1436 },
-    "PT. CELSIUS CREATIVA":       { lat: -6.2683, lng: 106.7972 },
-    "PT. SAPTA WARNA CEMERLANG":  { lat: -6.1895, lng: 106.7668 },
-    "PT. MUTIARA HEXAGON":        { lat: -6.1895, lng: 106.7668 },
-    "PT. SM":                     { lat: -6.1558, lng: 106.8920 },
-    "KLINIK SEMPER":              { lat: -6.1255, lng: 106.9261 },
-    "APOTEK SEMPER":              { lat: -6.1255, lng: 106.9261 }
+    "HEAD OFFICE":               { lat: -6.2148, lng: 106.9032 },
+    "RS. HARUM SISMA MEDIKA":    { lat: -6.2484, lng: 106.9082 },
+    "RS. SUKMUL SISMA MEDIKA":   { lat: -6.1213, lng: 106.8807 },
+    "PT. MOYA INDONESIA":        { lat: -6.2995, lng: 107.1436 },
+    "PT. CELSIUS CREATIVA":      { lat: -6.2683, lng: 106.7972 },
+    "PT. SAPTA WARNA CEMERLANG": { lat: -6.1895, lng: 106.7668 },
+    "PT. MUTIARA HEXAGON":       { lat: -6.1895, lng: 106.7668 },
+    "PT. SM":                    { lat: -6.1558, lng: 106.8920 },
+    "KLINIK SEMPER":             { lat: -6.1255, lng: 106.9261 },
+    "APOTEK SEMPER":             { lat: -6.1255, lng: 106.9261 }
   };
 
   let SITE_COORDINATES = { ...DEFAULT_SITE_COORDINATES };
@@ -726,6 +1068,102 @@
   let cutiBase64 = "";
   let cutiFileName = "";
 
+  // VARIABEL KHUSUS MODUL LAPORAN BULANAN V16.0 (SERVER 2)
+  let taskCameraStream = null;
+  let activeTaskPhotoStage = "BEFORE";
+  let lapToiletState = {};
+  let lapRoomState = [];
+  let lapTaskDraft = {
+    taskId: "",
+    area: "",
+    pekerjaan: "",
+    beforeBase64: "",
+    duringBase64: "",
+    afterBase64: "",
+    urlBefore: "",
+    urlDuring: "",
+    urlAfter: ""
+  };
+
+  const KONFIG_LAPORAN_6_PROYEK = {
+    "RS. HARUM SISMA MEDIKA": {
+      dibuatOleh: "Syaulia Medy Daiyah", jabatanPembuat: "Supervisor",
+      disetujuiKlien: "Rully", jabatanKlien: "Kabag. Penunjang Umum",
+      areas: [
+        "Harum / Kamar Perawatan Arumdalu", "Harum / Kamar Perawatan Anggrek", "Harum / Kamar Perawatan Anyelir",
+        "Harum / Kamar Perawatan Mawar", "Harum / Lantai Dasar", "Harum / Basement", "Harum / Dapur",
+        "Harum / Ruang ICU", "Harum / Ruang OKA", "Harum / Ruang IGD", "Harum / Poli Anak LT 1",
+        "Harum / Halaman", "Harum / Taman", "Harum / Mushola", "Harum / Toilet Umum"
+      ],
+      toilets: [
+        "Toilet Umum Poli Anak", "Toilet Umum Lt. Dasar Samping Pentry",
+        "Toilet Umum Lt. Dasar Samping IGD", "Toilet Umum Lt. 3"
+      ],
+      rooms: ["Ruang Anggrek", "Ruang Anyelir", "Ruang Arumndalu", "Ruang Mawar"]
+    },
+    "RS. SUKMUL SISMA MEDIKA": {
+      dibuatOleh: "Tita Lelawati", jabatanPembuat: "Supervisor",
+      disetujuiKlien: "Iman Saleh Tarihoran, SM", jabatanKlien: "Kabag. Penunjang RS",
+      areas: [
+        "Sukmul / Lobby Utama", "Sukmul / IGD dan Poli 2", "Sukmul / Paviliun Anggrek",
+        "Sukmul / Paviliun Arumdalu", "Sukmul / Paviliun Mawar", "Sukmul / Paviliun Melati", "Sukmul / Halaman"
+      ],
+      toilets: [
+        "Toilet Umum Teknisi", "Toilet Umum Official Lt 3", "Toilet Umum Depan Gudang",
+        "Toilet Umum Samping Ruang MR", "Toilet Umum Depan Fisio", "Toilet Umum Lobby"
+      ],
+      rooms: ["Paviliun Anggrek", "Paviliun Arumdalu", "Paviliun Mawar", "Paviliun Melati", "Ruang IGD"]
+    },
+    "PT. MOYA INDONESIA": {
+      dibuatOleh: "Ali Eka Wahyudi", jabatanPembuat: "Admin",
+      disetujuiKlien: "Slamet Riyadin / Didin Solahudin", jabatanKlien: "SPV Logistik / Plant Manager",
+      areas: ["Moya / Warehouse", "Moya / Gudang Chemical", "Moya / Gudang Gas Chlore", "Moya / Office & Toilet"],
+      toilets: ["Toilet Area PT. Moya"],
+      rooms: ["Ruang Office PT. Moya"]
+    },
+    "PT. SAPTA WARNA CEMERLANG": {
+      dibuatOleh: "Ali Eka Wahyudi", jabatanPembuat: "Admin",
+      disetujuiKlien: "Yumita Kusuma", jabatanKlien: "Management PT. Sapta Warna Cemerlang",
+      areas: ["Sapta / Lantai 2", "Sapta / Lantai 4", "Sapta / Lantai 5", "Sapta / Pantry & Toilet"],
+      toilets: ["Toilet PT. Sapta Warna"],
+      rooms: ["Ruang Kantor PT. Sapta Warna"]
+    },
+    "PT. MUTIARA HEXAGON": {
+      dibuatOleh: "Ali Eka Wahyudi", jabatanPembuat: "Admin",
+      disetujuiKlien: "Management PT. Mutiara Hexagon", jabatanKlien: "Perwakilan Klien",
+      areas: ["Hexagon / Ruang Kantor", "Hexagon / Koridor & Lobby", "Hexagon / Pantry & Toilet"],
+      toilets: ["Toilet PT. Mutiara Hexagon"],
+      rooms: ["Ruang Kantor PT. Mutiara Hexagon"]
+    },
+    "PT. CELSIUS CREATIVA": {
+      dibuatOleh: "Ali Eka Wahyudi", jabatanPembuat: "Admin",
+      disetujuiKlien: "Management PT. Celsius Creativa", jabatanKlien: "Perwakilan Klien",
+      areas: ["Celsius / Ruang Kantor", "Celsius / Studio & Koridor", "Celsius / Pantry & Toilet"],
+      toilets: ["Toilet PT. Celsius Creativa"],
+      rooms: ["Ruang Kantor PT. Celsius Creativa"]
+    }
+  };
+
+  const DAFTAR_9_ITEM_TOILET = [
+    { key: "entranceDoor", label: "ENTRANCE DOOR" },
+    { key: "floor",        label: "FLOOR" },
+    { key: "wall",         label: "WALL" },
+    { key: "mirror",       label: "MIRROR" },
+    { key: "uBowl",        label: "U.BOWL" },
+    { key: "tBowl",        label: "T.BOWL" },
+    { key: "tissue",       label: "TISSUE" },
+    { key: "wPartisi",     label: "W.PARTISI" },
+    { key: "wasteBin",     label: "WASTE BIN" }
+  ];
+
+  const DAFTAR_25_OBJEK_ROOM = [
+    "1. LANTAI", "2. DINDING", "3. PLAFON", "4. AKSESORIS", "5. KAP LAMPU",
+    "6. AC+REMOTE", "7. PINTU", "8. JENDELA KACA", "9. GORDEN", "10. TEMPAT TIDUR",
+    "11. SOFA", "12. KURSI", "13. MEJA KECIL", "14. MEJA BESAR", "15. LEMARI KECIL",
+    "16. LEMARI BESAR", "17. LEMARI ES", "18. JEMURAN", "19. TV+REMOT", "20. VAS BUNGA",
+    "21. DAK", "22. STOP KONTAK", "23. TEMPAT SAMPAH", "24. KESET", "25. TOILET"
+  ];
+
   function isAuthorizedAdmin(user) {
     if (!user) return false;
     const n = (user.nama || "").trim().toUpperCase();
@@ -743,6 +1181,9 @@
     renderUserDropdown();
     renderAdminDB();
     renderRiwayat();
+    initLapChecklistGrids();
+    onLapLokasiChange();
+    loadLapDraftLocal();
 
     const savedUser = localStorage.getItem('gces_currentUser');
     if (savedUser) {
@@ -804,7 +1245,6 @@
     }
   }
 
-  // SINKRONISASI DAFTAR CUTI PENDING UNTUK PANEL ADMIN & TAB TIM SPV
   async function syncPendingCutiFromServer(showNotif = false) {
     const icon = document.getElementById('pendingCutiRefreshIcon');
     if (icon) icon.classList.add('fa-spin');
@@ -825,7 +1265,6 @@
     }
   }
 
-  // RENDER KOTAK APPROVAL CUTI KHUSUS SPV DI TAB TIM (SKEMA 2)
   function renderSpvPendingBox() {
     const card = document.getElementById('spvApprovalCard');
     const badge = document.getElementById('spvPendingCountBadge');
@@ -882,7 +1321,6 @@
     });
   }
 
-  // RENDER KOTAK APPROVAL BERJENJANG HRD (PIN: admin) & MANAGER / BYPASS > 48 JAM (PIN: manager)
   function renderPendingCutiBox() {
     const badge = document.getElementById('pendingCutiCountBadge');
     const container = document.getElementById('pendingCutiListContainer');
@@ -912,7 +1350,6 @@
 
       let actionButtonsHtml = '';
 
-      // 1. TOMBOL TAHAP HRD (PIN: admin)
       if (item.roleTarget === 'hrd') {
         actionButtonsHtml += `
           <div class="flex gap-1.5 pt-1.5 border-t border-slate-100">
@@ -926,7 +1363,6 @@
         `;
       }
 
-      // 2. TOMBOL TAHAP MANAGER NORMAL (PIN: manager)
       if (item.roleTarget === 'mgr') {
         actionButtonsHtml += `
           <div class="flex gap-1.5 pt-1.5 border-t border-slate-100">
@@ -940,7 +1376,6 @@
         `;
       }
 
-      // 3. TOMBOL BYPASS MANAGER JIKA TERTAHAN DI SPV / HRD > 48 JAM (SKEMA 1 - PIN: manager)
       if ((item.roleTarget === 'spv' || item.roleTarget === 'hrd') && isOver48h) {
         actionButtonsHtml += `
           <div class="flex gap-1.5 pt-1.5 border-t border-purple-100">
@@ -986,7 +1421,6 @@
     });
   }
 
-  // FUNGSI EKSEKUSI APPROVAL / REJECT / BYPASS LANGSUNG DARI APLIKASI
   function prosesApprovalCutiAplikasi(reqId, role, keputusan, namaKaryawan) {
     if (!currentUser) {
       showToast("Pilih akun terlebih dahulu!", true);
@@ -1378,6 +1812,8 @@
     const subEl = document.getElementById('mainAbsenSublabel');
     subEl.textContent = `${jenisAbsen.toUpperCase()} ${labelShift} • ${labelKat}${dlTag}`;
     subEl.classList.remove('hidden');
+    const lapShiftBadge = document.getElementById('lapActiveShiftBadge');
+    if (lapShiftBadge) lapShiftBadge.textContent = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
   }
 
   function formatInitials(name) {
@@ -1445,6 +1881,30 @@
     document.getElementById('clockInSummary').textContent = "-- : --";
     document.getElementById('clockOutSummary').textContent = "-- : --";
     document.getElementById('cutiUserQuotaTitle').textContent = `${user.nama} (${user.nip})`;
+    document.getElementById('lapActiveUserName').textContent = `${user.nama} (${user.jabatan})`;
+
+    // Atur visibilitas tab Laporan (Hanya 6 Lokasi Proyek + Admin Head Office)
+    const navLapBtn = document.getElementById('nav-laporan');
+    const isEnamLokasi = ENAM_LOKASI_LAPORAN.includes((user.lokasi || '').toUpperCase()) || isAuthorizedAdmin(user);
+    if (isEnamLokasi) {
+      navLapBtn.classList.remove('hidden');
+      const lapLokSel = document.getElementById('lapLokasiSelect');
+      if (ENAM_LOKASI_LAPORAN.includes((user.lokasi || '').toUpperCase())) {
+        lapLokSel.value = user.lokasi.toUpperCase();
+        onLapLokasiChange();
+      }
+      const jabUp = (user.jabatan || '').toUpperCase();
+      if (jabUp.includes('PICKER')) document.getElementById('lapKategoriSelect').value = 'Picker';
+      else if (jabUp.includes('GARDENER')) document.getElementById('lapKategoriSelect').value = 'Gardener';
+      else if (jabUp.includes('GONDOLA')) document.getElementById('lapKategoriSelect').value = 'Gondola';
+      else document.getElementById('lapKategoriSelect').value = 'Cleaner';
+      updateLapPhotoSlots();
+    } else {
+      navLapBtn.classList.add('hidden');
+      if (!document.getElementById('tabContent-laporan').classList.contains('hidden')) {
+        switchTab('beranda');
+      }
+    }
 
     const navAdminBtn = document.getElementById('nav-admin');
     if (isAuthorizedAdmin(user)) {
@@ -1489,6 +1949,690 @@
     syncSisaCutiFromServer();
   }
 
+  // ==========================================================================
+  // LOGIKA MODUL LAPORAN BULANAN V16.0 (SERVER 2 TERPISAH)
+  // ==========================================================================
+  function switchSubTabLaporan(subId) {
+    ['task', 'toilet', 'room', 'malam', 'pdf'].forEach(k => {
+      document.getElementById('subPaneLap-' + k).classList.toggle('hidden', k !== subId);
+      const btn = document.getElementById('subBtnLap-' + k);
+      if (btn) {
+        btn.className = (k === subId)
+          ? "py-1.5 rounded-lg text-[9px] font-black bg-sky-600 text-white transition"
+          : "py-1.5 rounded-lg text-[9px] font-bold text-slate-300 hover:text-white transition";
+      }
+    });
+    if (subId === 'task') fetchRecentTaskReports();
+  }
+
+  function onLapLokasiChange() {
+    const lok = document.getElementById('lapLokasiSelect').value;
+    const cfg = KONFIG_LAPORAN_6_PROYEK[lok] || KONFIG_LAPORAN_6_PROYEK["RS. HARUM SISMA MEDIKA"];
+
+    document.getElementById('lapAreaSuggestions').innerHTML = cfg.areas.map(a => `<option value="${a}">`).join('');
+    document.getElementById('lapToiletName').innerHTML = cfg.toilets.map(t => `<option value="${t}">${t}</option>`).join('');
+    document.getElementById('lapRoomName').innerHTML = cfg.rooms.map(r => `<option value="${r}">${r}</option>`).join('');
+  }
+
+  function updateLapPhotoSlots() {
+    const kat = document.getElementById('lapKategoriSelect').value;
+    const boxDuring = document.getElementById('slotBoxDuring');
+    const boxAfter = document.getElementById('slotBoxAfter');
+    const grid = document.getElementById('lapPhotoGrid');
+    if (kat === 'Picker') {
+      boxDuring.classList.add('hidden');
+      boxAfter.classList.add('hidden');
+      grid.className = "grid grid-cols-1 gap-2 pt-1";
+    } else {
+      boxDuring.classList.remove('hidden');
+      boxAfter.classList.remove('hidden');
+      grid.className = "grid grid-cols-3 gap-2 pt-1";
+    }
+  }
+
+  async function openTaskLiveCamera(stage) {
+    if (!currentUser) {
+      showToast("Pilih akun karyawan terlebih dahulu!", true);
+      toggleUserDropdown();
+      return;
+    }
+    activeTaskPhotoStage = stage;
+    document.getElementById('taskCameraModalTitle').textContent = `Kamera Live: ${stage}`;
+    document.getElementById('taskCameraModal').classList.remove('hidden');
+
+    try {
+      if (taskCameraStream) closeTaskLiveCamera();
+      taskCameraStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 960 } },
+        audio: false
+      });
+      const v = document.getElementById('taskCameraVideo');
+      v.srcObject = taskCameraStream;
+      document.getElementById('taskCameraModal').classList.remove('hidden');
+    } catch (e) {
+      showToast("Gagal membuka kamera belakang. Pastikan izin kamera aktif!", true);
+      closeTaskLiveCamera();
+    }
+  }
+
+  function closeTaskLiveCamera() {
+    document.getElementById('taskCameraModal').classList.add('hidden');
+    if (taskCameraStream) {
+      taskCameraStream.getTracks().forEach(t => t.stop());
+      taskCameraStream = null;
+    }
+  }
+
+  function captureTaskPhotoLive() {
+    const v = document.getElementById('taskCameraVideo');
+    if (!v || !v.videoWidth) return;
+
+    const canvas = document.createElement('canvas');
+    const maxW = 640;
+    const scale = Math.min(1, maxW / v.videoWidth);
+    canvas.width = Math.round(v.videoWidth * scale);
+    canvas.height = Math.round(v.videoHeight * scale);
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(v, 0, 0, canvas.width, canvas.height);
+
+    // Cetak Watermark Tanggal & Jam WIB Otomatis
+    const now = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    const stamp = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+    ctx.fillStyle = "rgba(15, 23, 42, 0.78)";
+    ctx.fillRect(canvas.width - 170, canvas.height - 32, 162, 24);
+    ctx.fillStyle = "#fde047";
+    ctx.font = "bold 12px sans-serif";
+    ctx.fillText(stamp, canvas.width - 162, canvas.height - 15);
+
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.68);
+    if (activeTaskPhotoStage === 'BEFORE') {
+      lapTaskDraft.beforeBase64 = dataUrl;
+      const img = document.getElementById('imgPrevBefore');
+      img.src = dataUrl; img.classList.remove('hidden');
+      document.getElementById('emptyIconBefore').classList.add('hidden');
+    } else if (activeTaskPhotoStage === 'DURING') {
+      lapTaskDraft.duringBase64 = dataUrl;
+      const img = document.getElementById('imgPrevDuring');
+      img.src = dataUrl; img.classList.remove('hidden');
+      document.getElementById('emptyIconDuring').classList.add('hidden');
+    } else if (activeTaskPhotoStage === 'AFTER') {
+      lapTaskDraft.afterBase64 = dataUrl;
+      const img = document.getElementById('imgPrevAfter');
+      img.src = dataUrl; img.classList.remove('hidden');
+      document.getElementById('emptyIconAfter').classList.add('hidden');
+    }
+
+    saveLapDraftLocal();
+    closeTaskLiveCamera();
+    showToast(`Foto ${activeTaskPhotoStage} berhasil diambil!`);
+  }
+
+  function saveLapDraftLocal() {
+    lapTaskDraft.area = document.getElementById('lapTaskArea').value;
+    lapTaskDraft.pekerjaan = document.getElementById('lapTaskJob').value;
+    if (!lapTaskDraft.taskId) lapTaskDraft.taskId = "TASK_" + Date.now();
+    try {
+      localStorage.setItem('gces_v16_task_draft', JSON.stringify(lapTaskDraft));
+      const b = document.getElementById('lapDraftBadge');
+      b.textContent = `✓ Draft aktif tersimpan di HP (${lapTaskDraft.taskId})`;
+      b.classList.remove('hidden');
+    } catch (e) {}
+  }
+
+  function loadLapDraftLocal() {
+    try {
+      const raw = localStorage.getItem('gces_v16_task_draft');
+      if (!raw) return;
+      lapTaskDraft = JSON.parse(raw);
+      document.getElementById('lapTaskArea').value = lapTaskDraft.area || '';
+      document.getElementById('lapTaskJob').value = lapTaskDraft.pekerjaan || '';
+      if (lapTaskDraft.beforeBase64) {
+        const i = document.getElementById('imgPrevBefore');
+        i.src = lapTaskDraft.beforeBase64; i.classList.remove('hidden');
+        document.getElementById('emptyIconBefore').classList.add('hidden');
+      }
+      if (lapTaskDraft.duringBase64) {
+        const i = document.getElementById('imgPrevDuring');
+        i.src = lapTaskDraft.duringBase64; i.classList.remove('hidden');
+        document.getElementById('emptyIconDuring').classList.add('hidden');
+      }
+      if (lapTaskDraft.afterBase64) {
+        const i = document.getElementById('imgPrevAfter');
+        i.src = lapTaskDraft.afterBase64; i.classList.remove('hidden');
+        document.getElementById('emptyIconAfter').classList.add('hidden');
+      }
+      if (lapTaskDraft.taskId) {
+        const b = document.getElementById('lapDraftBadge');
+        b.textContent = `✓ Melanjutkan Draft (${lapTaskDraft.taskId})`;
+        b.classList.remove('hidden');
+      }
+    } catch (e) {}
+  }
+
+  function resetLapTaskDraft() {
+    lapTaskDraft = { taskId: "", area: "", pekerjaan: "", beforeBase64: "", duringBase64: "", afterBase64: "", urlBefore: "", urlDuring: "", urlAfter: "" };
+    localStorage.removeItem('gces_v16_task_draft');
+    document.getElementById('lapTaskArea').value = '';
+    document.getElementById('lapTaskJob').value = '';
+    ['Before', 'During', 'After'].forEach(s => {
+      const img = document.getElementById('imgPrev' + s);
+      img.src = ''; img.classList.add('hidden');
+      document.getElementById('emptyIcon' + s).classList.remove('hidden');
+    });
+    document.getElementById('lapDraftBadge').classList.add('hidden');
+  }
+
+  async function submitTaskReportServer2() {
+    if (!currentUser) {
+      showToast("Pilih akun karyawan terlebih dahulu!", true);
+      toggleUserDropdown();
+      return;
+    }
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const kategori = document.getElementById('lapKategoriSelect').value;
+    const area = document.getElementById('lapTaskArea').value.trim();
+    const pekerjaan = document.getElementById('lapTaskJob').value.trim();
+    const shiftLabel = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+
+    if (!area || !pekerjaan) {
+      showToast("Area dan Deskripsi Pekerjaan wajib diisi!", true);
+      return;
+    }
+    if (!lapTaskDraft.beforeBase64 && !lapTaskDraft.urlBefore) {
+      showToast("Minimal Foto BEFORE wajib diambil lewat Kamera Live!", true);
+      return;
+    }
+
+    if (!lapTaskDraft.taskId) lapTaskDraft.taskId = "TASK_" + Date.now();
+    const btn = document.getElementById('btnSubmitTaskReport');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>MENGUNGGAH KE SERVER 2...</span>`;
+
+    try {
+      const res = await fetch(GAS_TASK_REPORT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "simpan_task_report",
+          taskId: lapTaskDraft.taskId,
+          nip: currentUser.nip,
+          nama: currentUser.nama,
+          lokasi: lokasi,
+          shift: shiftLabel,
+          kategoriLaporan: kategori,
+          area: area,
+          pekerjaan: pekerjaan,
+          fotoBeforeBase64: lapTaskDraft.beforeBase64 || "",
+          fotoDuringBase64: lapTaskDraft.duringBase64 || "",
+          fotoAfterBase64: lapTaskDraft.afterBase64 || "",
+          urlBeforeExisting: lapTaskDraft.urlBefore || "",
+          urlDuringExisting: lapTaskDraft.urlDuring || "",
+          urlAfterExisting: lapTaskDraft.urlAfter || ""
+        })
+      });
+      const json = await res.json();
+      if (json.status === "success") {
+        if (json.urlBefore) { lapTaskDraft.urlBefore = json.urlBefore; lapTaskDraft.beforeBase64 = ""; }
+        if (json.urlDuring) { lapTaskDraft.urlDuring = json.urlDuring; lapTaskDraft.duringBase64 = ""; }
+        if (json.urlAfter)  { lapTaskDraft.urlAfter = json.urlAfter;   lapTaskDraft.afterBase64 = ""; }
+        saveLapDraftLocal();
+
+        const isComplete = (kategori === 'Picker' && lapTaskDraft.urlBefore) || (lapTaskDraft.urlBefore && lapTaskDraft.urlDuring && lapTaskDraft.urlAfter);
+        if (isComplete) {
+          showToast("Task Report LENGKAP berhasil disimpan ke Server 2!");
+          resetLapTaskDraft();
+          fetchRecentTaskReports();
+        } else {
+          showToast("Tahap foto tersimpan! Silakan lanjutkan foto During/After setelah dikerjakan.");
+        }
+      } else {
+        showToast("Gagal menyimpan: " + (json.message || ""), true);
+      }
+    } catch (e) {
+      showToast("Draft aman di HP. Gagal koneksi Server 2.", true);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-cloud-arrow-up"></i><span>SIMPAN / UPDATE TASK REPORT</span>`;
+    }
+  }
+
+  async function fetchRecentTaskReports() {
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const box = document.getElementById('recentTaskReportList');
+    box.innerHTML = `<p class="text-center py-2"><i class="fa-solid fa-circle-notch fa-spin mr-1"></i>Memuat data...</p>`;
+    try {
+      const res = await fetch(`${GAS_TASK_REPORT_URL}?action=get_task_report&lokasi=${encodeURIComponent(lokasi)}&_t=${Date.now()}`);
+      const data = await res.json();
+      const list = (data.tasks || []).slice(0, 12);
+      if (list.length === 0) {
+        box.innerHTML = `<p class="text-center py-2 italic">Belum ada Task Report di lokasi ${lokasi}.</p>`;
+        return;
+      }
+      box.innerHTML = list.map(t => `
+        <div class="p-2 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between gap-2">
+          <div class="truncate">
+            <p class="font-bold text-slate-800 truncate">${t.tanggal} &bull; ${t.nama}</p>
+            <p class="text-[9px] text-slate-500 truncate">${t.area} — ${t.pekerjaan}</p>
+          </div>
+          <span class="text-[9px] font-black text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded shrink-0">
+            ${t.fotoBefore ? '✓B' : '·'} ${t.fotoDuring ? '✓D' : '·'} ${t.fotoAfter ? '✓A' : '·'}
+          </span>
+        </div>
+      `).join('');
+    } catch (e) {
+      box.innerHTML = `<p class="text-rose-500 text-center py-2">Gagal memuat daftar dari Server 2.</p>`;
+    }
+  }
+
+  function initLapChecklistGrids() {
+    const tGrid = document.getElementById('lapToiletGrid9');
+    lapToiletState = {};
+    tGrid.innerHTML = DAFTAR_9_ITEM_TOILET.map(it => {
+      lapToiletState[it.key] = "B";
+      return `
+        <div id="lapTItem-${it.key}" onclick="toggleLapToiletItem('${it.key}')" class="p-2.5 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-800 flex items-center justify-between text-[10px] font-black cursor-pointer">
+          <span>${it.label}</span>
+          <span id="lapTVal-${it.key}" class="px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px]">B</span>
+        </div>
+      `;
+    }).join('');
+
+    const rGrid = document.getElementById('lapRoomGrid25');
+    lapRoomState = DAFTAR_25_OBJEK_ROOM.map(() => "B");
+    rGrid.innerHTML = DAFTAR_25_OBJEK_ROOM.map((nm, idx) => `
+      <div id="lapRItem-${idx}" onclick="toggleLapRoomItem(${idx})" class="p-2 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-800 flex items-center justify-between text-[10px] font-bold cursor-pointer">
+        <span class="truncate pr-1">${nm}</span>
+        <span id="lapRVal-${idx}" class="px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-black shrink-0">B</span>
+      </div>
+    `).join('');
+  }
+
+  function toggleLapToiletItem(key) {
+    const next = lapToiletState[key] === "B" ? "K" : "B";
+    lapToiletState[key] = next;
+    const box = document.getElementById('lapTItem-' + key);
+    const badge = document.getElementById('lapTVal-' + key);
+    if (next === "B") {
+      box.className = "p-2.5 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-800 flex items-center justify-between text-[10px] font-black cursor-pointer";
+      badge.className = "px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px]";
+      badge.textContent = "B";
+    } else {
+      box.className = "p-2.5 rounded-xl border border-rose-400 bg-rose-50 text-rose-800 flex items-center justify-between text-[10px] font-black cursor-pointer";
+      badge.className = "px-1.5 py-0.5 rounded bg-rose-600 text-white text-[9px]";
+      badge.textContent = "K";
+    }
+  }
+
+  function toggleLapRoomItem(idx) {
+    const cur = lapRoomState[idx];
+    const next = cur === "B" ? "K" : (cur === "K" ? "-" : "B");
+    lapRoomState[idx] = next;
+    const box = document.getElementById('lapRItem-' + idx);
+    const badge = document.getElementById('lapRVal-' + idx);
+    if (next === "B") {
+      box.className = "p-2 rounded-xl border border-emerald-400 bg-emerald-50 text-emerald-800 flex items-center justify-between text-[10px] font-bold cursor-pointer";
+      badge.className = "px-1.5 py-0.5 rounded bg-emerald-600 text-white text-[9px] font-black shrink-0";
+    } else if (next === "K") {
+      box.className = "p-2 rounded-xl border border-rose-400 bg-rose-50 text-rose-800 flex items-center justify-between text-[10px] font-bold cursor-pointer";
+      badge.className = "px-1.5 py-0.5 rounded bg-rose-600 text-white text-[9px] font-black shrink-0";
+    } else {
+      box.className = "p-2 rounded-xl border border-slate-300 bg-slate-100 text-slate-600 flex items-center justify-between text-[10px] font-bold cursor-pointer";
+      badge.className = "px-1.5 py-0.5 rounded bg-slate-500 text-white text-[9px] font-black shrink-0";
+    }
+    badge.textContent = next;
+  }
+
+  async function submitToiletInspectionServer2() {
+    if (!currentUser) { showToast("Pilih akun dulu!", true); return; }
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const namaToilet = document.getElementById('lapToiletName').value;
+    const jam = document.getElementById('lapToiletHour').value;
+    showToast(`Menyimpan Inspeksi Toilet (${namaToilet})...`);
+    try {
+      const res = await fetch(GAS_TASK_REPORT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "simpan_inspeksi_toilet",
+          lokasi: lokasi,
+          namaToilet: namaToilet,
+          jam: jam,
+          pic: `${currentUser.nama}/${currentUser.jabatan}`,
+          items: lapToiletState
+        })
+      });
+      const j = await res.json();
+      if (j.status === "success") {
+        showToast("Inspeksi Toilet berhasil disimpan ke Server 2!");
+        initLapChecklistGrids();
+      }
+    } catch (e) {
+      showToast("Gagal menyimpan inspeksi toilet.", true);
+    }
+  }
+
+  async function submitRoomInspectionServer2() {
+    if (!currentUser) { showToast("Pilih akun dulu!", true); return; }
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const ruangan = document.getElementById('lapRoomName').value;
+    const jam = document.getElementById('lapRoomHour').value;
+    const shiftLabel = isNonShift ? "Non-Shift" : `Shift ${currentShift}`;
+    showToast(`Menyimpan Service Room (${ruangan})...`);
+    try {
+      const res = await fetch(GAS_TASK_REPORT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "simpan_inspeksi_room",
+          lokasi: lokasi,
+          ruangan: ruangan,
+          shift: shiftLabel,
+          jam: jam,
+          pemeriksa: currentUser.nama.split(' ')[0].toUpperCase(),
+          objekValues: lapRoomState
+        })
+      });
+      const j = await res.json();
+      if (j.status === "success") {
+        showToast("Inspeksi 25 Objek Service Room berhasil disimpan!");
+        initLapChecklistGrids();
+      }
+    } catch (e) {
+      showToast("Gagal menyimpan Service Room.", true);
+    }
+  }
+
+  async function submitShiftMalamServer2() {
+    if (!currentUser) { showToast("Pilih akun dulu!", true); return; }
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const area = document.getElementById('lapMalamArea').value.trim();
+    const job = document.getElementById('lapMalamJob').value.trim();
+    const jam = document.getElementById('lapMalamJam').value.trim();
+    if (!area || !job) { showToast("Lengkapi Area dan Job Shift Malam!", true); return; }
+
+    showToast("Menyimpan Laporan Shift Malam...");
+    try {
+      const res = await fetch(GAS_TASK_REPORT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "simpan_shift_malam",
+          lokasi: lokasi,
+          area: area,
+          petugas: currentUser.nama,
+          job: job,
+          jam: jam,
+          keterangan: job
+        })
+      });
+      const j = await res.json();
+      if (j.status === "success") {
+        showToast("Laporan Shift Malam tersimpan!");
+        document.getElementById('lapMalamJob').value = '';
+      }
+    } catch (e) {
+      showToast("Gagal menyimpan Shift Malam.", true);
+    }
+  }
+
+  async function submitCatatanAreaServer2() {
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const periodeBulan = document.getElementById('lapCatBulan').value.trim();
+    const kerusakan = document.getElementById('lapCatKerusakan').value.trim() || "NIHIL";
+    const analisa = document.getElementById('lapCatAnalisa').value.trim() || "NIHIL";
+    const kendala = document.getElementById('lapCatKendala').value.trim() || "NIHIL";
+    showToast("Menyimpan Evaluasi Area Bulanan...");
+    try {
+      const res = await fetch(GAS_TASK_REPORT_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "simpan_catatan_area",
+          periodeBulan: periodeBulan,
+          lokasi: lokasi,
+          kerusakan: kerusakan,
+          analisa: analisa,
+          kendala: kendala,
+          actor: currentUser ? currentUser.nama : "Admin/SPV"
+        })
+      });
+      const j = await res.json();
+      if (j.status === "success") showToast("Evaluasi Area Bulanan berhasil disimpan!");
+    } catch (e) {
+      showToast("Gagal menyimpan Evaluasi Area.", true);
+    }
+  }
+
+  function formatDriveThumbnailUrl(url) {
+    if (!url) return "";
+    const m = String(url).match(/[-\w]{25,}/);
+    if (m && m[0]) return `https://drive.google.com/thumbnail?id=${m[0]}&sz=w500`;
+    return url;
+  }
+
+  async function generateMonthlyPdfReport() {
+    const pin = document.getElementById('lapPdfPin').value.trim();
+    if (pin !== ADMIN_MASTER_PIN && pin !== MANAGER_MASTER_PIN) {
+      showToast("PIN Otorisasi salah! Gunakan PIN admin atau manager.", true);
+      return;
+    }
+
+    const lokasi = document.getElementById('lapLokasiSelect').value;
+    const bulan = document.getElementById('lapPdfBulan').value.trim();
+    const labelPeriode = document.getElementById('lapPdfPeriodeLabel').value.trim();
+    const modeMoya = document.getElementById('lapPdfModeMoya').value;
+    const tglSah = document.getElementById('lapPdfTglSah').value.trim();
+    const cfg = KONFIG_LAPORAN_6_PROYEK[lokasi] || KONFIG_LAPORAN_6_PROYEK["RS. HARUM SISMA MEDIKA"];
+
+    const btn = document.getElementById('btnGenerateMonthlyPdf');
+    btn.disabled = true;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i><span>MENARIK DATA BULANAN SERVER 2...</span>`;
+
+    try {
+      const res = await fetch(`${GAS_TASK_REPORT_URL}?action=get_full_monthly_report&lokasi=${encodeURIComponent(lokasi)}&bulan=${encodeURIComponent(bulan)}&_t=${Date.now()}`);
+      const data = await res.json();
+
+      let tasks = (data.tasks || []).reverse();
+      if (modeMoya !== "ALL") {
+        tasks = tasks.filter(t => String(t.kategori).toLowerCase() === modeMoya.toLowerCase());
+      }
+
+      const isRS = lokasi.includes("HARUM") || lokasi.includes("SUKMUL");
+      const isPicker = modeMoya === "Picker";
+      const mpList = employees.filter(e => (e.lokasi || "").toUpperCase() === lokasi.toUpperCase());
+
+      const mpRowsHtml = mpList.map((m, idx) => `
+        <tr>
+          <td style="text-align:center">${idx + 1}</td>
+          <td>${m.nama}</td>
+          <td style="text-align:center">${m.jabatan}</td>
+          <td style="text-align:center">01-${bulan}</td>
+          <td></td>
+          <td style="text-align:center">Aktif</td>
+        </tr>
+      `).join('');
+
+      const taskRowsHtml = tasks.map(t => {
+        const imgB = t.fotoBefore ? `<img src="${formatDriveThumbnailUrl(t.fotoBefore)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
+        const imgD = t.fotoDuring ? `<img src="${formatDriveThumbnailUrl(t.fotoDuring)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
+        const imgA = t.fotoAfter  ? `<img src="${formatDriveThumbnailUrl(t.fotoAfter)}" style="width:115px;height:88px;object-fit:cover;border-radius:4px;">` : '-';
+        if (isPicker) {
+          return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td></tr>`;
+        }
+        return `<tr><td style="text-align:center">${t.tanggal}</td><td style="text-align:center">${t.shift}</td><td>${t.nama}</td><td>${t.area}</td><td>${t.pekerjaan}</td><td style="text-align:center">${imgB}</td><td style="text-align:center">${imgD}</td><td style="text-align:center">${imgA}</td></tr>`;
+      }).join('');
+
+      let htmlInspeksiRS = "";
+      if (isRS) {
+        const tList = (data.toiletList || []).reverse();
+        const rList = (data.roomList || []).reverse();
+        const mList = (data.malamList || []).reverse();
+
+        htmlInspeksiRS += `
+          <div class="page-break"></div>
+          <h3>QUALITY CARE REPORT — TOILET INSPECTION (${lokasi})</h3>
+          <table>
+            <thead>
+              <tr><th>Tanggal</th><th>Lokasi Toilet</th><th>Jam</th><th>PIC</th><th>DOOR</th><th>FLOOR</th><th>WALL</th><th>MIRROR</th><th>U.BOWL</th><th>T.BOWL</th><th>TISSUE</th><th>PARTISI</th><th>BIN</th></tr>
+            </thead>
+            <tbody>
+              ${tList.map(x => `
+                <tr>
+                  <td style="text-align:center">${x.tanggal}</td>
+                  <td>${x.namaToilet}</td>
+                  <td style="text-align:center">${x.jam}</td>
+                  <td>${x.pic}</td>
+                  ${(x.items || []).map(v => `<td style="text-align:center;font-weight:bold;color:${v==='K'?'#dc2626':'#059669'}">${v}</td>`).join('')}
+                </tr>
+              `).join('') || '<tr><td colspan="13" style="text-align:center">Belum ada data inspeksi toilet</td></tr>'}
+            </tbody>
+          </table>
+
+          <div class="page-break"></div>
+          <h3>QUALITY CARE REPORT — SERVICE ROOM 25 OBJEK (${lokasi})</h3>
+          <table>
+            <thead>
+              <tr><th>Tanggal</th><th>Ruangan / Paviliun</th><th>Shift</th><th>Jam</th><th>Pemeriksa</th><th>Status 25 Objek (1 s/d 25)</th></tr>
+            </thead>
+            <tbody>
+              ${rList.map(r => `
+                <tr>
+                  <td style="text-align:center">${r.tanggal}</td>
+                  <td>${r.ruangan}</td>
+                  <td style="text-align:center">${r.shift}</td>
+                  <td style="text-align:center">${r.jam}</td>
+                  <td>${r.pemeriksa}</td>
+                  <td style="font-size:9px">${(r.objekValues || []).map((v, i) => `${i+1}:${v}`).join(' | ')}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="6" style="text-align:center">Belum ada data service room</td></tr>'}
+            </tbody>
+          </table>
+
+          <div class="page-break"></div>
+          <h3>JOB DESCRIPTION SHIFT MALAM — ${lokasi}</h3>
+          <table>
+            <thead>
+              <tr><th>Tanggal</th><th>Area</th><th>Petugas</th><th>Job Description</th><th>Jam</th><th>Keterangan</th></tr>
+            </thead>
+            <tbody>
+              ${mList.map(m => `
+                <tr>
+                  <td style="text-align:center">${m.tanggal}</td>
+                  <td>${m.area}</td>
+                  <td>${m.petugas}</td>
+                  <td>${m.job}</td>
+                  <td style="text-align:center">${m.jam}</td>
+                  <td>${m.keterangan}</td>
+                </tr>
+              `).join('') || '<tr><td colspan="6" style="text-align:center">Tidak ada data shift malam</td></tr>'}
+            </tbody>
+          </table>
+        `;
+      }
+
+      const cat = data.catatanArea || { kerusakan: "NIHIL", analisa: "NIHIL", kendala: "NIHIL" };
+      const w = window.open("", "_blank");
+      w.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>LAPORAN BULANAN - ${lokasi} (${labelPeriode})</title>
+          <style>
+            @page { size: A4 portrait; margin: 14mm; }
+            body { font-family: Arial, sans-serif; color: #0f172a; font-size: 11px; line-height: 1.45; }
+            .cover { text-align: center; padding: 75px 25px; border: 3px double #0f172a; min-height: 820px; box-sizing: border-box; }
+            .page-break { page-break-before: always; }
+            h2, h3 { color: #0f172a; border-bottom: 2px solid #0284c7; padding-bottom: 4px; margin-top: 14px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 8px; margin-bottom: 14px; }
+            th, td { border: 1px solid #64748b; padding: 5px 6px; vertical-align: middle; font-size: 10px; }
+            th { background: #e2e8f0; font-weight: bold; text-align: center; }
+            tr { page-break-inside: avoid; }
+            .toolbar-cetak { background: #0f172a; color: #fff; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 999; }
+            @media print { .toolbar-cetak { display: none; } }
+          </style>
+        </head>
+        <body>
+          <div class="toolbar-cetak">
+            <b>PRATINJAU PDF LAPORAN BULANAN PT. GCES</b> — Klik tombol hijau untuk menyimpan menjadi 1 file PDF utuh:
+            <button onclick="window.print()" style="background:#10b981;color:#fff;border:none;padding:8px 16px;border-radius:6px;font-weight:bold;margin-left:10px;cursor:pointer;">🖨️ SIMPAN PDF / CETAK</button>
+          </div>
+
+          <div class="cover">
+            <h1 style="font-size:42px;color:#185fa5;margin:0;">GCES</h1>
+            <div style="font-weight:bold;letter-spacing:1px;color:#059669;margin-bottom:65px;">PT. GEMA CITA ELOK SELARAS</div>
+            <h2 style="font-size:22px;border:none;">LAPORAN BULANAN ${isPicker ? 'PICKER' : 'CLEANER'}</h2>
+            <h3 style="font-size:18px;border:none;color:#1e3a8a;">AREA: ${lokasi}</h3>
+            <p style="font-size:14px;font-weight:bold;margin-top:18px;">PERIODE: ${labelPeriode}</p>
+            <div style="margin-top:270px;font-size:12px;">
+              <b>PT. GEMA CITA ELOK SELARAS</b><br>
+              Jl. I Gusti Ngurah Rai Blok B2 No. 6, Klender - Duren Sawit, Jakarta Timur<br>
+              Telp: 021 8609011 | Fax: 021 8609011
+            </div>
+          </div>
+
+          <div class="page-break"></div>
+          <h3>1. PENDAHULUAN / KATA PENGANTAR</h3>
+          <p>Sebelumnya kami mengucapkan terima kasih banyak atas kerja sama yang sudah terjalin dengan baik selama ini antara manajemen <b>${lokasi}</b> dengan <b>PT. GEMA CITA ELOK SELARAS</b>.</p>
+          <p>Laporan bulanan ini merupakan pertanggungjawaban hasil pekerjaan tim operasional kami selama periode <b>${labelPeriode}</b> di area <b>${lokasi}</b> agar senantiasa mencapai standar kualitas yang diinginkan oleh manajemen <b>${lokasi}</b>.</p>
+
+          <h3>2. DATA MANPOWER AKTIF & RESIGN (${lokasi})</h3>
+          <table>
+            <thead>
+              <tr><th>No.</th><th>Nama Personel</th><th>Jabatan</th><th>Efektif</th><th>Resign</th><th>Keterangan</th></tr>
+            </thead>
+            <tbody>${mpRowsHtml}</tbody>
+          </table>
+
+          <div class="page-break"></div>
+          <h3>3. DOKUMENTASI TASK REPORTING BULANAN — ${lokasi}</h3>
+          <p>Periode: <b>${labelPeriode}</b></p>
+          <table>
+            <thead>
+              ${isPicker
+                ? '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>FOTO DOKUMENTASI</th></tr>'
+                : '<tr><th>Tanggal</th><th>Shift</th><th>Identitas</th><th>Area</th><th>Pekerjaan</th><th>BEFORE</th><th>DURING</th><th>AFTER</th></tr>'}
+            </thead>
+            <tbody>
+              ${taskRowsHtml || '<tr><td colspan="8" style="text-align:center">Belum ada dokumentasi pekerjaan pada periode ini</td></tr>'}
+            </tbody>
+          </table>
+
+          ${htmlInspeksiRS}
+
+          <div class="page-break"></div>
+          <h3>4. LAPORAN EVALUASI, ANALISA & KENDALA AREA</h3>
+          <table>
+            <tr><th style="width:32%">Penemuan & Kerusakan / Tinjauan</th><td>${cat.kerusakan}</td></tr>
+            <tr><th>Analisa / Extra Job</th><td>${cat.analisa}</td></tr>
+            <tr><th>Kendala / Saran & Masukan</th><td>${cat.kendala}</td></tr>
+          </table>
+
+          <h3 style="margin-top:28px;">5. FORMULIR PENGESAHAN LAPORAN BULANAN</h3>
+          <p>${tglSah}<br>Disiapkan oleh <b>PT. Gema Cita Elok Selaras</b> dan disetujui oleh manajemen <b>${lokasi}</b>:</p>
+          <table style="margin-top:18px;text-align:center;">
+            <tr>
+              <th style="width:33%">Dibuat Oleh,</th>
+              <th style="width:33%">Diketahui Oleh,</th>
+              <th style="width:34%">Diterima & Disetujui Oleh,</th>
+            </tr>
+            <tr style="height:95px;">
+              <td><br><br><br><b>${cfg.dibuatOleh}</b><br>(${cfg.jabatanPembuat})</td>
+              <td><br><br><br><b>Bima</b><br>(Direktur)</td>
+              <td><br><br><br><b>${cfg.disetujuiKlien}</b><br>(${cfg.jabatanKlien})</td>
+            </tr>
+          </table>
+        </body>
+        </html>
+      `);
+      w.document.close();
+    } catch (e) {
+      showToast("Gagal menarik laporan bulanan dari Server 2.", true);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = `<i class="fa-solid fa-file-pdf text-rose-400 text-base"></i><span>SUSUN & CETAK PDF LAPORAN BULANAN</span>`;
+    }
+  }
+
+  // ==========================================================================
+  // FUNGSI ASLI V15.8 (ADMIN DB, TIM, RIWAYAT, GPS, ABSENSI & CUTI)
+  // ==========================================================================
   function renderAdminDB(searchQuery = '') {
     const totalEl = document.getElementById('adminTotalKaryawan');
     const listEl = document.getElementById('adminDatabaseList');
@@ -2037,10 +3181,14 @@
       btn.classList.remove('text-emerald-600');
       btn.classList.add('text-slate-400');
     });
-    document.getElementById('nav-' + tabId).classList.remove('text-slate-400');
-    document.getElementById('nav-' + tabId).classList.add('text-emerald-600');
+    const activeNav = document.getElementById('nav-' + tabId);
+    if (activeNav) {
+      activeNav.classList.remove('text-slate-400');
+      activeNav.classList.add('text-emerald-600');
+    }
 
     if (tabId === 'riwayat') syncRiwayatFromServer(false);
+    if (tabId === 'laporan') fetchRecentTaskReports();
     if (tabId === 'tim') {
       syncStatusTimFromServer(false);
       syncPendingCutiFromServer(false);
